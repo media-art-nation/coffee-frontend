@@ -1,4 +1,11 @@
-import { Shadows, createTheme } from '@mui/material';
+import { PaginationItem, Shadows, createTheme } from '@mui/material';
+import {
+    CaretDoubleLeft,
+    CaretDoubleRight,
+    CaretLeft,
+    CaretRight,
+    DotOutline,
+} from '@phosphor-icons/react';
 
 import { palette } from '.';
 
@@ -25,6 +32,14 @@ declare module '@mui/material/Typography' {
         'caption/regular': true;
         'helperText/semibold': true;
         'helperText/regular': true;
+    }
+}
+
+declare module '@mui/material/Chip' {
+    interface ChipPropsColorOverrides {
+        blue: true;
+        red: true;
+        yellow: true;
     }
 }
 
@@ -154,6 +169,7 @@ export const theme = createTheme({
                         '& input': {
                             padding: '12px 10px',
                             borderRadius: '4px',
+                            background: palette.grey[50],
                         },
                         '& fieldset': {
                             borderColor: 'transparent',
@@ -165,8 +181,126 @@ export const theme = createTheme({
                             border: `1px solid ${palette.grey[500]}`,
                         },
                     },
+                    '& .MuiOutlinedInput-input::placeholder': {
+                        color: palette.grey[400],
+                        opacity: 1, // 기본적으로 placeholder는 opacity 0.54 정도로 설정되어 있음
+                    },
                 },
             },
+        },
+        MuiPagination: {
+            defaultProps: {
+                variant: 'outlined',
+                shape: 'rounded',
+                color: 'primary',
+                showFirstButton: true,
+                showLastButton: true,
+                renderItem: (item) => (
+                    <PaginationItem
+                        slots={{
+                            previous: CaretLeft,
+                            next: CaretRight,
+                            first: CaretDoubleLeft,
+                            last: CaretDoubleRight,
+                        }}
+                        {...item}
+                    />
+                ),
+            },
+            styleOverrides: {
+                root: {
+                    'li > button': { width: '32px', border: `1px solid ${palette.grey[200]}` },
+                    'li': {
+                        '.Mui-selected': {
+                            color: palette.common.white,
+                            backgroundColor: palette.blue[600],
+                        },
+                    },
+
+                    'svg': { width: '14px', height: '14px' },
+
+                    '& .MuiPaginationItem-firstLast': {
+                        border: 0,
+                        svg: { color: palette.grey[700] },
+                    },
+                    '& .MuiPaginationItem-previousNext': {
+                        border: 0,
+                        svg: { color: palette.grey[700] },
+                    },
+
+                    '& .Mui-disabled': {
+                        svg: { color: palette.grey[300] },
+                    },
+                },
+            },
+        },
+        MuiCheckbox: {
+            styleOverrides: {
+                root: {
+                    'width': 'fit-content',
+                    '.MuiSvgIcon-root': {
+                        color: palette.grey[400],
+                    },
+                    '&.Mui-checked .MuiSvgIcon-root': {
+                        color: palette.grey[700],
+                    },
+                },
+            },
+        },
+        MuiChip: {
+            defaultProps: {
+                icon: <DotOutline size={32} weight="fill" />,
+            },
+            styleOverrides: {
+                root: {
+                    'width': 'fit-content',
+                    'paddingRight': '10px',
+                    '& .MuiChip-label': {
+                        padding: 0,
+                    },
+                    '& .MuiChip-icon': {
+                        marginLeft: '0px',
+                    },
+                },
+            },
+            variants: [
+                {
+                    props: { color: 'blue' },
+                    style: {
+                        border: `1px solid ${palette.blue[100]}`,
+                        color: palette.blue[600],
+                        backgroundColor: palette.blue[50],
+
+                        svg: {
+                            color: palette.blue[600],
+                        },
+                    },
+                },
+                {
+                    props: { color: 'red' },
+                    style: {
+                        border: `1px solid ${palette.red[100]}`,
+                        color: palette.red[600],
+                        backgroundColor: palette.red[50],
+
+                        svg: {
+                            color: palette.red[600],
+                        },
+                    },
+                },
+                {
+                    props: { color: 'yellow' },
+                    style: {
+                        border: `1px solid ${palette.yellow[100]}`,
+                        color: palette.yellow[600],
+                        backgroundColor: palette.yellow[50],
+
+                        svg: {
+                            color: palette.yellow[600],
+                        },
+                    },
+                },
+            ],
         },
     },
 });
