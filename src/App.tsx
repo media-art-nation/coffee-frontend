@@ -1,9 +1,10 @@
-
+import TestComponents from '@/pages/TestComponents';
 
 const App = () => {
     return (
         <div>
-          App
+            App
+            <TestComponents />
         </div>
     );
 };

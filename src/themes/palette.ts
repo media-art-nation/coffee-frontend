@@ -8,7 +8,7 @@ interface CustomPaletteOptions extends PaletteOptions {
     blue: CustomColor;
     grey: CustomColor;
     success: CustomColor;
-    error: CustomColor;
+    red: CustomColor;
     yellow: CustomColor;
     divider: string;
     // TODO: text, common, action color 확정 시 타입 재정의 2024.04.01 kbc
@@ -32,7 +32,7 @@ export const palette: CustomPaletteOptions = {
         900: '#0d47a1',
     },
     grey: {
-        main: '9e9e9e',
+        main: '#9e9e9e',
         50: '#fafafa',
         100: '#f5f5f5',
         200: '#eeeeee',
@@ -57,7 +57,7 @@ export const palette: CustomPaletteOptions = {
         800: '#03543F',
         900: '#014737',
     },
-    error: {
+    red: {
         main: '#F05252', // 500
         50: '#FDF2F2',
         100: '#FDE8E8',
