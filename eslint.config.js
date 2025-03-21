@@ -1,4 +1,4 @@
-import tanstackQuery from '@tanstack/eslint-plugin-query';
+import * as tanstackQuery from '@tanstack/eslint-plugin-query';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
