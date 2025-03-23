@@ -1,12 +1,8 @@
-import TestComponents from '@/pages/TestComponents';
+import { RouterProvider } from 'react-router';
+import router from './routers/router';
 
 const App = () => {
-    return (
-        <div>
-            App
-            <TestComponents />
-        </div>
-    );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
