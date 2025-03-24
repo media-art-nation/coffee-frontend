@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router';
+
 import { Stack, Typography } from '@mui/material';
 
 import { palette } from '@/themes';
@@ -5,6 +7,8 @@ import { palette } from '@/themes';
 export const GNB_HEIGHT = 60;
 const Gnb = () => {
     const isLogin = true;
+    const navigate = useNavigate();
+
     const handleClickLogout = () => {};
 
     return (
@@ -25,7 +29,12 @@ const Gnb = () => {
             {isLogin && (
                 <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
                     <Typography>{`{ 아이디 }`}</Typography>
-                    <Typography sx={{ cursor: 'pointer' }}>내 정보 수정</Typography>
+                    <Typography
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => navigate('/my-profile-edit')}
+                    >
+                        내 정보 수정
+                    </Typography>
                     <Typography sx={{ cursor: 'pointer' }} onClick={handleClickLogout}>
                         로그아웃
                     </Typography>
