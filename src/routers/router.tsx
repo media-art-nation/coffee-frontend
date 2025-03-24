@@ -7,6 +7,7 @@ import FarmerDetails from '@/pages/FarmerDetails/FarmerDetails';
 import FarmerList from '@/pages/FarmerList/FarmerList';
 import FarmerRegister from '@/pages/FarmerRegister/FarmerRegister';
 import Login from '@/pages/Login/Login';
+import RequestList from '@/pages/RequestList/RequestList';
 import TreesPurchaseList from '@/pages/TreesPurchaseList/TreesPurchaseList';
 import TreesPurchaseRegister from '@/pages/TreesPurchaseRegister/TreesPurchaseRegister';
 import TreesTransactionList from '@/pages/TreesTransactionList/TreesTransactionList';
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         element: <Layouts />,
         children: [
             {
+                path: 'request', // 요청
+                children: [{ path: 'list', element: <RequestList /> }],
+            },
+            {
                 path: 'village-head', // 면장
                 children: [
                     { path: 'list', element: <VillageHeadList /> },
@@ -42,7 +47,7 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'farmer',
+                path: 'farmer', // 농부
                 children: [
                     { path: 'list', element: <FarmerList /> },
                     { path: 'list/:id', element: <FarmerDetails /> },
@@ -50,25 +55,25 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'trees-transaction',
+                path: 'trees-transaction', // 나무 수령
                 children: [
                     { path: 'list', element: <TreesTransactionList /> },
                     { path: 'register', element: <TreesTransactionRegister /> },
                 ],
             },
             {
-                path: 'trees-purchase',
+                path: 'trees-purchase', // 수매
                 children: [
                     { path: 'list', element: <TreesPurchaseList /> },
                     { path: 'register', element: <TreesPurchaseRegister /> },
                 ],
             },
             {
-                path: 'vice-admin',
+                path: 'vice-admin', // 부 관리자
                 children: [{ path: 'list', element: <ViceAdminList /> }],
             },
             {
-                path: 'account',
+                path: 'account', // 계정
                 children: [{ path: 'register', element: <AccountRegister /> }],
             },
         ],
