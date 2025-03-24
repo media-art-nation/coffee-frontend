@@ -8,29 +8,29 @@ import { palette } from '@/themes';
 export const lnbData = [
     {
         label: '요청 관리',
-        children: [{ label: '요청 목록', path: '/request/list' }],
+        children: [{ label: '요청 목록', path: '/requests' }],
     },
     {
         label: '면장 관리',
         children: [
-            { label: '면장 목록', path: '/village-head/list' },
+            { label: '면장 목록', path: '/village-head' },
             { label: '면장 등록', path: '/village-head/register' },
-            { label: '농부 목록', path: '/farmer/list' },
+            { label: '농부 목록', path: '/farmer' },
             { label: '농부 등록', path: '/farmer/register' },
-            { label: '나무 수령 목록', path: '/trees-transaction/list' },
+            { label: '나무 수령 목록', path: '/trees-transaction' },
             { label: '나무 수령 등록', path: '/trees-transaction/register' },
         ],
     },
     {
         label: '수매 관리',
         children: [
-            { label: '수매 목록', path: '/trees-purchase/list' },
+            { label: '수매 목록', path: '/trees-purchase' },
             { label: '수매 내역 등록', path: '/trees-purchase/register' },
         ],
     },
     {
         label: '부 관리자 관리',
-        children: [{ label: '부 관리자 목록', path: '/vice-admin/list' }],
+        children: [{ label: '부 관리자 목록', path: '/vice-admin' }],
     },
     {
         label: '계정 관리',

@@ -7,9 +7,9 @@ import Lnb from './Lnb';
 
 const Layouts = () => {
     return (
-        <Stack sx={{ height: '100vh' }}>
+        <Stack sx={{ height: '100vh', width: '100wh' }}>
             <Gnb />
-            <Stack sx={{ flexDirection: 'row', height: '100%' }}>
+            <Stack sx={{ flexDirection: 'row', height: '100%', width: '100%' }}>
                 <Lnb />
                 <Outlet />
             </Stack>
