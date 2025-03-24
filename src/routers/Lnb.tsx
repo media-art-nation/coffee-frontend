@@ -42,10 +42,15 @@ const Lnb = () => {
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    console.log(pathname);
-
     return (
-        <Stack sx={{ padding: '12px', width: '216px', gap: '5px' }}>
+        <Stack
+            sx={{
+                padding: '12px',
+                minWidth: '216px',
+                gap: '5px',
+                borderRight: `1px solid ${palette.grey[200]}`,
+            }}
+        >
             {lnbData.map((v) => {
                 return (
                     <Accordion
