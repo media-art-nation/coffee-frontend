@@ -4,6 +4,7 @@ import { Stack } from '@mui/material';
 
 import Gnb from './Gnb';
 import Lnb from './Lnb';
+import Common from '@/pages/Common';
 
 const Layouts = () => {
     return (
@@ -11,6 +12,7 @@ const Layouts = () => {
             <Gnb />
             <Stack sx={{ flexDirection: 'row', height: '100%', width: '100%' }}>
                 <Lnb />
+                <Common/>
                 <Outlet />
             </Stack>
         </Stack>

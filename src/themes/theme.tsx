@@ -46,6 +46,10 @@ declare module '@mui/material/Chip' {
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
         containedBlack: true;
+        containedBlue: true;
+        containedWhite: true;
+        containedRed: true;
+        containedGrey: true;
         //------------------------아래부터 진짜
         Primary: true;
         Secondary: true;
@@ -325,6 +329,47 @@ export const theme = createTheme({
                     },
                 },
             },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    padding: '10px 30px',
+                    borderRadius: '5px',
+                    fontSize: '14px',
+                },
+            },
+            variants: [
+                {
+                    props: { variant: 'containedBlue' },
+                    style: {
+                        backgroundColor: palette.blue[600],
+                        color: palette.common.white,
+                    },
+                },
+                {
+                    props: { variant: 'containedRed' },
+                    style: {
+                        backgroundColor: palette.error.main,
+                        color: palette.common.white,
+                    },
+                },
+                {
+                    props: { variant: 'containedGrey' },
+                    style: {
+                        backgroundColor: palette.grey[50],
+                        border: `1px solid ${palette.grey[100]}`,
+                        color: palette.grey[800],
+                    },
+                },
+                {
+                    props: { variant: 'containedWhite' },
+                    style: {
+                        backgroundColor: palette.common.white,
+                        border: `1px solid ${palette.grey[100]}`,
+                        color: palette.grey[800],
+                    },
+                },
+            ],
         },
     },
 });

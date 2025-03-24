@@ -1,5 +1,9 @@
 import { Color, PaletteOptions } from '@mui/material';
 
+
+
+
+
 interface CustomColor extends Omit<Color, 'A100' | 'A200' | 'A400' | 'A700'> {
     main: string;
 }
@@ -31,7 +35,7 @@ export const palette: CustomPaletteOptions = {
         900: '#0d47a1',
     },
     grey: {
-        main: '#9e9e9e',
+        main: '#607D8B', // 500
         50: '#ECEFF1',
         100: '#CFD8DC',
         200: '#B0BEC5',
