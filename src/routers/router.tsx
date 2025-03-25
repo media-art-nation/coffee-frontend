@@ -3,20 +3,25 @@ import { createBrowserRouter } from 'react-router';
 import { Stack } from '@mui/material';
 
 import AccountRegister from '@/pages/Accounts/AccountRegister';
+import Login from '@/pages/Accounts/Login';
+import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
 import Common from '@/pages/CommonComponents';
 import FarmerDetails from '@/pages/Farmers/FarmerDetails';
 import FarmerList from '@/pages/Farmers/FarmerList';
 import FarmerRegister from '@/pages/Farmers/FarmerRegister';
-import FarmerRequestDetails from '@/pages/Requests/FarmerRequestDetail';
-import Login from '@/pages/Accounts/Login';
-import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
+import LocationList from '@/pages/Locations/LocationList';
+import LocationRegister from '@/pages/Locations/LocationRegister';
+import SectionRegister from '@/pages/Locations/SectionRegister';
+import FarmerRequestDetails from '@/pages/Requests/FarmerRequestDetails';
 import RequestList from '@/pages/Requests/RequestList';
+import SectionRequestDetails from '@/pages/Requests/SectionRequestDetails';
+import TreesPurchaseRequestDetails from '@/pages/Requests/TreesPurchaseRequestDetails';
+import TreesTransactionRequestDetails from '@/pages/Requests/TreesTransactionRequestDetails';
+import VillageHeadRequestDetails from '@/pages/Requests/VillageHeadRequestDetails';
 import TreesPurchaseList from '@/pages/TreesPurchases/TreesPurchaseList';
 import TreesPurchaseRegister from '@/pages/TreesPurchases/TreesPurchaseRegister';
-import TreesPurchaseRequestDetails from '@/pages/Requests/TreesPurchaseRequestDetail';
 import TreesTransactionList from '@/pages/TreesTransactions/TreesTransactionList';
 import TreesTransactionRegister from '@/pages/TreesTransactions/TreesTransactionRegister';
-import TreesTransactionRequestDetails from '@/pages/Requests/TreesTransactionRequestDetails';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
 import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
 import ViceAdminList from '@/pages/ViceAdmins/ViceAdminList';
@@ -24,7 +29,6 @@ import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadEdit from '@/pages/VillageHeads/VillageHeadEdit';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
 import VillageHeadRegister from '@/pages/VillageHeads/VillageHeadRegister';
-import VillageHeadRequestDetails from '@/pages/Requests/VillageHeadRequestDetails';
 
 import Gnb from './Gnb';
 import Layouts from './Layouts';
@@ -55,6 +59,7 @@ const router = createBrowserRouter([
                     { path: 'farmer/:id', element: <FarmerRequestDetails /> }, // 농부 등록 요청 상세
                     { path: 'trees-transaction/:id', element: <TreesTransactionRequestDetails /> }, // 나무 수령 승인 요청 상세
                     { path: 'trees-purchase/:id', element: <TreesPurchaseRequestDetails /> }, // 수매 승인 요청 상세
+                    { path: 'section/:id', element: <SectionRequestDetails /> }, // 섹션 생성 요청 상세
                 ],
             },
             {
@@ -97,11 +102,19 @@ const router = createBrowserRouter([
                 ],
             },
             {
+                path: 'location', // 지역
+                children: [
+                    { index: true, element: <LocationList /> },
+                    { path: 'register', element: <LocationRegister /> },
+                    { path: 'register/section', element: <SectionRegister /> },
+                ],
+            },
+            {
                 path: 'account', // 계정
                 children: [{ path: 'register', element: <AccountRegister /> }],
             },
             {
-                path: 'components', // 계정
+                path: 'components', // 공통 컴포넌트
                 element: <Common />,
             },
         ],

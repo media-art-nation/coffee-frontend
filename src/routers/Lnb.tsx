@@ -33,6 +33,14 @@ export const lnbData = [
         children: [{ label: '부 관리자 목록', path: '/vice-admin' }],
     },
     {
+        label: '지역 관리',
+        children: [
+            { label: '지역 및 섹션 목록', path: '/location' },
+            { label: '지역 생성', path: '/location/register' },
+            { label: '섹션 생성', path: '/location/register/section' },
+        ],
+    },
+    {
         label: '계정 관리',
         children: [{ label: '계성 생성', path: '/account/register' }],
     },

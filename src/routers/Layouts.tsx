@@ -10,7 +10,9 @@ const Layouts = () => {
         <Stack sx={{ height: '100vh', width: '100wh' }}>
             <Gnb />
             <Stack sx={{ flexDirection: 'row', height: '100%', width: '100%', overflow: 'hidden' }}>
-                <Lnb />
+                <Stack sx={{ 'overflowY': 'auto', '&::-webkit-scrollbar': { display: 'none' } }}>
+                    <Lnb />
+                </Stack>
                 <Stack sx={{ flex: 1, overflowY: 'auto' }}>
                     <Outlet />
                 </Stack>
