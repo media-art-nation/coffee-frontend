@@ -1,4 +1,13 @@
-import { Button, MenuItem, Stack } from '@mui/material';
+import {
+    Button,
+    MenuItem,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from '@mui/material';
 
 import Select from '@/components/Select/Select';
 import { useDialog } from '@/hooks/useDialog';
@@ -54,6 +63,20 @@ const Common = () => {
                 <MenuItem>menu 1</MenuItem>
                 <MenuItem>menu 2</MenuItem>
             </Select>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Header1</TableCell>
+                        <TableCell>Header2</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TableCell>Header1</TableCell>
+                        <TableCell>Header2</TableCell>
+                    </TableRow>
+                </TableBody>
+            </Table>
         </Stack>
     );
 };

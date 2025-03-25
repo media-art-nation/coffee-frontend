@@ -7,13 +7,7 @@ import {
     DotOutline,
 } from '@phosphor-icons/react';
 
-
-
 import { palette } from '.';
-
-
-
-
 
 declare module '@mui/material/Typography' {
     interface TypographyPropsVariantOverrides {
@@ -382,6 +376,24 @@ export const theme = createTheme({
                 icon: {
                     color: palette.grey[700], // 아이콘 색상 변경
                     fontSize: '24px', // 아이콘 크기 변경
+                },
+            },
+        },
+        MuiTable: {
+            styleOverrides: {
+                root: { width: '100%' },
+            },
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: { color: palette.grey[900], fontSize: '14px' },
+                head: {
+                    backgroundColor: palette.grey[50],
+                    fontWeight: '600',
+                    borderBottom: `1px solid ${palette.grey[300]}`,
+                },
+                body: {
+                    borderBottom: `1px solid ${palette.grey[100]}`,
                 },
             },
         },
