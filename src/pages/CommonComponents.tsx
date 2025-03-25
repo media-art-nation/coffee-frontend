@@ -10,13 +10,21 @@ import {
 } from '@mui/material';
 
 import Select from '@/components/Select/Select';
+import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const Common = () => {
     const { openDialog } = useDialog();
 
     return (
-        <Stack sx={{ gap: '5px' }}>
+        <Stack sx={{ gap: '5px', width: '100%' }}>
+            <Title title="Title">
+                <Stack>
+                    <Button variant="containedBlue" size="xSmall">
+                        containedBlue
+                    </Button>
+                </Stack>
+            </Title>
             <Button variant="containedBlue">containedBlue</Button>
             <Button variant="containedRed">containedRed</Button>
             <Button variant="containedWhite">containedWhite</Button>

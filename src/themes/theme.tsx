@@ -59,6 +59,10 @@ declare module '@mui/material/Button' {
         Warning_Text: true;
         Text: true;
     }
+
+    interface ButtonPropsSizeOverrides {
+        xSmall: true;
+    }
 }
 
 export const theme = createTheme({
@@ -367,6 +371,15 @@ export const theme = createTheme({
                         backgroundColor: palette.common.white,
                         border: `1px solid ${palette.grey[100]}`,
                         color: palette.grey[800],
+                    },
+                },
+                {
+                    props: { size: 'xSmall' },
+                    style: {
+                        padding: '0 16px',
+                        height: '38px',
+                        fontSize: '14px',
+                        width: 'fit-content',
                     },
                 },
             ],

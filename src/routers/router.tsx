@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router';
 import { Stack } from '@mui/material';
 
 import AccountRegister from '@/pages/AccountRegister';
+import Common from '@/pages/CommonComponents';
 import FarmerDetails from '@/pages/FarmerDetails';
 import FarmerList from '@/pages/FarmerList';
 import FarmerRegister from '@/pages/FarmerRegister';
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
             {
                 path: 'account', // 계정
                 children: [{ path: 'register', element: <AccountRegister /> }],
+            },
+            {
+                path: 'components', // 계정
+                element: <Common />,
             },
         ],
     },
