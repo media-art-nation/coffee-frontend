@@ -1,20 +1,21 @@
-import {
-    Button,
-    MenuItem,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@mui/material';
+import { Button, MenuItem, Stack, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 
 import Select from '@/components/Select/Select';
+import Table from '@/components/Table';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const Common = () => {
     const { openDialog } = useDialog();
+
+    const renderRow = (row: { name: string; id: string }) => {
+        return (
+            <>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.id}</TableCell>
+            </>
+        );
+    };
 
     return (
         <Stack sx={{ gap: '5px', width: '100%' }}>
@@ -25,6 +26,19 @@ const Common = () => {
                     </Button>
                 </Stack>
             </Title>
+            <Table
+                headData={['header1', 'header2']}
+                bodyData={[
+                    { name: 'dummy1', id: 'dummy1' },
+                    { name: 'dummy2', id: 'dummy2' },
+                ]}
+                renderRow={renderRow}
+            />
+            <Table
+                headData={['header1', 'header2']}
+                bodyData={undefined}
+                renderRow={renderRow}
+            />
             <Button variant="containedBlue">containedBlue</Button>
             <Button variant="containedRed">containedRed</Button>
             <Button variant="containedWhite">containedWhite</Button>
@@ -71,20 +85,6 @@ const Common = () => {
                 <MenuItem>menu 1</MenuItem>
                 <MenuItem>menu 2</MenuItem>
             </Select>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Header1</TableCell>
-                        <TableCell>Header2</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <TableCell>Header1</TableCell>
-                        <TableCell>Header2</TableCell>
-                    </TableRow>
-                </TableBody>
-            </Table>
         </Stack>
     );
 };
