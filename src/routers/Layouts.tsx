@@ -9,9 +9,11 @@ const Layouts = () => {
     return (
         <Stack sx={{ height: '100vh', width: '100wh' }}>
             <Gnb />
-            <Stack sx={{ flexDirection: 'row', height: '100%', width: '100%' }}>
+            <Stack sx={{ flexDirection: 'row', height: '100%', width: '100%', overflow: 'hidden' }}>
                 <Lnb />
-                <Outlet />
+                <Stack sx={{ flex: 1, overflowY: 'auto' }}>
+                    <Outlet />
+                </Stack>
             </Stack>
         </Stack>
     );

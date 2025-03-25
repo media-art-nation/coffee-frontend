@@ -34,11 +34,7 @@ const Common = () => {
                 ]}
                 renderRow={renderRow}
             />
-            <Table
-                headData={['header1', 'header2']}
-                bodyData={undefined}
-                renderRow={renderRow}
-            />
+            <Table headData={['header1', 'header2']} bodyData={undefined} renderRow={renderRow} />
             <Button variant="containedBlue">containedBlue</Button>
             <Button variant="containedRed">containedRed</Button>
             <Button variant="containedWhite">containedWhite</Button>

@@ -23,6 +23,7 @@ const Gnb = () => {
                 'justifyContent': 'space-between',
                 'alignItems': 'center',
                 'height': GNB_HEIGHT,
+                'minHeight': GNB_HEIGHT,
             }}
         >
             <Typography sx={{ fontSize: '22px', fontWeight: '600' }}>테즈로스팅</Typography>
