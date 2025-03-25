@@ -7,7 +7,13 @@ import {
     DotOutline,
 } from '@phosphor-icons/react';
 
+
+
 import { palette } from '.';
+
+
+
+
 
 declare module '@mui/material/Typography' {
     interface TypographyPropsVariantOverrides {
@@ -370,6 +376,14 @@ export const theme = createTheme({
                     },
                 },
             ],
+        },
+        MuiSelect: {
+            styleOverrides: {
+                icon: {
+                    color: palette.grey[700], // 아이콘 색상 변경
+                    fontSize: '24px', // 아이콘 크기 변경
+                },
+            },
         },
     },
 });

@@ -1,6 +1,6 @@
-import { Button, Stack } from '@mui/material';
+import { Button, MenuItem, Stack } from '@mui/material';
 
-import Dialog from '@/components/Dialog/Dialog';
+import Select from '@/components/Select/Select';
 import { useDialog } from '@/hooks/useDialog';
 
 const Common = () => {
@@ -50,6 +50,10 @@ const Common = () => {
             >
                 alert Dialog
             </Button>
+            <Select>
+                <MenuItem>menu 1</MenuItem>
+                <MenuItem>menu 2</MenuItem>
+            </Select>
         </Stack>
     );
 };
