@@ -46,6 +46,10 @@ declare module '@mui/material/Chip' {
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
         containedBlack: true;
+        containedBlue: true;
+        containedWhite: true;
+        containedRed: true;
+        containedGrey: true;
         //------------------------아래부터 진짜
         Primary: true;
         Secondary: true;
@@ -54,6 +58,10 @@ declare module '@mui/material/Button' {
         Warning: true;
         Warning_Text: true;
         Text: true;
+    }
+
+    interface ButtonPropsSizeOverrides {
+        xSmall: true;
     }
 }
 
@@ -167,7 +175,7 @@ export const theme = createTheme({
                 root: {
                     'background': palette.grey[50],
                     'borderRadius': '4px',
-                    'min-height': '44px',
+                    'minHeight': '44px',
                     '& .MuiOutlinedInput-root': {
                         'height': '44px',
                         '& input': {
@@ -323,6 +331,78 @@ export const theme = createTheme({
                     'span': {
                         color: palette.grey[400],
                     },
+                },
+                icon: {
+                    color: palette.grey[700], // 아이콘 색상 변경
+                    fontSize: '24px', // 아이콘 크기 변경
+                },
+            },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    padding: '10px 30px',
+                    borderRadius: '5px',
+                    fontSize: '14px',
+                },
+            },
+            variants: [
+                {
+                    props: { variant: 'containedBlue' },
+                    style: {
+                        backgroundColor: palette.blue[600],
+                        color: palette.common.white,
+                    },
+                },
+                {
+                    props: { variant: 'containedRed' },
+                    style: {
+                        backgroundColor: palette.red.main,
+                        color: palette.common.white,
+                    },
+                },
+                {
+                    props: { variant: 'containedGrey' },
+                    style: {
+                        backgroundColor: palette.grey[50],
+                        border: `1px solid ${palette.grey[100]}`,
+                        color: palette.grey[800],
+                    },
+                },
+                {
+                    props: { variant: 'containedWhite' },
+                    style: {
+                        backgroundColor: palette.common.white,
+                        border: `1px solid ${palette.grey[100]}`,
+                        color: palette.grey[800],
+                    },
+                },
+                {
+                    props: { size: 'xSmall' },
+                    style: {
+                        padding: '0 16px',
+                        height: '38px',
+                        fontSize: '14px',
+                        width: 'fit-content',
+                    },
+                },
+            ],
+        },
+        MuiTable: {
+            styleOverrides: {
+                root: { width: '100%' },
+            },
+        },
+        MuiTableCell: {
+            styleOverrides: {
+                root: { color: palette.grey[900], fontSize: '14px' },
+                head: {
+                    backgroundColor: palette.grey[50],
+                    fontWeight: '600',
+                    borderBottom: `1px solid ${palette.grey[300]}`,
+                },
+                body: {
+                    borderBottom: `1px solid ${palette.grey[100]}`,
                 },
             },
         },
