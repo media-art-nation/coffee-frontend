@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router';
 
 import { Stack, Typography } from '@mui/material';
 
+import Logo from '@assets/logo.png';
+
 import { palette } from '@/themes';
 
 export const GNB_HEIGHT = 60;
@@ -18,7 +20,7 @@ const Gnb = () => {
                     color: palette.common.white,
                 },
                 'backgroundColor': palette.blue[500],
-                'padding': '0 20px',
+                'padding': '0 20px 0 15px',
                 'flexDirection': 'row',
                 'justifyContent': 'space-between',
                 'alignItems': 'center',
@@ -26,7 +28,16 @@ const Gnb = () => {
                 'minHeight': GNB_HEIGHT,
             }}
         >
-            <Typography sx={{ fontSize: '22px', fontWeight: '600' }}>테즈로스팅</Typography>
+            <Stack
+                sx={{
+                    height: '40px',
+                    width: '75px',
+                    backgroundImage: `url(${Logo})`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                }}
+            />
             {isLogin && (
                 <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
                     <Typography>{`{ 아이디 }`}</Typography>
