@@ -5,7 +5,6 @@ import { Stack } from '@mui/material';
 import AccountRegister from '@/pages/Accounts/AccountRegister';
 import Login from '@/pages/Accounts/Login';
 import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
-import Common from '@/pages/CommonComponents';
 import FarmerDetails from '@/pages/Farmers/FarmerDetails';
 import FarmerList from '@/pages/Farmers/FarmerList';
 import FarmerRegister from '@/pages/Farmers/FarmerRegister';
@@ -32,6 +31,7 @@ import VillageHeadRegister from '@/pages/VillageHeads/VillageHeadRegister';
 
 import Gnb from './Gnb';
 import Layouts from './Layouts';
+import TestComponents from '@/pages/TestComponents';
 
 const router = createBrowserRouter([
     {
@@ -115,7 +115,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'components', // 공통 컴포넌트
-                element: <Common />,
+                element: <TestComponents />,
             },
         ],
     },

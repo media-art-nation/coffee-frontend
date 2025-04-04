@@ -175,7 +175,7 @@ export const theme = createTheme({
                 root: {
                     'background': palette.grey[50],
                     'borderRadius': '4px',
-                    'min-height': '44px',
+                    'minHeight': '44px',
                     '& .MuiOutlinedInput-root': {
                         'height': '44px',
                         '& input': {
@@ -332,6 +332,10 @@ export const theme = createTheme({
                         color: palette.grey[400],
                     },
                 },
+                icon: {
+                    color: palette.grey[700], // 아이콘 색상 변경
+                    fontSize: '24px', // 아이콘 크기 변경
+                },
             },
         },
         MuiButton: {
@@ -353,7 +357,7 @@ export const theme = createTheme({
                 {
                     props: { variant: 'containedRed' },
                     style: {
-                        backgroundColor: palette.error.main,
+                        backgroundColor: palette.red.main,
                         color: palette.common.white,
                     },
                 },
@@ -383,14 +387,6 @@ export const theme = createTheme({
                     },
                 },
             ],
-        },
-        MuiSelect: {
-            styleOverrides: {
-                icon: {
-                    color: palette.grey[700], // 아이콘 색상 변경
-                    fontSize: '24px', // 아이콘 크기 변경
-                },
-            },
         },
         MuiTable: {
             styleOverrides: {

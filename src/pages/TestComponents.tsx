@@ -1,21 +1,104 @@
 import React from 'react';
 
-import { Checkbox, Chip, MenuItem, Pagination, Select, Stack, Typography } from '@mui/material';
+import {
+    Button,
+    Checkbox,
+    Chip,
+    MenuItem,
+    Pagination,
+    Select,
+    Stack,
+    TableCell,
+    Typography,
+} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 import AddPhoto from '@/components/AddPhoto';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import LabelAndInput from '@/components/LabelAndInput';
 import SearchTextField from '@/components/SearchTextField';
+import Table from '@/components/Table';
 import TextArea from '@/components/TextArea';
+import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 const TestComponents = () => {
+    const { openDialog } = useDialog();
+
+    const renderRow = (row: { name: string; id: string }) => {
+        return (
+            <>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.id}</TableCell>
+            </>
+        );
+    };
+
     const [input, setInput] = React.useState<string>('');
     const [select, setSelect] = React.useState<string>('');
     const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     console.log(dayjs(value).format('YYYY-MM-DD'));
+
     return (
         <Stack sx={{ gap: '30px', padding: '50px', flex: 1 }}>
+            <Title title="Title">
+                <Stack>
+                    <Button variant="containedBlue" size="xSmall">
+                        containedBlue
+                    </Button>
+                </Stack>
+            </Title>
+            <Table
+                headData={['header1', 'header2']}
+                bodyData={[
+                    { name: 'dummy1', id: 'dummy1' },
+                    { name: 'dummy2', id: 'dummy2' },
+                ]}
+                renderRow={renderRow}
+            />
+            <Table headData={['header1', 'header2']} bodyData={undefined} renderRow={renderRow} />
+            <Button variant="containedBlue">containedBlue</Button>
+            <Button variant="containedRed">containedRed</Button>
+            <Button variant="containedWhite">containedWhite</Button>
+            <Button variant="containedGrey">containedGrey</Button>
+            <Button
+                onClick={() => {
+                    openDialog({
+                        title: 'title',
+                        description: 'description',
+                        variant: 'confirm',
+                        primaryAction: {
+                            name: '확인',
+                            onClick: () => {},
+                        },
+                        secondaryAction: {
+                            name: '취소',
+                            onClick: () => {},
+                        },
+                    });
+                }}
+            >
+                confirm Dialog
+            </Button>
+            <Button
+                onClick={() => {
+                    openDialog({
+                        title: 'title',
+                        description: 'description',
+                        variant: 'alert',
+                        primaryAction: {
+                            name: '확인',
+                            onClick: () => {},
+                        },
+                        secondaryAction: {
+                            name: '취소',
+                            onClick: () => {},
+                        },
+                    });
+                }}
+            >
+                alert Dialog
+            </Button>
             <Stack gap={'10px'}>
                 <Typography>Label and input</Typography>
                 <LabelAndInput
