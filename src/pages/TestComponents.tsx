@@ -7,6 +7,7 @@ import AddPhoto from '@/components/AddPhoto';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import LabelAndInput from '@/components/LabelAndInput';
 import SearchTextField from '@/components/SearchTextField';
+import TextArea from '@/components/TextArea';
 
 const TestComponents = () => {
     const [input, setInput] = React.useState<string>('');
@@ -45,6 +46,8 @@ const TestComponents = () => {
                 <SearchTextField />
                 <Typography>calendar</Typography>
                 <CustomDatePicker value={value} onChange={(newValue) => setValue(newValue)} />
+                <Typography>Textarea</Typography>
+                <TextArea />
             </Stack>
 
             <Stack gap={'10px'}>

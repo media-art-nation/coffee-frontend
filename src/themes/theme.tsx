@@ -167,7 +167,7 @@ export const theme = createTheme({
                 root: {
                     'background': palette.grey[50],
                     'borderRadius': '4px',
-                    'height': '44px',
+                    'min-height': '44px',
                     '& .MuiOutlinedInput-root': {
                         'height': '44px',
                         '& input': {
