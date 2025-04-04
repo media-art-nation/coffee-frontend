@@ -1,9 +1,17 @@
 import { useLocation, useNavigate } from 'react-router';
 
+
+
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Stack, Typography } from '@mui/material';
 
+
+
 import { palette } from '@/themes';
+
+
+
+
 
 export const lnbData = [
     {
@@ -13,36 +21,36 @@ export const lnbData = [
     {
         label: '면장 관리',
         children: [
-            { label: '면장 목록', path: '/village-head' },
-            { label: '면장 등록', path: '/village-head/register' },
-            { label: '농부 목록', path: '/farmer' },
-            { label: '농부 등록', path: '/farmer/register' },
-            { label: '나무 수령 목록', path: '/trees-transaction' },
-            { label: '나무 수령 등록', path: '/trees-transaction/register' },
+            { label: '면장 목록', path: '/village-heads' },
+            { label: '면장 등록', path: '/village-heads/register' },
+            { label: '농부 목록', path: '/village-heads/farmers' },
+            { label: '농부 등록', path: '/village-heads/farmers/register' },
+            { label: '나무 수령 목록', path: '/village-heads/trees-transactions' },
+            { label: '나무 수령 등록', path: '/village-heads/trees-transactions/register' },
         ],
     },
     {
         label: '수매 관리',
         children: [
-            { label: '수매 목록', path: '/trees-purchase' },
-            { label: '수매 내역 등록', path: '/trees-purchase/register' },
+            { label: '수매 목록', path: '/trees-purchases' },
+            { label: '수매 내역 등록', path: '/trees-purchases/register' },
         ],
     },
     {
         label: '부 관리자 관리',
-        children: [{ label: '부 관리자 목록', path: '/vice-admin' }],
+        children: [{ label: '부 관리자 목록', path: '/vice-admins' }],
     },
     {
         label: '지역 관리',
         children: [
-            { label: '지역 및 섹션 목록', path: '/location' },
-            { label: '지역 생성', path: '/location/register' },
-            { label: '섹션 생성', path: '/location/register/section' },
+            { label: '지역 및 섹션 목록', path: '/locations' },
+            { label: '지역 생성', path: '/locations/register' },
+            { label: '섹션 생성', path: '/locations/register/section' },
         ],
     },
     {
         label: '계정 관리',
-        children: [{ label: '계성 생성', path: '/account/register' }],
+        children: [{ label: '계성 생성', path: '/accounts/register' }],
     },
 ];
 

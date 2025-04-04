@@ -17,6 +17,7 @@ import SectionRequestDetails from '@/pages/Requests/SectionRequestDetails';
 import TreesPurchaseRequestDetails from '@/pages/Requests/TreesPurchaseRequestDetails';
 import TreesTransactionRequestDetails from '@/pages/Requests/TreesTransactionRequestDetails';
 import VillageHeadRequestDetails from '@/pages/Requests/VillageHeadRequestDetails';
+import TestComponents from '@/pages/TestComponents';
 import TreesPurchaseList from '@/pages/TreesPurchases/TreesPurchaseList';
 import TreesPurchaseRegister from '@/pages/TreesPurchases/TreesPurchaseRegister';
 import TreesTransactionList from '@/pages/TreesTransactions/TreesTransactionList';
@@ -31,7 +32,6 @@ import VillageHeadRegister from '@/pages/VillageHeads/VillageHeadRegister';
 
 import Gnb from './Gnb';
 import Layouts from './Layouts';
-import TestComponents from '@/pages/TestComponents';
 
 const router = createBrowserRouter([
     {
@@ -63,38 +63,28 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'village-head', // 면장
+                path: 'village-heads', // 면장
                 children: [
                     { index: true, element: <VillageHeadList /> },
                     { path: ':id', element: <VillageHeadDetails /> },
                     { path: 'register', element: <VillageHeadRegister /> },
                     { path: 'edit', element: <VillageHeadEdit /> },
+                    { path: 'farmers', element: <FarmerList /> },
+                    { path: 'farmers/:id', element: <FarmerDetails /> },
+                    { path: 'farmers/register', element: <FarmerRegister /> },
+                    { path: 'trees-transactions', element: <TreesTransactionList /> },
+                    { path: 'trees-transactions/register', element: <TreesTransactionRegister /> },
                 ],
             },
             {
-                path: 'farmer', // 농부
-                children: [
-                    { index: true, element: <FarmerList /> },
-                    { path: ':id', element: <FarmerDetails /> },
-                    { path: 'register', element: <FarmerRegister /> },
-                ],
-            },
-            {
-                path: 'trees-transaction', // 나무 수령
-                children: [
-                    { index: true, element: <TreesTransactionList /> },
-                    { path: 'register', element: <TreesTransactionRegister /> },
-                ],
-            },
-            {
-                path: 'trees-purchase', // 수매
+                path: 'trees-purchases', // 수매
                 children: [
                     { index: true, element: <TreesPurchaseList /> },
                     { path: 'register', element: <TreesPurchaseRegister /> },
                 ],
             },
             {
-                path: 'vice-admin', // 부 관리자
+                path: 'vice-admins', // 부 관리자
                 children: [
                     { index: true, element: <ViceAdminList /> },
                     { path: ':id', element: <ViceAdminDetails /> },
@@ -102,7 +92,7 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'location', // 지역
+                path: 'locations', // 지역
                 children: [
                     { index: true, element: <LocationList /> },
                     { path: 'register', element: <LocationRegister /> },
@@ -110,7 +100,7 @@ const router = createBrowserRouter([
                 ],
             },
             {
-                path: 'account', // 계정
+                path: 'accounts', // 계정
                 children: [{ path: 'register', element: <AccountRegister /> }],
             },
             {
