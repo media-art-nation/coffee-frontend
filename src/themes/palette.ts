@@ -11,7 +11,6 @@ interface CustomPaletteOptions extends PaletteOptions {
     red: CustomColor;
     yellow: CustomColor;
     divider: string;
-    // TODO: text, common, action color 확정 시 타입 재정의 2024.04.01 kbc
     text: { primary: string };
     common: { black: string; white: string };
     action: { hover: string; focus: string; selected: string };
@@ -33,16 +32,16 @@ export const palette: CustomPaletteOptions = {
     },
     grey: {
         main: '#9e9e9e',
-        50: '#fafafa',
-        100: '#f5f5f5',
-        200: '#eeeeee',
-        300: '#e0e0e0',
-        400: '#bdbdbd',
-        500: '#9e9e9e',
-        600: '#757575',
-        700: '#616161',
-        800: '#424242',
-        900: '#212121',
+        50: '#ECEFF1',
+        100: '#CFD8DC',
+        200: '#B0BEC5',
+        300: '#90A4AE',
+        400: '#78909C',
+        500: '#607D8B',
+        600: '#546E7A',
+        700: '#455A64',
+        800: '#37474F',
+        900: '#263238',
     },
     success: {
         main: '#0E9F6E', // 500
@@ -84,7 +83,7 @@ export const palette: CustomPaletteOptions = {
         900: '#f57f17',
     },
     divider: '#E5E7EB',
-    text: { primary: '#111928' }, // grey 900
+    text: { primary: '#111928' },
     common: { black: '#000000', white: '#FFFFFF' },
-    action: { hover: '#0000000A', focus: '#0000000A', selected: '#EBF5FF' }, // TODO: disabled, disabledBackground, disabledOpacity color 2024.04.01 kbc
+    action: { hover: '#0000000A', focus: '#0000000A', selected: '#EBF5FF' },
 };
