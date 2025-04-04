@@ -165,11 +165,13 @@ export const theme = createTheme({
         MuiTextField: {
             styleOverrides: {
                 root: {
+                    'background': palette.grey[50],
+                    'borderRadius': '4px',
+                    'height': '44px',
                     '& .MuiOutlinedInput-root': {
+                        'height': '44px',
                         '& input': {
                             padding: '12px 10px',
-                            borderRadius: '4px',
-                            background: palette.grey[50],
                         },
                         '& fieldset': {
                             borderColor: 'transparent',
@@ -301,6 +303,28 @@ export const theme = createTheme({
                     },
                 },
             ],
+        },
+        MuiSelect: {
+            defaultProps: { displayEmpty: true },
+            styleOverrides: {
+                root: {
+                    'width': '100%',
+                    'minWidth': '100%',
+                    'height': '44px',
+                    'backgroundColor': palette.grey[50],
+                    'border': 'none',
+                    'outline': 'none',
+                    '& fieldset': {
+                        border: 'none',
+                    },
+                    '&:focus': {
+                        outline: 'none',
+                    },
+                    'span': {
+                        color: palette.grey[400],
+                    },
+                },
+            },
         },
     },
 });
