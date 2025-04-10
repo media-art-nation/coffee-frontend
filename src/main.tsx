@@ -15,11 +15,11 @@ import './index.css';
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DialogProvider>
-                <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
+                <DialogProvider>
                     <App />
-                </ThemeProvider>
-            </DialogProvider>
+                </DialogProvider>
+            </ThemeProvider>
         </LocalizationProvider>
     </StrictMode>
 );

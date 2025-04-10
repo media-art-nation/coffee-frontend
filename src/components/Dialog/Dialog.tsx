@@ -69,7 +69,7 @@ const Dialog = ({
                         />
                     )}
                 </Stack>
-                <Stack>
+                <Stack sx={{ gap: '10px' }}>
                     <Typography
                         sx={{ color: palette.grey[800], fontSize: '18px', fontWeight: '500' }}
                     >

@@ -6,6 +6,7 @@ import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
 
 import LabelAndInput from '@/components/LabelAndInput';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 type TAccountForm = {
     userId: string;
@@ -20,6 +21,7 @@ type TAccountForm = {
  * VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER */
 
 const AccountRegister = () => {
+    const { openDialog } = useDialog();
     const [passwordCheck, setPasswordCheck] = useState('');
     const { watch, register, setValue, handleSubmit } = useForm<TAccountForm>({
         defaultValues: {
@@ -30,8 +32,37 @@ const AccountRegister = () => {
         },
     });
 
+    const handleClickCancel = () => {
+        openDialog({
+            title: '계정 생성 취소',
+            description: '계정 생성을 취소하시겠습니까?',
+            variant: 'alert',
+            primaryAction: {
+                name: '확인',
+                onClick: () => {},
+            },
+            secondaryAction: {
+                name: '닫기',
+                onClick: () => {},
+            },
+        });
+    };
+
     const onSubmit = (formData: TAccountForm) => {
         console.log(formData);
+        openDialog({
+            title: '계정 생성',
+            description: '계정을 생성하시겠습니까?',
+            variant: 'confirm',
+            primaryAction: {
+                name: '확인',
+                onClick: () => {},
+            },
+            secondaryAction: {
+                name: '닫기',
+                onClick: () => {},
+            },
+        });
     };
 
     return (
@@ -44,7 +75,9 @@ const AccountRegister = () => {
                         '& .MuiButton-root': { height: '40px' },
                     }}
                 >
-                    <Button variant="containedGrey">취소</Button>
+                    <Button variant="containedGrey" onClick={handleClickCancel}>
+                        취소
+                    </Button>
                     <Button variant="containedBlue" type="submit">
                         생성
                     </Button>
@@ -100,15 +133,16 @@ const AccountRegister = () => {
                         <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
                     </Select>
                 </Stack>
-                {watch('role').startsWith('VICE_ADMIN') && <Stack sx={{ gap: '12px' }}>
-                    <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
-                    <Select {...register('role')}>
-                        <MenuItem value="지역 1">지역 1</MenuItem>
-                        <MenuItem value="지역 1">지역 2</MenuItem>
-                        <MenuItem value="지역 1">지역 3</MenuItem>
-                    </Select>
-                </Stack>
-                }
+                {watch('role').startsWith('VICE_ADMIN') && (
+                    <Stack sx={{ gap: '12px' }}>
+                        <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
+                        <Select {...register('role')}>
+                            <MenuItem value="지역 1">지역 1</MenuItem>
+                            <MenuItem value="지역 1">지역 2</MenuItem>
+                            <MenuItem value="지역 1">지역 3</MenuItem>
+                        </Select>
+                    </Stack>
+                )}
             </Stack>
         </Stack>
     );
