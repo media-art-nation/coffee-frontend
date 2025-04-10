@@ -1,6 +1,98 @@
-import { Stack } from '@mui/material';
+import { useState } from 'react';
+
+import { useForm } from 'react-hook-form';
+
+import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
+
+import LabelAndInput from '@/components/LabelAndInput';
+import Title from '@/components/Title';
+
+type TAccountForm = {
+    userId: string;
+    username: string;
+    password: string;
+    role: string;
+};
 
 const AccountRegister = () => {
-    return <Stack sx={{ width: '100%' }}>계정 생성</Stack>;
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const { watch, register, setValue, handleSubmit } = useForm<TAccountForm>({
+        defaultValues: {
+            userId: '',
+            username: '',
+            password: '',
+            role: 'ADMIN',
+        },
+    });
+
+    const onSubmit = (formData: TAccountForm) => {
+        console.log(formData);
+    };
+
+    return (
+        <Stack sx={{ width: '100%' }} component="form" onSubmit={handleSubmit(onSubmit)}>
+            <Title title="계정 생성">
+                <Stack
+                    sx={{
+                        'flexDirection': 'row',
+                        'gap': '5px',
+                        '& .MuiButton-root': { height: '40px' },
+                    }}
+                >
+                    <Button variant="containedGrey">취소</Button>
+                    <Button variant="containedBlue" type="submit">
+                        생성
+                    </Button>
+                </Stack>
+            </Title>
+            <Stack sx={{ gap: '20px', padding: '0 32px', width: '500px' }}>
+                <LabelAndInput
+                    sx={{ width: '100%' }}
+                    inputValue={watch('username')}
+                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setValue('username', e.target.value)
+                    }
+                    labelValue="이름"
+                    placeholder="Input"
+                />
+                <LabelAndInput
+                    sx={{ width: '100%' }}
+                    inputValue={watch('userId')}
+                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setValue('userId', e.target.value)
+                    }
+                    labelValue="아이디"
+                    placeholder="Input"
+                />
+                <LabelAndInput
+                    sx={{ width: '100%' }}
+                    inputValue={watch('password')}
+                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setValue('password', e.target.value)
+                    }
+                    labelValue="패스워드"
+                    placeholder="Password"
+                    type="password"
+                />
+                <LabelAndInput
+                    sx={{ width: '100%' }}
+                    inputValue={passwordCheck}
+                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPasswordCheck(e.target.value)
+                    }
+                    labelValue="패스워드 확인"
+                    placeholder="Password Check"
+                    type="password"
+                />
+
+                <Stack sx={{ gap: '12px' }}>
+                    <Typography sx={{ fontSize: '14px' }}>권한</Typography>
+                    <Select {...register('role')}>
+                        <MenuItem value="ADMIN">총 관리자</MenuItem>
+                    </Select>
+                </Stack>
+            </Stack>
+        </Stack>
+    );
 };
 export default AccountRegister;
