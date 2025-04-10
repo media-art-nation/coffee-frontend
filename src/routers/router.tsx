@@ -37,8 +37,8 @@ const router = createBrowserRouter([
     {
         path: 'login',
         element: (
-            <Stack>
-                <Gnb />
+            <Stack sx={{ height: '100vh', width: '100vw' }}>
+                <Gnb isLoginPage={true} />
                 <Login />
             </Stack>
         ),
