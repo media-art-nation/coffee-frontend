@@ -54,8 +54,7 @@ const Dialog = ({
                     sx={{
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor:
-                            variant === 'confirm' ? palette.blue[50] : palette.error[50],
+                        backgroundColor: variant === 'confirm' ? palette.blue[50] : palette.red[50],
                         width: '32px',
                         height: '32px',
                         borderRadius: '100%',
@@ -66,7 +65,7 @@ const Dialog = ({
                     )}
                     {variant === 'alert' && (
                         <ErrorOutline
-                            sx={{ color: palette.error.main, width: '20px', height: '20px' }}
+                            sx={{ color: palette.red.main, width: '20px', height: '20px' }}
                         />
                     )}
                 </Stack>

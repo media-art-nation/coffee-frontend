@@ -1,19 +1,11 @@
 import { useLocation, useNavigate } from 'react-router';
 
-
-
 import { ExpandMore } from '@mui/icons-material';
 import { Accordion, AccordionSummary, Stack, Typography } from '@mui/material';
 
-
-
 import { palette } from '@/themes';
 
-
-
-
-
-export const lnbData = [
+const lnbData = [
     {
         label: '요청 관리',
         children: [{ label: '요청 목록', path: '/requests' }],
