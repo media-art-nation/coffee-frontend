@@ -14,6 +14,11 @@ type TAccountForm = {
     role: string;
 };
 
+/**
+ * ADMIN, VILLAGE_HEAD
+ * VICE_ADMIN_HEAD_OFFICER
+ * VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER */
+
 const AccountRegister = () => {
     const [passwordCheck, setPasswordCheck] = useState('');
     const { watch, register, setValue, handleSubmit } = useForm<TAccountForm>({
@@ -88,9 +93,22 @@ const AccountRegister = () => {
                 <Stack sx={{ gap: '12px' }}>
                     <Typography sx={{ fontSize: '14px' }}>권한</Typography>
                     <Select {...register('role')}>
-                        <MenuItem value="ADMIN">총 관리자</MenuItem>
+                        <MenuItem value="VICE_ADMIN_HEAD_OFFICER">{'부 관리자(한국지사)'}</MenuItem>
+                        <MenuItem value="VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER">
+                            {'부 관리자(농림부)'}
+                        </MenuItem>
+                        <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
                     </Select>
                 </Stack>
+                {watch('role').startsWith('VICE_ADMIN') && <Stack sx={{ gap: '12px' }}>
+                    <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
+                    <Select {...register('role')}>
+                        <MenuItem value="지역 1">지역 1</MenuItem>
+                        <MenuItem value="지역 1">지역 2</MenuItem>
+                        <MenuItem value="지역 1">지역 3</MenuItem>
+                    </Select>
+                </Stack>
+                }
             </Stack>
         </Stack>
     );
