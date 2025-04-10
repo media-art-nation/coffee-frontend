@@ -16,5 +16,3 @@ if ! [[ "$COMMIT_MSG" =~ $COMMIT_MSG_REGEX ]]; then
   echo "❌ 커밋 메시지가 규칙에 맞지 않습니다. 올바른 형식: [feat|add|config|chore|docs|bugfix|refactor|style] 커밋 내용"
   exit 1
 fi
-
-npx lint-staged

@@ -54,6 +54,7 @@ export default {
 
         // Unused imports 관련 규칙
         'unused-imports/no-unused-imports': 'error',
+        'no-multiple-empty-lines': 'error',
     },
     settings: {
         react: {
