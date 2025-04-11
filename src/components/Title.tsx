@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 
 type TitleProps = {
     title: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 const Title = ({ title, children }: TitleProps) => {

@@ -394,6 +394,9 @@ export const theme = createTheme({
             },
         },
         MuiTableCell: {
+            defaultProps: {
+                align: 'center',
+            },
             styleOverrides: {
                 root: { color: palette.grey[900], fontSize: '14px' },
                 head: {
