@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router';
+
 import { Chip, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
@@ -7,9 +9,10 @@ import { TRequestListTableRow } from '@/typings/Requests';
 import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constants';
 
 const RequestListTable = () => {
+    const navigate = useNavigate();
     const renderRow = (row: TRequestListTableRow) => {
         return (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} onClick={() => navigate(`${row.serviceType.toLocaleLowerCase()}/${row.id}`)}>
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
