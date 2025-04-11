@@ -77,9 +77,24 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Chip color="blue" label="승인" />
                     </Stack>
                 </Stack>
+                {/* 거절 사유 */}
+                <Typography variant="title/semibold">거절 사유</Typography>
+                <Stack
+                    sx={{
+                        border: `1px solid ${palette.grey[50]}`,
+                        padding: '16px',
+                        minHeight: '150px',
+                    }}
+                >
+                    <Typography sx={{ color: palette.grey[700] }}>
+                        무슨 무슨 이유로 거절합니다.
+                    </Typography>
+                </Stack>
+
                 {/* 요청 상세 정보 */}
                 {children}
                 {/* 승인, 거절 버튼 */}
+                {/* TODO: status REJECTED일 때 아래 컴포넌트 숨기기 */}
                 {showTextArea ? (
                     <Stack sx={{ gap: '15px' }}>
                         <Typography variant="title/semibold">거절 사유 입력</Typography>
