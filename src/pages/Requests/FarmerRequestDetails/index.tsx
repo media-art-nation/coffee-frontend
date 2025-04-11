@@ -10,7 +10,7 @@ const FarmerRequestDetails = () => {
             <Stack sx={{ gap: '20px' }}>
                 <Typography variant="h3/bold">내용</Typography>
                 <Typography variant="title/semibold">농부 정보</Typography>
-                <Stack sx={{ flexDirection: 'row', gap: '20px', alignItems: 'center' }}>
+                <Stack sx={{ flexDirection: 'row', gap: '30px', alignItems: 'center' }}>
                     <Box
                         sx={{
                             width: '120px',

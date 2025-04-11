@@ -93,7 +93,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                                 'justifyContent': 'flex-end',
                                 'flexDirection': 'row',
                                 'gap': '10px',
-                                'padding': '10px 0',
+                                'padding': '0 0 30px 0',
                                 '& .MuiButton-root': { height: '40px' },
                             }}
                         >
@@ -112,7 +112,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             'flexDirection': 'row',
                             'gap': '10px',
                             '& .MuiButton-root': { height: '40px' },
-                            'padding': '10px 0',
+                            'padding': '0 0 30px 0',
                         }}
                     >
                         <Button variant="containedRed" onClick={toggleShowTextArea}>
