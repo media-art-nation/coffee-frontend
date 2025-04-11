@@ -29,9 +29,7 @@ const Table = <T,>({ headData, bodyData, renderRow }: TableProps<T>) => {
                 </TableHead>
                 {bodyData ? (
                     <TableBody>
-                        {bodyData.map((item, idx) => {
-                            return <TableRow key={idx}>{renderRow(item)}</TableRow>;
-                        })}
+                        {bodyData.map((item) => renderRow(item))}
                     </TableBody>
                 ) : (
                     <TableBody>

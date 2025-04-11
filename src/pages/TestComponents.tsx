@@ -9,6 +9,7 @@ import {
     Select,
     Stack,
     TableCell,
+    TableRow,
     Typography,
 } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
@@ -27,10 +28,10 @@ const TestComponents = () => {
 
     const renderRow = (row: { name: string; id: string }) => {
         return (
-            <>
+            <TableRow>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.id}</TableCell>
-            </>
+            </TableRow>
         );
     };
 

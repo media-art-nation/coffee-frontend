@@ -1,4 +1,4 @@
-import { Chip, TableCell } from '@mui/material';
+import { Chip, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
 import Table from '@/components/Table';
@@ -9,7 +9,7 @@ import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constan
 const RequestListTable = () => {
     const renderRow = (row: TRequestListTableRow) => {
         return (
-            <>
+            <TableRow key={row.id}>
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
@@ -21,7 +21,7 @@ const RequestListTable = () => {
                         color={REQUEST_STATUS[row.status].color as 'blue' | 'yellow' | 'red'}
                     />
                 </TableCell>
-            </>
+            </TableRow>
         );
     };
 
