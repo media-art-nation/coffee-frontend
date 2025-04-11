@@ -59,6 +59,24 @@ const RequestListTable = () => {
                     serviceType: 'FARMER',
                     method: 'UPDATE',
                 },
+                {
+                    id: 3,
+                    requesterName: '장은희',
+                    approverName: '강종원',
+                    status: 'PENDING',
+                    createdAt: new Date(),
+                    serviceType: 'TREES_TRANSACTION',
+                    method: 'UPDATE',
+                },
+                {
+                    id: 4,
+                    requesterName: '장은희',
+                    approverName: '강종원',
+                    status: 'PENDING',
+                    createdAt: new Date(),
+                    serviceType: 'PURCHASE',
+                    method: 'CREATE',
+                },
             ]}
             renderRow={renderRow}
         />
