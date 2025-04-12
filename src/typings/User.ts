@@ -1,0 +1,5 @@
+export type TRole =
+    | 'ADMIN'
+    | 'VILLAGE_HEAD'
+    | 'VICE_ADMIN_HEAD_OFFICER'
+    | 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER';
