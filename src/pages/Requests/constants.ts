@@ -1,11 +1,11 @@
-import { RequestMethod, RequestServiceType, RequestStatus } from '@/typings/Requests';
+import { TRequestMethod, TRequestServiceType, TRequestStatus } from '@/typings/Requests';
 
-export const REQUEST_STATUS: Record<RequestStatus, { label: string; color: string }> = {
+export const REQUEST_STATUS: Record<TRequestStatus, { label: string; color: string }> = {
     PENDING: {
         label: '대기',
         color: 'yellow',
     },
-    APPROVAL: {
+    APPROVED: {
         label: '승인',
         color: 'blue',
     },
@@ -15,7 +15,7 @@ export const REQUEST_STATUS: Record<RequestStatus, { label: string; color: strin
     },
 };
 
-export const REQUEST_SERVICE_TYPE: Record<RequestServiceType, string> = {
+export const REQUEST_SERVICE_TYPE: Record<TRequestServiceType, string> = {
     VILLAGE_HEAD: '면장',
     FARMER: '농부',
     PURCHASE: '수매',
@@ -23,7 +23,7 @@ export const REQUEST_SERVICE_TYPE: Record<RequestServiceType, string> = {
     SECTION: '지역',
 };
 
-export const REQUEST_METHOD: Record<RequestMethod, string> = {
+export const REQUEST_METHOD: Record<TRequestMethod, string> = {
     CREATE: '등록',
     DELETE: '삭제',
     UPDATE: '수정',

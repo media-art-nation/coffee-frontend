@@ -1,22 +1,18 @@
-import { useEffect } from 'react';
-
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Pagination, Stack } from '@mui/material';
 
 import Title from '@/components/Title';
+import { TPageable } from '@/typings/Pageable';
+import { TRequestServiceType, TRequestStatus } from '@/typings/Requests';
 
 import RequestListFilter from './RequestListFilter';
 import RequestListTable from './RequestListTable';
 
 type TRequestListFilterForm = {
-    statuses: Record<string, boolean>;
-    serviceTypes: Record<string, boolean>;
-    pageable: {
-        page: number;
-        size: number;
-        sort: string;
-    };
+    statuses: Record<TRequestStatus, boolean>;
+    serviceTypes: Record<TRequestServiceType, boolean>;
+    pageable: TPageable;
 };
 
 const RequestList = () => {
@@ -42,22 +38,12 @@ const RequestList = () => {
         },
     });
 
-    const watchedValues = methods.watch();
-
-    useEffect(() => {
-        console.log('값 바뀜:', watchedValues);
-    }, [watchedValues]);
-
-    const onSubmit = (formData: TRequestListFilterForm) => {
-        console.log(formData);
-    };
-
     return (
         <FormProvider {...methods}>
             <Stack
                 sx={{ width: '100%' }}
                 component="form"
-                onSubmit={methods.handleSubmit(onSubmit)}
+                // onSubmit={methods.handleSubmit(onSubmit)}
             >
                 <Title title="요청 목록" />
                 <Stack sx={{ gap: '20px', padding: '0 32px' }}>

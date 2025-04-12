@@ -1,8 +1,8 @@
-export type RequestStatus = 'PENDING' | 'APPROVAL' | 'REJECTED';
+export type TRequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
 
-export type RequestMethod = 'CREATE' | 'DELETE' | 'UPDATE';
+export type TRequestMethod = 'CREATE' | 'DELETE' | 'UPDATE';
 
-export type RequestServiceType =
+export type TRequestServiceType =
     | 'VILLAGE_HEAD'
     | 'FARMER'
     | 'PURCHASE'
@@ -13,8 +13,8 @@ export type TRequestListTableRow = {
     id: number;
     requesterName: string;
     approverName: string;
-    status: RequestStatus;
-    method: RequestMethod;
-    serviceType: RequestServiceType;
+    status: TRequestStatus;
+    method: TRequestMethod;
+    serviceType: TRequestServiceType;
     createdAt: Date;
 };

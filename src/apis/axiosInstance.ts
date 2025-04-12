@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { getCookies } from './AppUser/cookie';
+
 export const axiosInstance = axios.create({
     baseURL: 'https://dubbi-coffee-531048086785.asia-northeast3.run.app/',
     headers: {
@@ -11,10 +13,10 @@ export const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         // 토큰 가져오기
-        // const token = getCookies('accessToken');
-        // if (token) {
-        //     config.headers['access-token'] = `${token}`;
-        // }
+        const token = getCookies('accessToken');
+        if (token) {
+            config.headers['access-token'] = `${token}`;
+        }
         return config;
     },
     function (error) {
