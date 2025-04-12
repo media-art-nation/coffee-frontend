@@ -4,6 +4,7 @@ import { Stack, Typography } from '@mui/material';
 
 import Logo from '@assets/logo.png';
 
+import { removeCookies } from '@/apis/AppUser/cookie';
 import { palette } from '@/themes';
 
 const GNB_HEIGHT = 60;
@@ -15,7 +16,12 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
     const isLogin = true;
     const navigate = useNavigate();
 
-    const handleClickLogout = () => {};
+    const handleClickLogout = () => {
+        removeCookies('accessToken');
+        removeCookies('role');
+        removeCookies('appUserId');
+        navigate('/login');
+    };
 
     return (
         <Stack
