@@ -393,7 +393,19 @@ export const theme = createTheme({
                 root: { width: '100%' },
             },
         },
+        MuiTableRow: {
+            styleOverrides: {
+                root: {
+                    '&:hover': {
+                        backgroundColor: palette.action.hover,
+                    },
+                },
+            },
+        },
         MuiTableCell: {
+            defaultProps: {
+                align: 'center',
+            },
             styleOverrides: {
                 root: { color: palette.grey[900], fontSize: '14px' },
                 head: {
@@ -403,6 +415,7 @@ export const theme = createTheme({
                 },
                 body: {
                     borderBottom: `1px solid ${palette.grey[100]}`,
+                    padding: '12px',
                 },
             },
         },

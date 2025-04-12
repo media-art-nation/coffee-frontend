@@ -6,8 +6,12 @@ import Logo from '@assets/logo.png';
 
 import { palette } from '@/themes';
 
-const GNB_HEIGHT = 60;
-const Gnb = () => {
+export const GNB_HEIGHT = 60;
+type GnbProps = {
+    isLoginPage: boolean;
+};
+
+const Gnb = ({ isLoginPage }: GnbProps) => {
     const isLogin = true;
     const navigate = useNavigate();
 
@@ -22,7 +26,7 @@ const Gnb = () => {
                 'backgroundColor': palette.blue[500],
                 'padding': '0 20px 0 15px',
                 'flexDirection': 'row',
-                'justifyContent': 'space-between',
+                'justifyContent': isLoginPage ? 'center' : 'space-between',
                 'alignItems': 'center',
                 'height': GNB_HEIGHT,
                 'minHeight': GNB_HEIGHT,
@@ -38,7 +42,7 @@ const Gnb = () => {
                     backgroundPosition: 'center',
                 }}
             />
-            {isLogin && (
+            {isLogin && !isLoginPage && (
                 <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
                     <Typography>{`{ 아이디 }`}</Typography>
                     <Typography

@@ -7,6 +7,7 @@ interface LabelAndInputProps extends StackProps {
     inputValue: string;
     inputOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder: string;
+    type?: string;
 }
 
 const LabelAndInput: React.FC<LabelAndInputProps> = ({
@@ -14,12 +15,18 @@ const LabelAndInput: React.FC<LabelAndInputProps> = ({
     inputValue,
     inputOnChange,
     placeholder,
+    type = 'text',
     sx,
 }) => {
     return (
         <Stack sx={{ ...sx, gap: '12px' }}>
             <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
-            <TextField placeholder={placeholder} value={inputValue} onChange={inputOnChange} />
+            <TextField
+                placeholder={placeholder}
+                value={inputValue}
+                onChange={inputOnChange}
+                slotProps={{ htmlInput: { type } }}
+            />
         </Stack>
     );
 };

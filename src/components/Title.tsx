@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 
 type TitleProps = {
     title: string;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 };
 
 const Title = ({ title, children }: TitleProps) => {
@@ -11,7 +11,7 @@ const Title = ({ title, children }: TitleProps) => {
             sx={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                padding: '24px',
+                padding: '32px',
                 width: '100%',
             }}
         >

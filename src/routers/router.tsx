@@ -37,8 +37,8 @@ const router = createBrowserRouter([
     {
         path: 'login',
         element: (
-            <Stack>
-                <Gnb />
+            <Stack sx={{ height: '100vh', width: '100vw' }}>
+                <Gnb isLoginPage={true} />
                 <Login />
             </Stack>
         ),
@@ -55,10 +55,10 @@ const router = createBrowserRouter([
                 path: 'requests', // 요청
                 children: [
                     { index: true, element: <RequestList /> },
-                    { path: 'village-head/:id', element: <VillageHeadRequestDetails /> }, // 면장 등록 요청 상세
+                    { path: 'village_head/:id', element: <VillageHeadRequestDetails /> }, // 면장 등록 요청 상세
                     { path: 'farmer/:id', element: <FarmerRequestDetails /> }, // 농부 등록 요청 상세
-                    { path: 'trees-transaction/:id', element: <TreesTransactionRequestDetails /> }, // 나무 수령 승인 요청 상세
-                    { path: 'trees-purchase/:id', element: <TreesPurchaseRequestDetails /> }, // 수매 승인 요청 상세
+                    { path: 'trees_transaction/:id', element: <TreesTransactionRequestDetails /> }, // 나무 수령 승인 요청 상세
+                    { path: 'purchase/:id', element: <TreesPurchaseRequestDetails /> }, // 수매 승인 요청 상세
                     { path: 'section/:id', element: <SectionRequestDetails /> }, // 섹션 생성 요청 상세
                 ],
             },
