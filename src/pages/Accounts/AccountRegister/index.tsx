@@ -1,18 +1,20 @@
 import { useState } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
 
+import { useSignUp } from '@/apis/AppUser/useSignUp';
 import LabelAndInput from '@/components/LabelAndInput';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import { TRole } from '@/typings/User';
 
-type TAccountForm = {
+export type TSignUpForm = {
     userId: string;
     username: string;
     password: string;
-    role: string;
+    role: TRole;
 };
 
 /**
@@ -23,7 +25,8 @@ type TAccountForm = {
 const AccountRegister = () => {
     const { openDialog } = useDialog();
     const [passwordCheck, setPasswordCheck] = useState('');
-    const { watch, register, setValue, handleSubmit } = useForm<TAccountForm>({
+    const { mutateAsync: signUp } = useSignUp();
+    const { watch, control, setValue, handleSubmit, reset } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
@@ -39,7 +42,9 @@ const AccountRegister = () => {
             variant: 'alert',
             primaryAction: {
                 name: '확인',
-                onClick: () => {},
+                onClick: () => {
+                    reset();
+                },
             },
             secondaryAction: {
                 name: '닫기',
@@ -48,7 +53,7 @@ const AccountRegister = () => {
         });
     };
 
-    const onSubmit = (formData: TAccountForm) => {
+    const onSubmit = (formData: TSignUpForm) => {
         console.log(formData);
         openDialog({
             title: '계정 생성',
@@ -56,7 +61,12 @@ const AccountRegister = () => {
             variant: 'confirm',
             primaryAction: {
                 name: '확인',
-                onClick: () => {},
+                onClick: async () => {
+                    await signUp(formData).then((res) => {
+                        if (res.code === 'SUCCESS') alert('계정이 생성 되었습니다.');
+                        else alert('계정 생성에 실패하였습니다.');
+                    });
+                },
             },
             secondaryAction: {
                 name: '닫기',
@@ -91,7 +101,7 @@ const AccountRegister = () => {
                         setValue('username', e.target.value)
                     }
                     labelValue="이름"
-                    placeholder="Input"
+                    placeholder="username"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
@@ -100,7 +110,7 @@ const AccountRegister = () => {
                         setValue('userId', e.target.value)
                     }
                     labelValue="아이디"
-                    placeholder="Input"
+                    placeholder="id"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
@@ -109,7 +119,7 @@ const AccountRegister = () => {
                         setValue('password', e.target.value)
                     }
                     labelValue="패스워드"
-                    placeholder="Password"
+                    placeholder="password"
                     type="password"
                 />
                 <LabelAndInput
@@ -119,27 +129,35 @@ const AccountRegister = () => {
                         setPasswordCheck(e.target.value)
                     }
                     labelValue="패스워드 확인"
-                    placeholder="Password Check"
+                    placeholder="password check"
                     type="password"
                 />
-
                 <Stack sx={{ gap: '12px' }}>
                     <Typography sx={{ fontSize: '14px' }}>권한</Typography>
-                    <Select {...register('role')}>
-                        <MenuItem value="VICE_ADMIN_HEAD_OFFICER">{'부 관리자(한국지사)'}</MenuItem>
-                        <MenuItem value="VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER">
-                            {'부 관리자(농림부)'}
-                        </MenuItem>
-                        <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
-                    </Select>
+                    <Controller
+                        name="role"
+                        control={control}
+                        render={({ field }) => (
+                            <Select {...field}>
+                                <MenuItem value="ADMIN">총 관리자</MenuItem>
+                                <MenuItem value="VICE_ADMIN_HEAD_OFFICER">
+                                    {'부 관리자(한국지사)'}
+                                </MenuItem>
+                                <MenuItem value="VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER">
+                                    {'부 관리자(농림부)'}
+                                </MenuItem>
+                                <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
+                            </Select>
+                        )}
+                    />
                 </Stack>
                 {watch('role').startsWith('VICE_ADMIN') && (
                     <Stack sx={{ gap: '12px' }}>
                         <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
-                        <Select {...register('role')}>
+                        <Select>
                             <MenuItem value="지역 1">지역 1</MenuItem>
-                            <MenuItem value="지역 1">지역 2</MenuItem>
-                            <MenuItem value="지역 1">지역 3</MenuItem>
+                            <MenuItem value="지역 2">지역 2</MenuItem>
+                            <MenuItem value="지역 3">지역 3</MenuItem>
                         </Select>
                     </Stack>
                 )}
