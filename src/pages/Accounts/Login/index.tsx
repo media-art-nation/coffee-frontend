@@ -30,7 +30,6 @@ const Login = () => {
     };
 
     const onSubmit = async (formData: TLoginForm) => {
-        console.log(formData);
         await signIn(formData).then((res) => {
             if (res.code === 'SUCCESS') {
                 setCookies('accessToken', res.response.accessToken);
