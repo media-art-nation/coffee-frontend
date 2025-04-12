@@ -1,18 +1,43 @@
+import { useFormContext } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 
 import { Chip, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { useGetApproval } from '@/apis/Approval/useGetApproval';
 import Table from '@/components/Table';
-import { TRequestListTableRow } from '@/typings/Requests';
+import { TRequestListTableRow, TRequestServiceType, TRequestStatus } from '@/typings/Requests';
 
 import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constants';
 
 const RequestListTable = () => {
     const navigate = useNavigate();
+    const { watch } = useFormContext();
+
+    const watchedValues = watch();
+
+    const { data } = useGetApproval({
+        statuses: Object.entries(watchedValues.statuses)
+            .map(([key, val]) => (val ? (key as TRequestStatus) : null))
+            .filter((v) => v !== null),
+        serviceTypes: Object.entries(watchedValues.serviceTypes)
+            .map(([key, val]) => (val ? (key as TRequestServiceType) : null))
+            .filter((v) => v !== null),
+        pageable: {
+            page: 0,
+            size: 1,
+            sort: 'id',
+        },
+    });
+
+    console.log(data, 'approval');
+
     const renderRow = (row: TRequestListTableRow) => {
         return (
-            <TableRow key={row.id} onClick={() => navigate(`${row.serviceType.toLocaleLowerCase()}/${row.id}`)}>
+            <TableRow
+                key={row.id}
+                onClick={() => navigate(`${row.serviceType.toLocaleLowerCase()}/${row.id}`)}
+            >
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
@@ -31,53 +56,7 @@ const RequestListTable = () => {
     return (
         <Table
             headData={['요청 분류', '요청 일시', '담당자', '요청 상태']}
-            bodyData={[
-                {
-                    id: 0,
-                    requesterName: '김유나',
-                    approverName: '강종원',
-                    status: 'REJECTED',
-                    createdAt: new Date(),
-                    serviceType: 'VILLAGE_HEAD',
-                    method: 'DELETE',
-                },
-                {
-                    id: 1,
-                    requesterName: '김유나',
-                    approverName: '장은희',
-                    status: 'APPROVAL',
-                    createdAt: new Date(),
-                    serviceType: 'SECTION',
-                    method: 'CREATE',
-                },
-                {
-                    id: 2,
-                    requesterName: '장은희',
-                    approverName: '강종원',
-                    status: 'PENDING',
-                    createdAt: new Date(),
-                    serviceType: 'FARMER',
-                    method: 'UPDATE',
-                },
-                {
-                    id: 3,
-                    requesterName: '장은희',
-                    approverName: '강종원',
-                    status: 'PENDING',
-                    createdAt: new Date(),
-                    serviceType: 'TREES_TRANSACTION',
-                    method: 'UPDATE',
-                },
-                {
-                    id: 4,
-                    requesterName: '장은희',
-                    approverName: '강종원',
-                    status: 'PENDING',
-                    createdAt: new Date(),
-                    serviceType: 'PURCHASE',
-                    method: 'CREATE',
-                },
-            ]}
+            bodyData={data?.content}
             renderRow={renderRow}
         />
     );
