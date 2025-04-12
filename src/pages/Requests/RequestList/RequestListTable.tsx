@@ -25,12 +25,10 @@ const RequestListTable = () => {
             .filter((v) => v !== null),
         pageable: {
             page: 0,
-            size: 1,
+            size: 10,
             sort: 'id',
         },
     });
-
-    console.log(data, 'approval');
 
     const renderRow = (row: TRequestListTableRow) => {
         return (
