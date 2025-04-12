@@ -13,8 +13,19 @@ type GetApprovalReq = {
 };
 
 const getApproval = async (params: GetApprovalReq) => {
+    const { statuses, serviceTypes, pageable } = params;
+
+    const flatParams = new URLSearchParams();
+
+    statuses.forEach((status) => flatParams.append('statuses', status));
+    serviceTypes.forEach((type) => flatParams.append('serviceTypes', type));
+
+    flatParams.append('page', pageable.page.toString());
+    flatParams.append('size', pageable.size.toString());
+    flatParams.append('sort', pageable.sort);
+
     const { data } = await axiosInstance.get('/approval', {
-        params,
+        params: flatParams,
     });
 
     return data.response;
@@ -22,7 +33,7 @@ const getApproval = async (params: GetApprovalReq) => {
 
 export const useGetApproval = (params: GetApprovalReq) => {
     return useQuery({
-        queryKey: ['approval'],
+        queryKey: ['approval', JSON.stringify(params)],
         queryFn: async () => await getApproval(params),
     });
 };

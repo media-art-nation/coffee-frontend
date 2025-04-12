@@ -19,20 +19,20 @@ const RequestList = () => {
     const methods = useForm<TRequestListFilterForm>({
         defaultValues: {
             statuses: {
-                PENDING: false,
-                APPROVED: false,
-                REJECTED: false,
+                PENDING: true,
+                APPROVED: true,
+                REJECTED: true,
             },
             serviceTypes: {
-                VILLAGE_HEAD: false,
-                FARMER: false,
-                PURCHASE: false,
-                SECTION: false,
-                TREES_TRANSACTION: false,
+                VILLAGE_HEAD: true,
+                FARMER: true,
+                PURCHASE: true,
+                SECTION: true,
+                TREES_TRANSACTION: true,
             },
             pageable: {
                 page: 0,
-                size: 0,
+                size: 10,
                 sort: 'id',
             },
         },
@@ -43,7 +43,6 @@ const RequestList = () => {
             <Stack
                 sx={{ width: '100%' }}
                 component="form"
-                // onSubmit={methods.handleSubmit(onSubmit)}
             >
                 <Title title="요청 목록" />
                 <Stack sx={{ gap: '20px', padding: '0 32px' }}>
