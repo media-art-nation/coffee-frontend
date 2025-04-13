@@ -11,7 +11,7 @@ const Title = ({ title, children }: TitleProps) => {
             sx={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                padding: '32px',
+                padding: '24px 32px',
                 width: '100%',
             }}
         >
