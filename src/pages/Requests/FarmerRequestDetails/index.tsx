@@ -1,10 +1,24 @@
+import { useParams } from 'react-router';
+
 import { Box, Stack, Typography } from '@mui/material';
 
+import {
+    TFarmerApprovalDetails,
+    useGetApprovalDetails,
+} from '@/apis/Approval/useGetApprovalDetails';
 import { palette } from '@/themes';
 
 import RequestDetailsLayout from './RequestDetailsLayout';
 
 const FarmerRequestDetails = () => {
+    const { id } = useParams();
+
+    if (!id) return null;
+
+    const { data: details } = useGetApprovalDetails<TFarmerApprovalDetails>(id);
+
+    if (!details) return null;
+
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '20px' }}>
@@ -41,11 +55,7 @@ const FarmerRequestDetails = () => {
                         </Stack>
                         <Stack>
                             <Typography>이름</Typography>
-                            <Typography>농부 이름</Typography>
-                        </Stack>
-                        <Stack>
-                            <Typography>아이디</Typography>
-                            <Typography>아이디</Typography>
+                            <Typography>{details.name}</Typography>
                         </Stack>
                     </Stack>
                 </Stack>
