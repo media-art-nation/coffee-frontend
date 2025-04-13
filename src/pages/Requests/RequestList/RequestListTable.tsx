@@ -16,7 +16,7 @@ const RequestListTable = () => {
 
     const watchedValues = watch();
 
-    const { data } = useGetApproval({
+    const { data, isLoading } = useGetApproval({
         statuses: Object.entries(watchedValues.statuses)
             .map(([key, val]) => (val ? (key as TRequestStatus) : null))
             .filter((v) => v !== null),
@@ -56,6 +56,7 @@ const RequestListTable = () => {
             headData={['요청 분류', '요청 일시', '담당자', '요청 상태']}
             bodyData={data?.content}
             renderRow={renderRow}
+            isLoading={isLoading}
         />
     );
 };
