@@ -13,7 +13,7 @@ const Layouts = () => {
                 <Stack sx={{ 'overflowY': 'auto', '&::-webkit-scrollbar': { display: 'none' } }}>
                     <Lnb />
                 </Stack>
-                <Stack sx={{ flex: 1, overflowY: 'auto' }}>
+                <Stack sx={{ flex: 1, overflowY: 'auto', paddingBottom: '32px' }}>
                     <Outlet />
                 </Stack>
             </Stack>
