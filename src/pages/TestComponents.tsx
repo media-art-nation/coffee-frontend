@@ -50,6 +50,7 @@ const TestComponents = () => {
                     </Button>
                 </Stack>
             </Title>
+            {/* Table */}
             <Table
                 headData={['header1', 'header2']}
                 bodyData={[
@@ -58,49 +59,63 @@ const TestComponents = () => {
                 ]}
                 renderRow={renderRow}
             />
+            {/* Table - no Data */}
             <Table headData={['header1', 'header2']} bodyData={undefined} renderRow={renderRow} />
-            <Button variant="containedBlue">containedBlue</Button>
-            <Button variant="containedRed">containedRed</Button>
-            <Button variant="containedWhite">containedWhite</Button>
-            <Button variant="containedGrey">containedGrey</Button>
-            <Button
-                onClick={() => {
-                    openDialog({
-                        title: 'title',
-                        description: 'description',
-                        variant: 'confirm',
-                        primaryAction: {
-                            name: '확인',
-                            onClick: () => {},
-                        },
-                        secondaryAction: {
-                            name: '취소',
-                            onClick: () => {},
-                        },
-                    });
-                }}
-            >
-                confirm Dialog
-            </Button>
-            <Button
-                onClick={() => {
-                    openDialog({
-                        title: 'title',
-                        description: 'description',
-                        variant: 'alert',
-                        primaryAction: {
-                            name: '확인',
-                            onClick: () => {},
-                        },
-                        secondaryAction: {
-                            name: '취소',
-                            onClick: () => {},
-                        },
-                    });
-                }}
-            >
-                alert Dialog
-            </Button>
+            {/* Table - isLoading */}
+            <Table
+                headData={['header1', 'header2']}
+                bodyData={undefined}
+                renderRow={renderRow}
+                isLoading={true}
+            />
+            {/* Button */}
+            <Stack sx={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Button variant="containedBlue">containedBlue</Button>
+                <Button variant="containedRed">containedRed</Button>
+                <Button variant="containedWhite">containedWhite</Button>
+                <Button variant="containedGrey">containedGrey</Button>
+            </Stack>
+            {/* Dialog */}
+            <Stack sx={{ flexDirection: 'row', gap: '20px' }}>
+                <Button
+                    onClick={() => {
+                        openDialog({
+                            title: 'title',
+                            description: 'description',
+                            variant: 'confirm',
+                            primaryAction: {
+                                name: '확인',
+                                onClick: () => {},
+                            },
+                            secondaryAction: {
+                                name: '취소',
+                                onClick: () => {},
+                            },
+                        });
+                    }}
+                >
+                    confirm Dialog
+                </Button>
+                <Button
+                    onClick={() => {
+                        openDialog({
+                            title: 'title',
+                            description: 'description',
+                            variant: 'alert',
+                            primaryAction: {
+                                name: '확인',
+                                onClick: () => {},
+                            },
+                            secondaryAction: {
+                                name: '취소',
+                                onClick: () => {},
+                            },
+                        });
+                    }}
+                >
+                    alert Dialog
+                </Button>
+            </Stack>
             <Stack gap={'10px'}>
                 <Typography>Label and input</Typography>
                 <LabelAndInput

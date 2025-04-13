@@ -1,4 +1,5 @@
 import {
+    CircularProgress,
     Table as MuiTable,
     Stack,
     TableBody,
@@ -14,9 +15,10 @@ type TableProps<T> = {
     headData: string[];
     bodyData: T[] | undefined;
     renderRow: (row: T) => React.ReactNode;
+    isLoading?: boolean;
 };
 
-const Table = <T,>({ headData, bodyData, renderRow }: TableProps<T>) => {
+const Table = <T,>({ headData, bodyData, renderRow, isLoading }: TableProps<T>) => {
     return (
         <TableContainer sx={{ width: '100%', height: '100%' }}>
             <MuiTable sx={{ height: '100%' }} stickyHeader>
@@ -28,8 +30,22 @@ const Table = <T,>({ headData, bodyData, renderRow }: TableProps<T>) => {
                     </TableRow>
                 </TableHead>
                 {bodyData ? (
+                    <TableBody>{bodyData.map((item) => renderRow(item))}</TableBody>
+                ) : isLoading ? (
                     <TableBody>
-                        {bodyData.map((item) => renderRow(item))}
+                        <TableRow>
+                            <TableCell colSpan={headData.length}>
+                                <Stack
+                                    sx={{
+                                        width: '100%',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <CircularProgress color="primary" size={30}/>
+                                </Stack>
+                            </TableCell>
+                        </TableRow>
                     </TableBody>
                 ) : (
                     <TableBody>
