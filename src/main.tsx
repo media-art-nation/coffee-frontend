@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 
 import { createRoot } from 'react-dom/client';
 
-import { ThemeProvider } from '@mui/material';
+import { GlobalStyles, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -20,6 +20,13 @@ createRoot(document.getElementById('root')!).render(
         <QueryClientProvider client={queryClient}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <ThemeProvider theme={theme}>
+                    <GlobalStyles
+                        styles={{
+                            '*': {
+                                fontFamily: `'IBM Plex Sans KR', 'IBM Plex Sans', sans-serif`,
+                            },
+                        }}
+                    />
                     <DialogProvider>
                         <App />
                     </DialogProvider>
