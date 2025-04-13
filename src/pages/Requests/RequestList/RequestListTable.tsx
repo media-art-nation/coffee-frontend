@@ -39,7 +39,7 @@ const RequestListTable = () => {
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
-                <TableCell>{dayjs(row.createdAt).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
+                <TableCell>{dayjs(row.createdAt).format('YYYY-MM-DD HH:mm')}</TableCell>
                 <TableCell>{row.requesterName}</TableCell>
                 <TableCell>
                     <Chip

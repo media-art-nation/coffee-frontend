@@ -1,10 +1,23 @@
+import { useParams } from 'react-router';
+
 import { Box, Stack, Typography } from '@mui/material';
 
+import {
+    TVillageHeadApprovalDetails,
+    useGetApprovalDetails,
+} from '@/apis/Approval/useGetApprovalDetails';
 import { palette } from '@/themes';
 
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const VillageHeadRequestDetails = () => {
+    const { id } = useParams();
+
+    if (!id) return null;
+
+    const { data: details } = useGetApprovalDetails<TVillageHeadApprovalDetails>(id);
+
+    if (!details) return null;
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '30px' }}>
@@ -41,11 +54,11 @@ const VillageHeadRequestDetails = () => {
                         </Stack>
                         <Stack>
                             <Typography>이름</Typography>
-                            <Typography>면장 이름</Typography>
+                            <Typography>{details.username}</Typography>
                         </Stack>
                         <Stack>
                             <Typography>아이디</Typography>
-                            <Typography>아이디</Typography>
+                            <Typography>{details.userId}</Typography>
                         </Stack>
                     </Stack>
                 </Stack>
@@ -64,7 +77,9 @@ const VillageHeadRequestDetails = () => {
                 >
                     <Stack>
                         <Typography>계좌 정보</Typography>
-                        <Typography>계좌 정보</Typography>
+                        <Typography>
+                            {details.bankName} / {details.accountInfo}
+                        </Typography>
                     </Stack>
                     <Stack>
                         <Typography>계약서</Typography>

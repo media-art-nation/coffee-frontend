@@ -1,10 +1,22 @@
+import { useParams } from 'react-router';
+
 import { Stack, Typography } from '@mui/material';
 
+import {
+    TSectionApprovalDetails,
+    useGetApprovalDetails,
+} from '@/apis/Approval/useGetApprovalDetails';
 import { palette } from '@/themes';
 
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const SectionRequestDetails = () => {
+    const { id } = useParams();
+    if (!id) return null;
+
+    const { data: details } = useGetApprovalDetails<TSectionApprovalDetails>(id);
+
+    if (!details) return null;
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '30px' }}>
@@ -29,7 +41,7 @@ const SectionRequestDetails = () => {
                     </Stack>
                     <Stack>
                         <Typography>섹션</Typography>
-                        <Typography>섹션 명</Typography>
+                        <Typography>{details.sectionName}</Typography>
                     </Stack>
                 </Stack>
                 <Stack sx={{ width: '900px', height: '400px', backgroundColor: palette.grey[100] }}>

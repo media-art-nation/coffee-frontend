@@ -22,6 +22,7 @@ import Table from '@/components/Table';
 import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import { TChipColor } from '@/typings/Chip';
 
 const TestComponents = () => {
     const { openDialog } = useDialog();
@@ -145,7 +146,7 @@ const TestComponents = () => {
             <Stack gap={'10px'}>
                 <Typography>Chip</Typography>
                 {['blue', 'red', 'yellow'].map((item) => (
-                    <Chip key={item} label={item} color={item as 'blue' | 'yellow' | 'red'} />
+                    <Chip key={item} label={item} color={item as TChipColor} />
                 ))}
             </Stack>
             <Stack gap={'10px'}>

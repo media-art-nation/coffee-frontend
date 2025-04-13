@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
-import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
+import { useParams } from 'react-router';
 
+import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
+import dayjs from 'dayjs';
+
+import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
 import { palette } from '@/themes';
+import { TChipColor } from '@/typings/Chip';
+
+import { REQUEST_STATUS } from '../constants';
 
 type RequestDetailsLayoutProps = {
     children: React.ReactNode;
@@ -26,6 +33,13 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
         console.log(rejectedReason);
     };
 
+    const { id } = useParams();
+    if (!id) return null;
+
+    const { data: details } = useGetApprovalDetails(id);
+    console.log(details);
+
+    if (!details) return null;
     return (
         <Stack sx={{ width: '100%' }}>
             <Title title="요청 상세" />
@@ -53,7 +67,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
                             요청 일시
                         </Typography>
-                        <Typography>2023. 10. 19 15:23</Typography>
+                        <Typography>{dayjs().format('YYYY-MM-DD hh:mm')}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
@@ -74,68 +88,75 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
                             요청 상태
                         </Typography>
-                        <Chip color="blue" label="승인" />
+                        <Chip
+                            color={REQUEST_STATUS[details.status].color as TChipColor}
+                            label={REQUEST_STATUS[details.status].label}
+                        />
                     </Stack>
                 </Stack>
                 {/* 거절 사유 */}
-                <Typography variant="title/semibold">거절 사유</Typography>
-                <Stack
-                    sx={{
-                        border: `1px solid ${palette.grey[50]}`,
-                        padding: '16px',
-                        minHeight: '150px',
-                    }}
-                >
-                    <Typography sx={{ color: palette.grey[700] }}>
-                        무슨 무슨 이유로 거절합니다.
-                    </Typography>
-                </Stack>
+                {details?.status === 'REJECTED' && (
+                    <>
+                        <Typography variant="title/semibold">거절 사유</Typography>
+                        <Stack
+                            sx={{
+                                border: `1px solid ${palette.grey[50]}`,
+                                padding: '16px',
+                                minHeight: '150px',
+                            }}
+                        >
+                            <Typography sx={{ color: palette.grey[700] }}>
+                                {details.rejectedReason}
+                            </Typography>
+                        </Stack>
+                    </>
+                )}
 
                 {/* 요청 상세 정보 */}
                 {children}
                 {/* 승인, 거절 버튼 */}
-                {/* TODO: status REJECTED일 때 아래 컴포넌트 숨기기 */}
-                {showTextArea ? (
-                    <Stack sx={{ gap: '15px' }}>
-                        <Typography variant="title/semibold">거절 사유 입력</Typography>
-                        <TextArea
-                            value={rejectedReason}
-                            onChange={handleChangeRejectedReason}
-                            placeholder="거절 사유를 입력해주세요."
-                        />
+                {details.status !== 'REJECTED' &&
+                    (showTextArea ? (
+                        <Stack sx={{ gap: '15px' }}>
+                            <Typography variant="title/semibold">거절 사유 입력</Typography>
+                            <TextArea
+                                value={rejectedReason}
+                                onChange={handleChangeRejectedReason}
+                                placeholder="거절 사유를 입력해주세요."
+                            />
+                            <Stack
+                                sx={{
+                                    'justifyContent': 'flex-end',
+                                    'flexDirection': 'row',
+                                    'gap': '10px',
+                                    'padding': '0 0 30px 0',
+                                    '& .MuiButton-root': { height: '40px' },
+                                }}
+                            >
+                                <Button variant="containedGrey" onClick={toggleShowTextArea}>
+                                    취소
+                                </Button>
+                                <Button variant="containedRed" onClick={handleRejectRequest}>
+                                    완료
+                                </Button>
+                            </Stack>
+                        </Stack>
+                    ) : (
                         <Stack
                             sx={{
-                                'justifyContent': 'flex-end',
+                                'margin': 'auto',
                                 'flexDirection': 'row',
                                 'gap': '10px',
-                                'padding': '0 0 30px 0',
                                 '& .MuiButton-root': { height: '40px' },
+                                'padding': '0 0 30px 0',
                             }}
                         >
-                            <Button variant="containedGrey" onClick={toggleShowTextArea}>
-                                취소
+                            <Button variant="containedRed" onClick={toggleShowTextArea}>
+                                거절
                             </Button>
-                            <Button variant="containedRed" onClick={handleRejectRequest}>
-                                완료
-                            </Button>
+                            <Button variant="containedGrey">승인</Button>
                         </Stack>
-                    </Stack>
-                ) : (
-                    <Stack
-                        sx={{
-                            'margin': 'auto',
-                            'flexDirection': 'row',
-                            'gap': '10px',
-                            '& .MuiButton-root': { height: '40px' },
-                            'padding': '0 0 30px 0',
-                        }}
-                    >
-                        <Button variant="containedRed" onClick={toggleShowTextArea}>
-                            거절
-                        </Button>
-                        <Button variant="containedGrey">승인</Button>
-                    </Stack>
-                )}
+                    ))}
             </Stack>
         </Stack>
     );
