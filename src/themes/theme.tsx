@@ -79,7 +79,7 @@ export const theme = createTheme({
         ...createTheme({}).shadows.slice(8),
     ] as Shadows,
     palette: palette,
-    typography: { fontFamily: 'Pretendard' }, //[TODO] 수정해야됨 폰트
+    typography: { fontFamily: 'IBM Plex Sans' }, //[TODO] 수정해야됨 폰트
     components: {
         MuiTypography: {
             defaultProps: { variant: 'body1/regular' },

@@ -76,7 +76,11 @@ const AccountRegister = () => {
     };
 
     return (
-        <Stack sx={{ width: '100%' }} component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+            sx={{ width: '100%' }}
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+        >
             <Title title="계정 생성">
                 <Stack
                     sx={{
