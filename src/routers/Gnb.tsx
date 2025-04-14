@@ -6,7 +6,7 @@ import Logo from '@assets/logo.png';
 
 import { palette } from '@/themes';
 
-export const GNB_HEIGHT = 60;
+const GNB_HEIGHT = 60;
 type GnbProps = {
     isLoginPage: boolean;
 };
