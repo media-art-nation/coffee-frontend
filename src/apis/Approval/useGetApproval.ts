@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
 import { TPageable } from '@/typings/Pageable';
 import { TRequestServiceType, TRequestStatus } from '@/typings/Requests';
