@@ -42,7 +42,7 @@ const Table = <T,>({ headData, bodyData, renderRow, isLoading }: TableProps<T>) 
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <CircularProgress color="primary" size={30}/>
+                                    <CircularProgress color="primary" size={30} />
                                 </Stack>
                             </TableCell>
                         </TableRow>
