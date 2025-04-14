@@ -43,6 +43,7 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.21.0",
+        "@tanstack/eslint-plugin-query": "^5.73.3",
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
         "@types/node": "^22.13.10",
         "@types/react": "^19.0.10",

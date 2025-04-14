@@ -10,7 +10,7 @@ type GetApprovalDetailsRes =
     | TFarmerApprovalDetails
     | TSectionApprovalDetails;
 
-export type TApprovalBase = {
+type TApprovalBase = {
     id: number | null;
     rejectedReason: string | null;
     serviceType: TRequestServiceType;
@@ -54,7 +54,7 @@ const getApprovalDetails = async <T = GetApprovalDetailsRes>(
     approvalId: GetApprovalDetailsReq
 ): Promise<T> => {
     const { data } = await axiosInstance.get(`/approval/${approvalId}`);
-    console.log(data, 'backend Data')
+    console.log(data, 'backend Data');
 
     return data.response;
 };
