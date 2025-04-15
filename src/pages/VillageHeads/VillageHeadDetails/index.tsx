@@ -3,7 +3,7 @@ import { Button, Stack } from '@mui/material';
 import AddPhoto from '@/components/AddPhoto';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
-import LabelValue from '@/pages/VillageHeads/VillageHeadDetails/componentes/LabelValue';
+import LabelValue from '@/pages/VillageHeads/VillageHeadDetails/components/LabelValue';
 
 const VillageHeadDetails = () => {
     return (
