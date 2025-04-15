@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router';
+
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 
 import PageLayout from '@/components/PageLayout';
@@ -11,6 +13,7 @@ interface TDummy {
     managingCnt: number;
 }
 const VillageHeadList = () => {
+    const navigate = useNavigate();
     const dummy = [
         { id: '1', name: 'dummy', section: 'dummy', managingCnt: 5 },
         { id: '2', name: 'dummy', section: 'dummy', managingCnt: 5 },
@@ -18,7 +21,7 @@ const VillageHeadList = () => {
     ];
     const renderRow = (row: TDummy) => {
         return (
-            <TableRow>
+            <TableRow onClick={() => navigate(`/village-heads/${row.id}`)}>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.section}</TableCell>
