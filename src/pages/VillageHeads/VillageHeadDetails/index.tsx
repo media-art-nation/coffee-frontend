@@ -8,17 +8,14 @@ import Title from '@/components/Title';
 const VillageHeadDetails = () => {
     return (
         <Stack>
-            <Stack direction={'row'} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-                <Title title="면장 상세 정보" />
-                <Stack direction={'row'} gap={'20px'} sx={{ height: '40px', paddingRight: '40px' }}>
-                    <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
-                        수정
-                    </Button>
-                    <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
-                        승인
-                    </Button>
-                </Stack>
-            </Stack>
+            <Title title="면장 상세 정보">
+                <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
+                    수정
+                </Button>
+                <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
+                    승인
+                </Button>
+            </Title>
             <PageLayout gap={'50px'}>
                 <Stack direction={'row'} gap={'20px'} sx={{ alignItems: 'center' }}>
                     <AddPhoto />
