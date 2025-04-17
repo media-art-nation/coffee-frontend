@@ -1,12 +1,20 @@
 import React from 'react';
 
+import { FieldValues, Path, PathValue, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+
 import { IconButton, Stack } from '@mui/material';
 import { Plus } from '@phosphor-icons/react';
 
 import { palette } from '@/themes';
 
-const AddPhoto = () => {
+interface AddPhotoProps<T extends FieldValues> {
+    fieldName: Path<T>;
+    watch: UseFormWatch<T>;
+    setValue: UseFormSetValue<T>;
+}
+const AddPhoto = <T extends FieldValues>({ fieldName, setValue }: AddPhotoProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    // const file: File | null = watch(fieldName) as File | null;
 
     const handleClick = () => {
         fileInputRef.current?.click();
@@ -15,8 +23,7 @@ const AddPhoto = () => {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            console.log('이미지 URL:', imageUrl);
+            setValue(fieldName, file as PathValue<T, Path<T>>);
         }
     };
     return (

@@ -10,16 +10,18 @@ import { useDialog } from '@/hooks/useDialog';
 type TProfileEditForm = {
     username: string;
     password: string;
+    photo: File | null;
     idCard?: any;
 };
 
 const MyProfileEdit = () => {
     const { openDialog } = useDialog();
-    const { watch, setValue, handleSubmit } = useForm<TProfileEditForm>({
+    const { register, handleSubmit, watch, setValue } = useForm<TProfileEditForm>({
         defaultValues: {
             username: '',
             password: '',
             idCard: null,
+            photo: null,
         },
     });
 
@@ -77,19 +79,15 @@ const MyProfileEdit = () => {
             <Stack sx={{ gap: '20px', padding: '0 32px', width: '500px' }}>
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={watch('username')}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setValue('username', e.target.value)
-                    }
+                    fieldName="username"
+                    register={register}
                     labelValue="이름"
                     placeholder="username"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={watch('password')}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setValue('password', e.target.value)
-                    }
+                    fieldName="password"
+                    register={register}
                     labelValue="패스워드"
                     placeholder="password"
                     type="password"
@@ -98,7 +96,7 @@ const MyProfileEdit = () => {
                 {/* TODO: 부관리자의 경우에만 ID Card 필드 노출 */}
                 <Stack gap={'10px'}>
                     <Typography sx={{ fontSize: '14px' }}>ID Card</Typography>
-                    <AddPhoto />
+                    <AddPhoto fieldName="photo" watch={watch} setValue={setValue} />
                 </Stack>
             </Stack>
         </Stack>

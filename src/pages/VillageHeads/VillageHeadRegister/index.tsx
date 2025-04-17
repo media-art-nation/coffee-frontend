@@ -1,4 +1,4 @@
-import React from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
 
@@ -8,23 +8,34 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
+interface TVillageHeadRegister {
+    managingArea: string;
+    name: string;
+    id: string;
+    password: string;
+    accountInfo: {
+        bankName: string;
+        account: string;
+    };
+    contract: File;
+    passbook: File;
+}
 const VillageHeadRegister = () => {
-    const [managerArea, setManagerArea] = React.useState<string>('');
-    const [name, setName] = React.useState<string>('');
-    const [id, setId] = React.useState<string>('');
-    const [password, setPassword] = React.useState<string>('');
-    const [bankName, setBankName] = React.useState<string>('');
-    const [account, setAccount] = React.useState<string>('');
-    const [contractFile, setContractFile] = React.useState<File | null>(null);
-    const [passbookFile, setPassbookFile] = React.useState<File | null>(null);
-
+    const methods = useForm<TVillageHeadRegister>();
+    const onSubmit = (data: TVillageHeadRegister) => {
+        console.log(data);
+    };
     return (
         <Stack>
             <Title title="면장 등록">
                 <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
                     취소
                 </Button>
-                <Button variant="containedBlue" sx={{ width: '86px', wordBreak: 'keep-all' }}>
+                <Button
+                    variant="containedBlue"
+                    sx={{ width: '86px', wordBreak: 'keep-all' }}
+                    onClick={() => methods.handleSubmit(onSubmit)()}
+                >
                     등록
                 </Button>
             </Title>
@@ -32,8 +43,8 @@ const VillageHeadRegister = () => {
                 <LabelAndSelect
                     sx={{ width: '500px' }}
                     labelValue="관리 지역"
-                    inputValue={managerArea}
-                    inputOnChange={(e) => setManagerArea(e.target.value)}
+                    fieldName="managingArea"
+                    control={methods.control}
                     placeholder={'관리 지역'}
                     selectArr={[
                         { value: '0', label: '경기도' },
@@ -44,49 +55,49 @@ const VillageHeadRegister = () => {
                 <LabelAndInput
                     sx={{ width: '500px' }}
                     labelValue="이름"
-                    inputValue={name}
-                    inputOnChange={(e) => setName(e.target.value)}
+                    fieldName="name"
+                    register={methods.register}
                     placeholder="이름"
                 />
                 <LabelAndInput
                     sx={{ width: '500px' }}
                     labelValue="아이디"
-                    inputValue={id}
-                    inputOnChange={(e) => setId(e.target.value)}
+                    fieldName="id"
+                    register={methods.register}
                     placeholder="ID"
                 />
                 <LabelAndInput
                     sx={{ width: '500px' }}
                     labelValue="패스워드"
-                    inputValue={password}
-                    inputOnChange={(e) => setPassword(e.target.value)}
+                    fieldName="password"
+                    register={methods.register}
                     placeholder="password"
                 />
                 <Stack sx={{ gap: '12px' }}>
                     <Typography sx={{ fontSize: '14px' }}>계좌 정보</Typography>
                     <Stack direction={'row'} gap="15px">
                         <TextField
+                            {...methods.register('accountInfo.bankName')}
                             placeholder={'은행명'}
-                            value={bankName}
-                            onChange={(e) => setBankName(e.target.value)}
                         />
                         <TextField
                             sx={{ width: '500px' }}
+                            {...methods.register('accountInfo.account')}
                             placeholder={'계좌 번호'}
-                            value={account}
-                            onChange={(e) => setAccount(e.target.value)}
                         />
                     </Stack>
                 </Stack>
                 <LabelAndSelectFile
                     labelValue="계약서"
-                    fileName={contractFile?.name || ''}
-                    setFile={setContractFile}
+                    fieldName={'contract'}
+                    watch={methods.watch}
+                    setValue={methods.setValue}
                 />
                 <LabelAndSelectFile
                     labelValue="통장 사본"
-                    fileName={passbookFile?.name || ''}
-                    setFile={setPassbookFile}
+                    fieldName={'passbook'}
+                    watch={methods.watch}
+                    setValue={methods.setValue}
                 />
             </PageLayout>
         </Stack>

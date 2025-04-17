@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useForm } from 'react-hook-form';
+
 import {
     Button,
     Checkbox,
@@ -25,6 +27,9 @@ import { useDialog } from '@/hooks/useDialog';
 import { TChipColor } from '@/typings/Chip';
 
 const TestComponents = () => {
+    const methods = useForm<{ input: string; photo: File | null }>({
+        defaultValues: { input: '', photo: null },
+    });
     const { openDialog } = useDialog();
 
     const renderRow = (row: { name: string; id: string }) => {
@@ -36,7 +41,6 @@ const TestComponents = () => {
         );
     };
 
-    const [input, setInput] = React.useState<string>('');
     const [select, setSelect] = React.useState<string>('');
     const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     console.log(dayjs(value).format('YYYY-MM-DD'));
@@ -120,10 +124,8 @@ const TestComponents = () => {
                 <Typography>Label and input</Typography>
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={input}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setInput(e.target.value)
-                    }
+                    fieldName="input"
+                    register={methods.register}
                     labelValue="label"
                     placeholder="Label"
                 />
@@ -166,7 +168,7 @@ const TestComponents = () => {
             </Stack>
             <Stack gap={'10px'}>
                 <Typography>Add Photo</Typography>
-                <AddPhoto />
+                <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
             </Stack>
         </Stack>
     );
