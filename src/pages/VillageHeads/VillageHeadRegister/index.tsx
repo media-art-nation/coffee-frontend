@@ -6,7 +6,7 @@ import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import PageLayout from '@/components/PageLayout';
-import TitleWithButton from '@/components/TitleWithButton';
+import Title from '@/components/Title';
 
 const VillageHeadRegister = () => {
     const [managerArea, setManagerArea] = React.useState<string>('');
@@ -20,14 +20,14 @@ const VillageHeadRegister = () => {
 
     return (
         <Stack>
-            <TitleWithButton title="면장 등록">
+            <Title title="면장 등록">
                 <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
                     취소
                 </Button>
                 <Button variant="containedBlue" sx={{ width: '86px', wordBreak: 'keep-all' }}>
                     등록
                 </Button>
-            </TitleWithButton>
+            </Title>
             <PageLayout gap={'10px'}>
                 <LabelAndSelect
                     sx={{ width: '500px' }}
