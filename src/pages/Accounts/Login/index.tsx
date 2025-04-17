@@ -6,6 +6,7 @@ import { Button, Stack, TextField, Typography } from '@mui/material';
 import { setCookies } from '@/apis/AppUser/cookie';
 import { useSignIn } from '@/apis/AppUser/useSignIn';
 import { TRole } from '@/typings/User';
+import { showToast } from '@/utils/showToast';
 
 export type TLoginForm = {
     userId: string;
@@ -38,7 +39,7 @@ const Login = () => {
 
                 navigate(roleRouteMap[res.response.role as TRole]);
             } else {
-                alert(res.message);
+                showToast.error(res.message);
             }
         });
     };
