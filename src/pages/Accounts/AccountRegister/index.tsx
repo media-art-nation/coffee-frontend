@@ -1,9 +1,10 @@
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Button, SelectChangeEvent, Stack } from '@mui/material';
 
 import { useSignUp } from '@/apis/AppUser/useSignUp';
 import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TRole } from '@/typings/User';
@@ -13,24 +14,19 @@ export type TSignUpForm = {
     username: string;
     password: string;
     passwordCheck: string;
-    role: TRole;
+    role: '' | TRole;
 };
-
-/**
- * ADMIN, VILLAGE_HEAD
- * VICE_ADMIN_HEAD_OFFICER
- * VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER */
 
 const AccountRegister = () => {
     const { openDialog } = useDialog();
     const { mutateAsync: signUp } = useSignUp();
-    const { register, watch, control, handleSubmit, reset } = useForm<TSignUpForm>({
+    const { watch, setValue, handleSubmit, reset, register } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
             password: '',
             passwordCheck: '',
-            role: 'ADMIN',
+            role: '',
         },
     });
 
@@ -123,34 +119,37 @@ const AccountRegister = () => {
                     placeholder="password check"
                     type="password"
                 />
-                <Stack sx={{ gap: '12px' }}>
-                    <Typography sx={{ fontSize: '14px' }}>권한</Typography>
-                    <Controller
-                        name="role"
-                        control={control}
-                        render={({ field }) => (
-                            <Select {...field}>
-                                <MenuItem value="ADMIN">총 관리자</MenuItem>
-                                <MenuItem value="VICE_ADMIN_HEAD_OFFICER">
-                                    {'부 관리자(한국지사)'}
-                                </MenuItem>
-                                <MenuItem value="VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER">
-                                    {'부 관리자(농림부)'}
-                                </MenuItem>
-                                <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
-                            </Select>
-                        )}
+                <LabelAndSelect
+                    labelValue="권한"
+                    inputValue={watch('role')}
+                    inputOnChange={(e: SelectChangeEvent<string>) =>
+                        setValue('role', e.target.value as TRole)
+                    }
+                    selectArr={[
+                        { value: 'ADMIN', label: '총 관리자' },
+                        { value: 'VICE_ADMIN_HEAD_OFFICER', label: '부 관리자(한국지사)' },
+                        {
+                            value: 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER',
+                            label: '부 관리자(농림부)',
+                        },
+                        { value: 'VILLAGE_HEAD', label: '면장' },
+                    ]}
+                    placeholder="role"
+                />
+                {watch('role')?.startsWith('VICE_ADMIN') && (
+                    <LabelAndSelect
+                        labelValue="지역"
+                        inputValue={''}
+                        inputOnChange={(e: SelectChangeEvent<string>) =>
+                            console.log(e.target.value)
+                        }
+                        selectArr={[
+                            { value: '지역 1', label: '지역 1' },
+                            { value: '지역 2', label: '지역 2' },
+                            { value: '지역 3', label: '지역 3' },
+                        ]}
+                        placeholder="location"
                     />
-                </Stack>
-                {watch('role').startsWith('VICE_ADMIN') && (
-                    <Stack sx={{ gap: '12px' }}>
-                        <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
-                        <Select>
-                            <MenuItem value="지역 1">지역 1</MenuItem>
-                            <MenuItem value="지역 2">지역 2</MenuItem>
-                            <MenuItem value="지역 3">지역 3</MenuItem>
-                        </Select>
-                    </Stack>
                 )}
             </Stack>
         </Stack>
