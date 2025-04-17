@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { Controller, useForm } from 'react-hook-form';
 
 import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
@@ -14,6 +12,7 @@ export type TSignUpForm = {
     userId: string;
     username: string;
     password: string;
+    passwordCheck: string;
     role: TRole;
 };
 
@@ -24,13 +23,13 @@ export type TSignUpForm = {
 
 const AccountRegister = () => {
     const { openDialog } = useDialog();
-    const [passwordCheck, setPasswordCheck] = useState('');
     const { mutateAsync: signUp } = useSignUp();
-    const { watch, control, setValue, handleSubmit, reset } = useForm<TSignUpForm>({
+    const { register, watch, control, handleSubmit, reset } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
             password: '',
+            passwordCheck: '',
             role: 'ADMIN',
         },
     });
@@ -76,11 +75,7 @@ const AccountRegister = () => {
     };
 
     return (
-        <Stack
-            sx={{ width: '100%' }}
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-        >
+        <Stack sx={{ width: '100%' }} component="form" onSubmit={handleSubmit(onSubmit)}>
             <Title title="계정 생성">
                 <Stack
                     sx={{
@@ -100,38 +95,30 @@ const AccountRegister = () => {
             <Stack sx={{ gap: '20px', padding: '0 32px', width: '500px' }}>
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={watch('username')}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setValue('username', e.target.value)
-                    }
+                    fieldName="username"
+                    register={register}
                     labelValue="이름"
                     placeholder="username"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={watch('userId')}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setValue('userId', e.target.value)
-                    }
+                    fieldName="userId"
+                    register={register}
                     labelValue="아이디"
                     placeholder="id"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={watch('password')}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setValue('password', e.target.value)
-                    }
+                    fieldName="password"
+                    register={register}
                     labelValue="패스워드"
                     placeholder="password"
                     type="password"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
-                    inputValue={passwordCheck}
-                    inputOnChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setPasswordCheck(e.target.value)
-                    }
+                    fieldName="passwordCheck"
+                    register={register}
                     labelValue="패스워드 확인"
                     placeholder="password check"
                     type="password"

@@ -1,3 +1,5 @@
+import { useForm } from 'react-hook-form';
+
 import { Button, Stack } from '@mui/material';
 
 import AddPhoto from '@/components/AddPhoto';
@@ -5,7 +7,11 @@ import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
+interface TVillageHeaderDetail {
+    photo: File | null;
+}
 const VillageHeadDetails = () => {
+    const methods = useForm<TVillageHeaderDetail>({ defaultValues: { photo: null } });
     return (
         <Stack>
             <Title title="면장 상세 정보">
@@ -18,7 +24,7 @@ const VillageHeadDetails = () => {
             </Title>
             <PageLayout gap={'50px'}>
                 <Stack direction={'row'} gap={'20px'} sx={{ alignItems: 'center' }}>
-                    <AddPhoto />
+                    <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
                     <Stack
                         sx={{
                             height: '100%',

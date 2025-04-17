@@ -1,4 +1,4 @@
-import React from 'react';
+import { useForm } from 'react-hook-form';
 
 import { Button, Stack, Typography } from '@mui/material';
 
@@ -8,22 +8,38 @@ import LabelAndSelect from '@/components/LabelAndSelect';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
+interface TFarmerRegister {
+    villageHead: string;
+    farmerName: string;
+    farmerId: string;
+    photo: File | null;
+}
 const FarmerRegister = () => {
-    const [villageHead, setVillageHead] = React.useState<string>('');
-    const [farmerName, setFarmerName] = React.useState<string>('');
-    const [farmerId, setFarmerId] = React.useState<string>('');
+    const methods = useForm<TFarmerRegister>({
+        defaultValues: { villageHead: '1', farmerName: '', farmerId: '', photo: null },
+    });
+    const onSubmit = (data: TFarmerRegister) => {
+        console.log('제출 데이터:', data);
+    };
     return (
         <Stack>
             <Title title="농부 등록">
                 <Button variant="containedGrey">취소</Button>
-                <Button variant="containedBlue">등록</Button>
+                <Button
+                    variant="containedBlue"
+                    onClick={() => {
+                        methods.handleSubmit(onSubmit)();
+                    }}
+                >
+                    등록
+                </Button>
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndSelect
                     sx={{ width: '500px' }}
                     labelValue="면장"
-                    inputValue={villageHead}
-                    inputOnChange={(e) => setVillageHead(e.target.value)}
+                    control={methods.control}
+                    fieldName="villageHead"
                     placeholder="면장 선택"
                     selectArr={[
                         { value: '1', label: '면장1' },
@@ -32,21 +48,21 @@ const FarmerRegister = () => {
                 />
                 <Stack gap={'30px'}>
                     <Typography fontSize={'14px'}>사진</Typography>
-                    <AddPhoto />
+                    <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
                 </Stack>
                 <LabelAndInput
                     sx={{ width: '500px' }}
                     labelValue="이름"
                     placeholder="이름을 적어주세요."
-                    inputValue={farmerName}
-                    inputOnChange={(e) => setFarmerName(e.target.value)}
+                    register={methods.register}
+                    fieldName="farmerName"
                 />
                 <LabelAndInput
                     sx={{ width: '500px' }}
                     labelValue="아이디"
                     placeholder="아이디를 적어주세요."
-                    inputValue={farmerId}
-                    inputOnChange={(e) => setFarmerId(e.target.value)}
+                    register={methods.register}
+                    fieldName="farmerId"
                 />
             </PageLayout>
         </Stack>

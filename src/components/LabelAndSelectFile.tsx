@@ -1,20 +1,25 @@
 import React from 'react';
 
+import { FieldValues, Path, PathValue, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+
 import { Button, Stack, StackProps, Typography } from '@mui/material';
 
 import { palette } from '@/themes';
 
-interface LabelAndSelectFileProps extends StackProps {
+interface LabelAndSelectFileProps<T extends FieldValues> extends StackProps {
     labelValue: string;
-    fileName: string;
-    setFile: React.Dispatch<React.SetStateAction<File | null>>;
+    fieldName: Path<T>;
+    watch: UseFormWatch<T>;
+    setValue: UseFormSetValue<T>;
 }
-const LabelAndSelectFile: React.FC<LabelAndSelectFileProps> = ({
-    fileName,
+const LabelAndSelectFile = <T extends FieldValues>({
     labelValue,
-    setFile,
-}) => {
+    fieldName,
+    watch,
+    setValue,
+}: LabelAndSelectFileProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+    const file: File | null = watch(fieldName) as File | null;
 
     const handleClick = () => {
         fileInputRef.current?.click();
@@ -23,7 +28,7 @@ const LabelAndSelectFile: React.FC<LabelAndSelectFileProps> = ({
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
-            setFile(file);
+            setValue(fieldName, file as PathValue<T, Path<T>>);
         }
     };
     return (
@@ -40,7 +45,7 @@ const LabelAndSelectFile: React.FC<LabelAndSelectFileProps> = ({
                         borderRadius: '4px',
                     }}
                 >
-                    {fileName}
+                    {file ? file.name : '선택된 파일 없음'}
                 </Typography>
                 <input
                     type="file"

@@ -1,30 +1,31 @@
-import React from 'react';
+import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
 import { Stack, StackProps, TextField, Typography } from '@mui/material';
 
-interface LabelAndInputProps extends StackProps {
+interface LabelAndInputProps<T extends FieldValues> extends StackProps {
+    register: UseFormRegister<T>;
+    rules?: RegisterOptions<T, Path<T>>;
     labelValue: string;
-    inputValue: string;
-    inputOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    fieldName: Path<T>;
     placeholder?: string;
     type?: string;
 }
 
-const LabelAndInput: React.FC<LabelAndInputProps> = ({
+const LabelAndInput = <T extends FieldValues>({
+    register,
+    rules,
     labelValue,
-    inputValue,
-    inputOnChange,
+    fieldName,
     placeholder = '',
     type = 'text',
     sx,
-}) => {
+}: LabelAndInputProps<T>) => {
     return (
         <Stack sx={{ ...sx, gap: '12px' }}>
             <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
             <TextField
+                {...register(fieldName, rules)}
                 placeholder={placeholder}
-                value={inputValue}
-                onChange={inputOnChange}
                 slotProps={{ htmlInput: { type } }}
             />
         </Stack>
