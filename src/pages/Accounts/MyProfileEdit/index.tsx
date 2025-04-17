@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 
 import { Button, Stack, Typography } from '@mui/material';
 
+import { getCookies } from '@/apis/AppUser/cookie';
 import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import Title from '@/components/Title';
@@ -16,7 +17,9 @@ type TProfileEditForm = {
 
 const MyProfileEdit = () => {
     const { openDialog } = useDialog();
-    const { register, handleSubmit, watch, setValue } = useForm<TProfileEditForm>({
+    const role = getCookies('role');
+    console.log(role, 'role');
+    const { watch, setValue, handleSubmit, register } = useForm<TProfileEditForm>({
         defaultValues: {
             username: '',
             password: '',
@@ -92,12 +95,13 @@ const MyProfileEdit = () => {
                     placeholder="password"
                     type="password"
                 />
-
-                {/* TODO: 부관리자의 경우에만 ID Card 필드 노출 */}
-                <Stack gap={'10px'}>
-                    <Typography sx={{ fontSize: '14px' }}>ID Card</Typography>
-                    <AddPhoto fieldName="photo" watch={watch} setValue={setValue} />
-                </Stack>
+                {/* 부관리자의 경우에만 IDCard 노출 */}
+                {role.startsWith('VICE_ADMIN') && (
+                    <Stack gap={'10px'}>
+                        <Typography sx={{ fontSize: '14px' }}>ID Card</Typography>
+                        <AddPhoto fieldName="photo" watch={watch} setValue={setValue} />
+                    </Stack>
+                )}
             </Stack>
         </Stack>
     );
