@@ -1,8 +1,9 @@
 import { useForm } from 'react-hook-form';
 
-import { Button, SelectChangeEvent, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 import { useSignUp } from '@/apis/AppUser/useSignUp';
+import { useGetArea } from '@/apis/Area/useGetArea';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
@@ -19,8 +20,11 @@ export type TSignUpForm = {
 
 const AccountRegister = () => {
     const { openDialog } = useDialog();
+    const { data: area } = useGetArea();
+    console.log(area);
+
     const { mutateAsync: signUp } = useSignUp();
-    const { watch, setValue, handleSubmit, reset, register } = useForm<TSignUpForm>({
+    const { control, handleSubmit, reset, register } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
@@ -121,10 +125,8 @@ const AccountRegister = () => {
                 />
                 <LabelAndSelect
                     labelValue="권한"
-                    inputValue={watch('role')}
-                    inputOnChange={(e: SelectChangeEvent<string>) =>
-                        setValue('role', e.target.value as TRole)
-                    }
+                    fieldName="role"
+                    control={control}
                     selectArr={[
                         { value: 'ADMIN', label: '총 관리자' },
                         { value: 'VICE_ADMIN_HEAD_OFFICER', label: '부 관리자(한국지사)' },
@@ -136,21 +138,22 @@ const AccountRegister = () => {
                     ]}
                     placeholder="role"
                 />
-                {watch('role')?.startsWith('VICE_ADMIN') && (
+                {/* {watch('role')?.startsWith('VICE_ADMIN') && (
                     <LabelAndSelect
                         labelValue="지역"
-                        inputValue={''}
-                        inputOnChange={(e: SelectChangeEvent<string>) =>
-                            console.log(e.target.value)
+                        fieldName='location'
+                        control={control}
+                        selectArr={
+                            area?.map((v) => {
+                                return {
+                                    value: v.areaName,
+                                    label: v.areaName,
+                                };
+                            }) || []
                         }
-                        selectArr={[
-                            { value: '지역 1', label: '지역 1' },
-                            { value: '지역 2', label: '지역 2' },
-                            { value: '지역 3', label: '지역 3' },
-                        ]}
                         placeholder="location"
                     />
-                )}
+                )} */}
             </Stack>
         </Stack>
     );
