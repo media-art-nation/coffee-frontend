@@ -9,6 +9,7 @@ import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TRole } from '@/typings/User';
+import { showToast } from '@/utils/showToast';
 
 export type TSignUpForm = {
     userId: string;
@@ -52,7 +53,6 @@ const AccountRegister = () => {
     };
 
     const onSubmit = (formData: TSignUpForm) => {
-        console.log(formData);
         openDialog({
             title: '계정 생성',
             description: '계정을 생성하시겠습니까?',
@@ -61,8 +61,8 @@ const AccountRegister = () => {
                 name: '확인',
                 onClick: async () => {
                     await signUp(formData).then((res) => {
-                        if (res.code === 'SUCCESS') alert('계정이 생성 되었습니다.');
-                        else alert('계정 생성에 실패하였습니다.');
+                        if (res.code === 'SUCCESS') showToast.success('계정이 생성 되었습니다.');
+                        else showToast.error('계정 생성에 실패하였습니다.');
                     });
                 },
             },
