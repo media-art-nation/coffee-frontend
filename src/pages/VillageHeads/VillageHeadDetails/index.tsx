@@ -1,9 +1,9 @@
 import { Button, Stack } from '@mui/material';
 
 import AddPhoto from '@/components/AddPhoto';
+import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
-import LabelValue from '@/pages/VillageHeads/VillageHeadDetails/components/LabelValue';
 
 const VillageHeadDetails = () => {
     return (
