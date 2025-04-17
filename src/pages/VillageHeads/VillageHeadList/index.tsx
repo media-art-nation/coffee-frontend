@@ -21,7 +21,7 @@ const VillageHeadList = () => {
     ];
     const renderRow = (row: TDummy) => {
         return (
-            <TableRow onClick={() => navigate(`/village-heads/${row.id}`)}>
+            <TableRow key={row.id} onClick={() => navigate(`/village-heads/${row.id}`)}>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.section}</TableCell>
