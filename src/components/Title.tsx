@@ -11,12 +11,15 @@ const Title = ({ title, children }: TitleProps) => {
             sx={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'center',
                 padding: '24px 32px',
                 width: '100%',
             }}
         >
             <Typography variant="h2/bold">{title}</Typography>
-            <Stack>{children}</Stack>
+            <Stack gap={'10px'} direction={'row'} sx={{ height: '40px' }}>
+                {children}
+            </Stack>
         </Stack>
     );
 };

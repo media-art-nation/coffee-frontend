@@ -6,7 +6,7 @@ interface LabelAndInputProps extends StackProps {
     labelValue: string;
     inputValue: string;
     inputOnChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder: string;
+    placeholder?: string;
     type?: string;
 }
 
@@ -14,7 +14,7 @@ const LabelAndInput: React.FC<LabelAndInputProps> = ({
     labelValue,
     inputValue,
     inputOnChange,
-    placeholder,
+    placeholder = '',
     type = 'text',
     sx,
 }) => {

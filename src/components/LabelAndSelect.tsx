@@ -8,7 +8,7 @@ interface LabelAndSelectProps extends StackProps {
     labelValue: string;
     inputValue: string;
     inputOnChange: (e: SelectChangeEvent<string>) => void;
-    placeholder: string;
+    placeholder?: string;
     selectArr: { value: string; label: string }[];
 }
 
@@ -16,7 +16,7 @@ const LabelAndSelect: React.FC<LabelAndSelectProps> = ({
     labelValue,
     inputValue,
     inputOnChange,
-    placeholder,
+    placeholder = '',
     selectArr,
     sx,
 }) => {
