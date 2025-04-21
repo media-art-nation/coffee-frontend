@@ -36,7 +36,6 @@ const FarmerRegister = () => {
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndSelect
-                    sx={{ width: '500px' }}
                     labelValue="면장"
                     control={methods.control}
                     fieldName="villageHead"
@@ -51,14 +50,12 @@ const FarmerRegister = () => {
                     <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
                 </Stack>
                 <LabelAndInput
-                    sx={{ width: '500px' }}
                     labelValue="이름"
                     placeholder="이름을 적어주세요."
                     register={methods.register}
                     fieldName="farmerName"
                 />
                 <LabelAndInput
-                    sx={{ width: '500px' }}
                     labelValue="아이디"
                     placeholder="아이디를 적어주세요."
                     register={methods.register}

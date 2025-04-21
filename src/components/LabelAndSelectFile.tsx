@@ -38,7 +38,6 @@ const LabelAndSelectFile = <T extends FieldValues>({
             <Stack direction={'row'} gap="10px" sx={{ alignItems: 'center' }}>
                 <Typography
                     sx={{
-                        width: '500px',
                         padding: '10px 12px',
                         height: '44px',
                         color: palette.grey[400],

@@ -12,6 +12,7 @@ const CustomDatePicker: React.FC<DatePickerProps<Dayjs>> = ({ ...props }) => {
             open={calendarOpen}
             onClose={() => setCalendarOpen(false)}
             onOpen={() => setCalendarOpen(true)}
+            format="YYYY-MM-DD"
             slotProps={{
                 popper: {
                     disablePortal: true,
