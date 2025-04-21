@@ -7,10 +7,12 @@ import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
+import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
 import { palette } from '@/themes';
 import { TChipColor } from '@/typings/Chip';
+import { showToast } from '@/utils/showToast';
 
 import { REQUEST_STATUS } from '../constants';
 
@@ -23,23 +25,29 @@ type TRequestDetailInput = {
 };
 
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
-    const methods = useForm<TRequestDetailInput>();
+    const { watch, register } = useForm<TRequestDetailInput>();
     const [showTextArea, setShowTextArea] = useState(false);
 
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails(id);
 
+    const { mutateAsync: rejectApproval } = useRejectApproval();
+
     const toggleShowTextArea = () => {
         setShowTextArea((prev) => !prev);
     };
 
-    const handleRejectRequest = () => {
-        console.log(methods.getValues('rejectedReason'));
+    const handleRejectRequest = async () => {
+        if (!id || watch('rejectedReason') === '') return;
+        await rejectApproval({
+            approvalId: id,
+            rejectedReason: watch('rejectedReason'),
+        })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch(() => showToast.error('요청에 실패했습니다.'));
     };
-
-    if (!id) return null;
-
-    console.log(details);
 
     if (!details) return null;
     return (
@@ -122,7 +130,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Stack sx={{ gap: '15px' }}>
                             <Typography variant="title/semibold">거절 사유 입력</Typography>
                             <TextArea
-                                register={methods.register}
+                                register={register}
                                 fieldName="rejectedReason"
                                 placeholder="거절 사유를 입력해주세요."
                             />
