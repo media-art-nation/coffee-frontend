@@ -1,7 +1,8 @@
 import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
-import { MenuItem, Select, Stack, StackProps, Typography } from '@mui/material';
+import { MenuItem, Select, StackProps, Typography } from '@mui/material';
 
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { palette } from '@/themes';
 
 interface LabelAndSelectProps<T extends FieldValues> extends StackProps {
@@ -20,11 +21,10 @@ const LabelAndSelect = <T extends FieldValues>({
     fieldName,
     placeholder = '',
     selectArr,
-    sx,
+    ...props
 }: LabelAndSelectProps<T>) => {
     return (
-        <Stack sx={{ ...sx, gap: '12px' }}>
-            <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
+        <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
             <Controller
                 name={fieldName}
                 control={control}
@@ -55,7 +55,7 @@ const LabelAndSelect = <T extends FieldValues>({
                     </Select>
                 )}
             />
-        </Stack>
+        </LabelComponentsLayout>
     );
 };
 

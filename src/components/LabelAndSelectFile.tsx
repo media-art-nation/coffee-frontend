@@ -4,6 +4,7 @@ import { FieldValues, Path, PathValue, UseFormSetValue, UseFormWatch } from 'rea
 
 import { Button, Stack, StackProps, Typography } from '@mui/material';
 
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { palette } from '@/themes';
 
 interface LabelAndSelectFileProps<T extends FieldValues> extends StackProps {
@@ -17,6 +18,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
     fieldName,
     watch,
     setValue,
+    ...props
 }: LabelAndSelectFileProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const file: File | null = watch(fieldName) as File | null;
@@ -32,8 +34,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
         }
     };
     return (
-        <Stack sx={{ gap: '12px' }}>
-            <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
+        <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
             <Stack direction={'row'} gap="10px" sx={{ alignItems: 'center' }}>
                 <Typography
                     sx={{
@@ -67,7 +68,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
                     파일 첨부
                 </Button>
             </Stack>
-        </Stack>
+        </LabelComponentsLayout>
     );
 };
 
