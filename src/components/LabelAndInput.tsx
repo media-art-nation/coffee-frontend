@@ -1,6 +1,8 @@
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-import { Stack, StackProps, TextField, Typography } from '@mui/material';
+import { StackProps, TextField } from '@mui/material';
+
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 
 interface LabelAndInputProps<T extends FieldValues> extends StackProps {
     register: UseFormRegister<T>;
@@ -18,17 +20,16 @@ const LabelAndInput = <T extends FieldValues>({
     fieldName,
     placeholder = '',
     type = 'text',
-    sx,
+    ...props
 }: LabelAndInputProps<T>) => {
     return (
-        <Stack sx={{ ...sx, gap: '12px' }}>
-            <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
+        <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
             <TextField
                 {...register(fieldName, rules)}
                 placeholder={placeholder}
                 slotProps={{ htmlInput: { type } }}
             />
-        </Stack>
+        </LabelComponentsLayout>
     );
 };
 
