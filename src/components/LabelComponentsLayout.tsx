@@ -12,7 +12,7 @@ const LabelComponentsLayout: React.FC<LabelComponentsLayoutProps> = ({
     ...props
 }) => {
     return (
-        <Stack {...props} sx={{ ...props.sx, gap: '12px' }}>
+        <Stack {...props} sx={{ width: '500px', gap: '12px', ...props.sx }}>
             <Typography sx={{ fontSize: '14px' }}>{labelValue}</Typography>
             {children}
         </Stack>

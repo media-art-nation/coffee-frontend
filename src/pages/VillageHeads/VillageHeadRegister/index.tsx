@@ -41,7 +41,6 @@ const VillageHeadRegister = () => {
             </Title>
             <PageLayout gap={'10px'}>
                 <LabelAndSelect
-                    sx={{ width: '500px' }}
                     labelValue="관리 지역"
                     fieldName="managingArea"
                     control={methods.control}
@@ -53,21 +52,18 @@ const VillageHeadRegister = () => {
                     ]}
                 />
                 <LabelAndInput
-                    sx={{ width: '500px' }}
                     labelValue="이름"
                     fieldName="name"
                     register={methods.register}
                     placeholder="이름"
                 />
                 <LabelAndInput
-                    sx={{ width: '500px' }}
                     labelValue="아이디"
                     fieldName="id"
                     register={methods.register}
                     placeholder="ID"
                 />
                 <LabelAndInput
-                    sx={{ width: '500px' }}
                     labelValue="패스워드"
                     fieldName="password"
                     register={methods.register}
