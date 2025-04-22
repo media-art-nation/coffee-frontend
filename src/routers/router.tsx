@@ -23,7 +23,6 @@ import TreesPurchaseRegister from '@/pages/TreesPurchases/TreesPurchaseRegister'
 import TreesTransactionList from '@/pages/TreesTransactions/TreesTransactionList';
 import TreesTransactionRegister from '@/pages/TreesTransactions/TreesTransactionRegister';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
-import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
 import ViceAdminList from '@/pages/ViceAdmins/ViceAdminList';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadEdit from '@/pages/VillageHeads/VillageHeadEdit';
@@ -88,7 +87,6 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <ViceAdminList /> },
                     { path: ':id', element: <ViceAdminDetails /> },
-                    { path: 'edit', element: <ViceAdminEdit /> },
                 ],
             },
             {
