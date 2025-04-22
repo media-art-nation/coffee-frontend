@@ -12,9 +12,8 @@ import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const TreesPurchaseRequestDetails = () => {
     const { id } = useParams();
-    if (!id) return null;
-
     const { data: details } = useGetApprovalDetails<TPurchaseApprovalDetails>(id);
+    if (!id) return null;
 
     if (!details) return null;
     return (

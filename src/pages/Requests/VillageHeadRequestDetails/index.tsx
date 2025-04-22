@@ -13,9 +13,8 @@ import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 const VillageHeadRequestDetails = () => {
     const { id } = useParams();
 
-    if (!id) return null;
-
     const { data: details } = useGetApprovalDetails<TVillageHeadApprovalDetails>(id);
+    if (!id) return null;
 
     if (!details) return null;
     return (

@@ -4,7 +4,7 @@ import { TLoginForm } from '@/pages/Accounts/Login';
 
 import { axiosInstance } from '../axiosInstance';
 
-type SignInReq = TLoginForm
+type SignInReq = TLoginForm;
 
 const signIn = async (formData: SignInReq) => {
     const response = await axiosInstance.post('/app-user/sign-in', formData);
