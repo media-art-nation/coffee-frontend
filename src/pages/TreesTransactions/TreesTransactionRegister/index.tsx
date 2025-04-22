@@ -10,12 +10,12 @@ import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-interface TTreesTransactionRegisterInput {
+type TTreesTransactionRegisterInput = {
     farmer: string;
     receipt: Dayjs | null;
     tree: string;
     count: number;
-}
+};
 const TreesTransactionRegister = () => {
     const methods = useForm<TTreesTransactionRegisterInput>();
     return (

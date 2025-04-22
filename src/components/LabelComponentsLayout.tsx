@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Stack, StackProps, Typography } from '@mui/material';
 
-interface LabelComponentsLayoutProps extends StackProps {
+type LabelComponentsLayoutProps = StackProps & {
     labelValue: string;
     children?: React.ReactNode;
-}
+};
 const LabelComponentsLayout: React.FC<LabelComponentsLayoutProps> = ({
     children,
     labelValue,

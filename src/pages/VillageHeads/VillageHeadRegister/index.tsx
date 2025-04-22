@@ -8,7 +8,7 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-interface TVillageHeadRegister {
+type TVillageHeadRegister = {
     managingArea: string;
     name: string;
     id: string;
@@ -19,7 +19,7 @@ interface TVillageHeadRegister {
     };
     contract: File;
     passbook: File;
-}
+};
 const VillageHeadRegister = () => {
     const methods = useForm<TVillageHeadRegister>();
     const onSubmit = (data: TVillageHeadRegister) => {

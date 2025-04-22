@@ -7,12 +7,12 @@ import { Button, Stack, StackProps, Typography } from '@mui/material';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { palette } from '@/themes';
 
-interface LabelAndSelectFileProps<T extends FieldValues> extends StackProps {
+type LabelAndSelectFileProps<T extends FieldValues> = StackProps & {
     labelValue: string;
     fieldName: Path<T>;
     watch: UseFormWatch<T>;
     setValue: UseFormSetValue<T>;
-}
+};
 const LabelAndSelectFile = <T extends FieldValues>({
     labelValue,
     fieldName,

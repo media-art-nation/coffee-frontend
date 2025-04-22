@@ -1,10 +1,10 @@
 import { Color, PaletteOptions } from '@mui/material';
 
-interface CustomColor extends Omit<Color, 'A100' | 'A200' | 'A400' | 'A700'> {
+type CustomColor = Omit<Color, 'A100' | 'A200' | 'A400' | 'A700'> & {
     main: string;
-}
+};
 
-interface CustomPaletteOptions extends PaletteOptions {
+type CustomPaletteOptions = PaletteOptions & {
     blue: CustomColor;
     grey: CustomColor;
     success: CustomColor;
@@ -14,7 +14,7 @@ interface CustomPaletteOptions extends PaletteOptions {
     text: { primary: string };
     common: { black: string; white: string };
     action: { hover: string; focus: string; selected: string };
-}
+};
 
 export const palette: CustomPaletteOptions = {
     blue: {

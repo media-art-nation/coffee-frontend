@@ -5,13 +5,13 @@ import { MagnifyingGlass, X } from '@phosphor-icons/react';
 
 import { palette } from '@/themes';
 
-interface SearchTextFieldProps<T extends FieldValues> extends Omit<TextFieldProps, 'name'> {
+type SearchTextFieldProps<T extends FieldValues> = Omit<TextFieldProps, 'name'> & {
     disabled?: boolean;
     register: UseFormRegister<T>;
     rules?: RegisterOptions<T, Path<T>>;
     fieldName: Path<T>;
     placeholder?: string;
-}
+};
 const SearchTextField = <T extends FieldValues>({
     fieldName,
     register,

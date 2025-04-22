@@ -6,12 +6,12 @@ import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-interface TDummy {
+type TDummy = {
     id: number;
     name: string;
     villageHeader: string;
     section: string;
-}
+};
 const FarmerList = () => {
     const navigate = useNavigate();
     const dummy = [

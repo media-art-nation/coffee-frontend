@@ -6,12 +6,12 @@ import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-interface TDummy {
+type TDummy = {
     id: string;
     name: string;
     section: string;
     managingCnt: number;
-}
+};
 const VillageHeadList = () => {
     const navigate = useNavigate();
     const dummy = [

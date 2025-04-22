@@ -9,7 +9,7 @@ import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-interface TTreesPurchaseRegisterInput {
+type TTreesPurchaseRegisterInput = {
     purchaseDate: Dayjs | null;
     tree: string;
     count: number;
@@ -17,7 +17,7 @@ interface TTreesPurchaseRegisterInput {
     totalPrice: number;
     minusPrice: number;
     payment: number;
-}
+};
 const TreesPurchaseRegister = () => {
     const methods = useForm<TTreesPurchaseRegisterInput>();
     return (

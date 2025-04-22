@@ -5,7 +5,7 @@ import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-interface TDummy {
+type TDummy = {
     id: number;
     manager: string;
     purchaseDate: Date;
@@ -14,7 +14,7 @@ interface TDummy {
     totalPrice: number;
     minusPrice: number;
     payment: number;
-}
+};
 const TreesPurchaseList = () => {
     const dummy = [
         {

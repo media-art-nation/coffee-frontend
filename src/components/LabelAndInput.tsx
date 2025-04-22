@@ -4,7 +4,7 @@ import { StackProps, TextField } from '@mui/material';
 
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 
-interface LabelAndInputProps<T extends FieldValues> extends StackProps {
+type LabelAndInputProps<T extends FieldValues> = StackProps & {
     disabled?: boolean;
     register: UseFormRegister<T>;
     rules?: RegisterOptions<T, Path<T>>;
@@ -12,7 +12,7 @@ interface LabelAndInputProps<T extends FieldValues> extends StackProps {
     fieldName: Path<T>;
     placeholder?: string;
     type?: string;
-}
+};
 
 const LabelAndInput = <T extends FieldValues>({
     register,
