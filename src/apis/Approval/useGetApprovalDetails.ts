@@ -4,7 +4,7 @@ import { TRequestServiceType, TRequestStatus } from '@/typings/Requests';
 
 import { axiosInstance } from '../axiosInstance';
 
-type GetApprovalDetailsReq = string;
+type GetApprovalDetailsReq = string | undefined;
 type GetApprovalDetailsRes =
     | TVillageHeadApprovalDetails
     | TFarmerApprovalDetails

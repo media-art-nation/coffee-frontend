@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 
 import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
@@ -17,26 +18,27 @@ type RequestDetailsLayoutProps = {
     children: React.ReactNode;
 };
 
-const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
-    const [showTextArea, setShowTextArea] = useState(false);
-    const [rejectedReason, setRejectedReason] = useState('');
+interface TRequestDetailInput {
+    rejectedReason: string;
+}
 
-    const handleChangeRejectedReason = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setRejectedReason(e.target.value);
-    };
+const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
+    const methods = useForm<TRequestDetailInput>();
+    const [showTextArea, setShowTextArea] = useState(false);
+
+    const { id } = useParams();
+    const { data: details } = useGetApprovalDetails(id);
 
     const toggleShowTextArea = () => {
         setShowTextArea((prev) => !prev);
     };
 
     const handleRejectRequest = () => {
-        console.log(rejectedReason);
+        console.log(methods.getValues('rejectedReason'));
     };
 
-    const { id } = useParams();
     if (!id) return null;
 
-    const { data: details } = useGetApprovalDetails(id);
     console.log(details);
 
     if (!details) return null;
@@ -120,8 +122,8 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Stack sx={{ gap: '15px' }}>
                             <Typography variant="title/semibold">거절 사유 입력</Typography>
                             <TextArea
-                                value={rejectedReason}
-                                onChange={handleChangeRejectedReason}
+                                register={methods.register}
+                                fieldName="rejectedReason"
                                 placeholder="거절 사유를 입력해주세요."
                             />
                             <Stack
