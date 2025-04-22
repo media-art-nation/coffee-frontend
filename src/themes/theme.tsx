@@ -192,10 +192,14 @@ export const theme = createTheme({
                         '&.Mui-focused fieldset': {
                             border: `1px solid ${palette.grey[500]}`,
                         },
+                        '&.Mui-disabled': { opacity: 0.5 },
+                        '&.Mui-disabled fieldset': {
+                            border: 0,
+                        },
                     },
                     '& .MuiOutlinedInput-input::placeholder': {
                         color: palette.grey[400],
-                        opacity: 1, // 기본적으로 placeholder는 opacity 0.54 정도로 설정되어 있음
+                        opacity: 1,
                     },
                 },
             },

@@ -5,6 +5,7 @@ import { StackProps, TextField } from '@mui/material';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 
 interface LabelAndInputProps<T extends FieldValues> extends StackProps {
+    disabled?: boolean;
     register: UseFormRegister<T>;
     rules?: RegisterOptions<T, Path<T>>;
     labelValue: string;
@@ -20,12 +21,14 @@ const LabelAndInput = <T extends FieldValues>({
     fieldName,
     placeholder = '',
     type = 'text',
+    disabled = false,
     ...props
 }: LabelAndInputProps<T>) => {
     return (
         <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
             <TextField
                 {...register(fieldName, rules)}
+                disabled={disabled}
                 placeholder={placeholder}
                 slotProps={{ htmlInput: { type } }}
             />
