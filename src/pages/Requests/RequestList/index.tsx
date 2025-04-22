@@ -40,10 +40,7 @@ const RequestList = () => {
 
     return (
         <FormProvider {...methods}>
-            <Stack
-                sx={{ width: '100%' }}
-                component="form"
-            >
+            <Stack sx={{ width: '100%' }} component="form">
                 <Title title="요청 목록" />
                 <Stack sx={{ gap: '20px', padding: '0 32px' }}>
                     <RequestListFilter />

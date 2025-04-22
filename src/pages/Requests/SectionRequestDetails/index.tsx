@@ -12,9 +12,8 @@ import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const SectionRequestDetails = () => {
     const { id } = useParams();
-    if (!id) return null;
-
     const { data: details } = useGetApprovalDetails<TSectionApprovalDetails>(id);
+    if (!id) return null;
 
     if (!details) return null;
     return (
