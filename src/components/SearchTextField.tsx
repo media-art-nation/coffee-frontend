@@ -1,13 +1,30 @@
+import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
+
 import { InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { MagnifyingGlass, X } from '@phosphor-icons/react';
 
 import { palette } from '@/themes';
 
-const SearchTextField: React.FC<TextFieldProps> = ({ sx, ...props }) => {
+interface SearchTextFieldProps<T extends FieldValues> extends Omit<TextFieldProps, 'name'> {
+    disabled?: boolean;
+    register: UseFormRegister<T>;
+    rules?: RegisterOptions<T, Path<T>>;
+    fieldName: Path<T>;
+    placeholder?: string;
+}
+const SearchTextField = <T extends FieldValues>({
+    fieldName,
+    register,
+    rules,
+    placeholder,
+    ...props
+}: SearchTextFieldProps<T>) => {
     return (
         <TextField
             {...props}
-            sx={{ ...sx }}
+            {...register(fieldName, rules)}
+            sx={{ ...props.sx }}
+            placeholder={placeholder}
             slotProps={{
                 input: {
                     startAdornment: (

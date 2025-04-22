@@ -27,8 +27,8 @@ import { useDialog } from '@/hooks/useDialog';
 import { TChipColor } from '@/typings/Chip';
 
 const TestComponents = () => {
-    const methods = useForm<{ input: string; photo: File | null }>({
-        defaultValues: { input: '', photo: null },
+    const methods = useForm<{ input: string; photo: File | null; search: string }>({
+        defaultValues: { input: '', photo: null, search: '' },
     });
     const { openDialog } = useDialog();
 
@@ -145,7 +145,11 @@ const TestComponents = () => {
                     <MenuItem value="3">3</MenuItem>
                 </Select>
                 <Typography>Search</Typography>
-                <SearchTextField />
+                <SearchTextField
+                    fieldName="search"
+                    register={methods.register}
+                    placeholder="검색어를 입력하세요."
+                />
                 <Typography>calendar</Typography>
                 <CustomDatePicker value={value} onChange={(newValue) => setValue(newValue)} />
                 <Typography>Textarea</Typography>
