@@ -7,12 +7,12 @@ import Table from '@/components/Table';
 import Title from '@/components/Title';
 import { palette } from '@/themes';
 
-interface TDummy {
+type TDummy = {
     id: number;
     tree: string;
     count: number;
     createdAt: Date;
-}
+};
 const FarmerDetails = () => {
     const dummy: TDummy[] = [
         { id: 1, tree: 'apple', count: 5, createdAt: new Date() },

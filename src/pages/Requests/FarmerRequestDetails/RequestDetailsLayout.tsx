@@ -18,9 +18,9 @@ type RequestDetailsLayoutProps = {
     children: React.ReactNode;
 };
 
-interface TRequestDetailInput {
+type TRequestDetailInput = {
     rejectedReason: string;
-}
+};
 
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const methods = useForm<TRequestDetailInput>();

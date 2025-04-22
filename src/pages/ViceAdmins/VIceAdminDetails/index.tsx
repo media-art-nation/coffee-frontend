@@ -12,12 +12,12 @@ import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { palette } from '@/themes';
 
-interface TViceAdminInput {
+type TViceAdminInput = {
     name: string;
     userId: string;
     managingArea: string;
     imgSrc: string;
-}
+};
 const ViceAdminDetails = () => {
     const methods = useForm<TViceAdminInput>({
         defaultValues: { name: 'dummy', userId: 'dummy', managingArea: '1' },

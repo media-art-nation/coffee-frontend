@@ -4,11 +4,11 @@ import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-interface TDummy {
+type TDummy = {
     id: number;
     area: string;
     section: string;
-}
+};
 const LocationList = () => {
     const dummy: TDummy[] = [
         { id: 1, area: 'dummy', section: 'dummy' },

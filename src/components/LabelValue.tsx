@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Stack, Typography } from '@mui/material';
 
-interface LabelValueProps {
+type LabelValueProps = {
     label: string;
     value: string;
-}
+};
 const LabelValue: React.FC<LabelValueProps> = ({ label, value }) => {
     return (
         <Stack direction={'row'} sx={{ height: '40px' }}>

@@ -7,9 +7,9 @@ import PageLayout from '@/components/PageLayout';
 import SearchTextField from '@/components/SearchTextField';
 import Title from '@/components/Title';
 
-interface TLocationInput {
+type TLocationInput = {
     area: string;
-}
+};
 const LocationRegister = () => {
     const methods = useForm<TLocationInput>();
     return (

@@ -7,13 +7,13 @@ import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-interface TDummy {
+type TDummy = {
     id: number;
     farmer: string;
     tree: string;
     count: number;
     receiptDate: Date;
-}
+};
 const TreesTransactionList = () => {
     const dummy: TDummy[] = [
         {

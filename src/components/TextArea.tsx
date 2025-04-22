@@ -2,13 +2,13 @@ import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-
 
 import { TextField, TextFieldProps } from '@mui/material';
 
-interface TextAreaProps<T extends FieldValues> extends Omit<TextFieldProps, 'name'> {
+type TextAreaProps<T extends FieldValues> = Omit<TextFieldProps, 'name'> & {
     disabled?: boolean;
     register: UseFormRegister<T>;
     rules?: RegisterOptions<T, Path<T>>;
     fieldName: Path<T>;
     placeholder?: string;
-}
+};
 const TextArea = <T extends FieldValues>({
     disabled = false,
     register,

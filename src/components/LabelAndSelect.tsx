@@ -5,14 +5,14 @@ import { MenuItem, Select, StackProps, Typography } from '@mui/material';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { palette } from '@/themes';
 
-interface LabelAndSelectProps<T extends FieldValues> extends StackProps {
+type LabelAndSelectProps<T extends FieldValues> = StackProps & {
     control: Control<T>;
     rules?: RegisterOptions<T, Path<T>>;
     labelValue: string;
     fieldName: Path<T>;
     placeholder?: string;
     selectArr: { value: string; label: string }[];
-}
+};
 
 const LabelAndSelect = <T extends FieldValues>({
     control,

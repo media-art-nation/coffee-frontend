@@ -7,11 +7,11 @@ import { Plus } from '@phosphor-icons/react';
 
 import { palette } from '@/themes';
 
-interface AddPhotoProps<T extends FieldValues> {
+type AddPhotoProps<T extends FieldValues> = {
     fieldName: Path<T>;
     watch: UseFormWatch<T>;
     setValue: UseFormSetValue<T>;
-}
+};
 const AddPhoto = <T extends FieldValues>({ fieldName, setValue }: AddPhotoProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     // const file: File | null = watch(fieldName) as File | null;

@@ -8,12 +8,12 @@ import LabelAndSelect from '@/components/LabelAndSelect';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-interface TFarmerRegister {
+type TFarmerRegister = {
     villageHead: string;
     farmerName: string;
     farmerId: string;
     photo: File | null;
-}
+};
 const FarmerRegister = () => {
     const methods = useForm<TFarmerRegister>({
         defaultValues: { villageHead: '1', farmerName: '', farmerId: '', photo: null },

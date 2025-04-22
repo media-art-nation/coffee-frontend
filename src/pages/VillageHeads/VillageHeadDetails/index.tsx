@@ -7,9 +7,9 @@ import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-interface TVillageHeaderDetail {
+type TVillageHeaderDetail = {
     photo: File | null;
-}
+};
 const VillageHeadDetails = () => {
     const methods = useForm<TVillageHeaderDetail>({ defaultValues: { photo: null } });
     return (

@@ -8,10 +8,10 @@ import PageLayout from '@/components/PageLayout';
 import SearchTextField from '@/components/SearchTextField';
 import Title from '@/components/Title';
 
-interface TSectionInput {
+type TSectionInput = {
     area: string;
     section: string;
-}
+};
 const SectionRegister = () => {
     const methods = useForm<TSectionInput>();
     return (
