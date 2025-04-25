@@ -22,6 +22,7 @@ export type TSignUpForm = {
 const AccountRegister = () => {
     const { openDialog } = useDialog();
     const { data: area } = useGetArea();
+    console.log(area);
 
     const { mutateAsync: signUp } = useSignUp();
     const { control, handleSubmit, reset, register } = useForm<TSignUpForm>({

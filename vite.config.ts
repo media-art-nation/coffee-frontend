@@ -24,5 +24,15 @@ export default defineConfig(({ mode }) => {
                 { find: '@utils', replacement: path.resolve(__dirname, 'src/utils') },
             ],
         },
+        server: {
+            proxy: {
+                '/api': {
+                    target: 'https://dubbi-coffee-531048086785.asia-northeast3.run.app',
+                    changeOrigin: true,
+                    secure: false,
+                    rewrite: (path) => path.replace(/^\/api/, ''),
+                },
+            },
+        },
     };
 });
