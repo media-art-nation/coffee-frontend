@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 
 import { createRoot } from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { GlobalStyles, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -29,6 +31,12 @@ createRoot(document.getElementById('root')!).render(
                     />
                     <DialogProvider>
                         <App />
+                        <ToastContainer
+                            position="top-center"
+                            theme="dark"
+                            hideProgressBar={true}
+                            autoClose={3000}
+                        />
                     </DialogProvider>
                 </ThemeProvider>
             </LocalizationProvider>

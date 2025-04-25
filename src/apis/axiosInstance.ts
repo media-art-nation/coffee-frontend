@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getCookies } from './AppUser/cookie';
 
 export const axiosInstance = axios.create({
-    baseURL: 'https://dubbi-coffee-531048086785.asia-northeast3.run.app/',
+    baseURL: '/api',
     headers: {
         'Content-Type': 'application/json',
     },

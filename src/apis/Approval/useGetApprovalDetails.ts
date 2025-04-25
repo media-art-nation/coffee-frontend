@@ -54,7 +54,6 @@ const getApprovalDetails = async <T = GetApprovalDetailsRes>(
     approvalId: GetApprovalDetailsReq
 ): Promise<T> => {
     const { data } = await axiosInstance.get(`/approval/${approvalId}`);
-    console.log(data, 'backend Data');
 
     return data.response;
 };

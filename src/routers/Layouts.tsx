@@ -1,11 +1,17 @@
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 
 import { Stack } from '@mui/material';
+
+import { getCookies } from '@/apis/AppUser/cookie';
 
 import Gnb from './Gnb';
 import Lnb from './Lnb';
 
 const Layouts = () => {
+    const isLogin = getCookies('accessToken');
+
+    if (!isLogin) return <Navigate to="/login" replace />;
+
     return (
         <Stack sx={{ height: '100vh', width: '100vw' }}>
             <Gnb isLoginPage={false} />

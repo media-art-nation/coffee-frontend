@@ -1,36 +1,37 @@
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
-import { Button, MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 import { useSignUp } from '@/apis/AppUser/useSignUp';
+import { useGetArea } from '@/apis/Area/useGetArea';
 import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TRole } from '@/typings/User';
+import { showToast } from '@/utils/showToast';
 
 export type TSignUpForm = {
     userId: string;
     username: string;
     password: string;
     passwordCheck: string;
-    role: TRole;
+    role: '' | TRole;
 };
-
-/**
- * ADMIN, VILLAGE_HEAD
- * VICE_ADMIN_HEAD_OFFICER
- * VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER */
 
 const AccountRegister = () => {
     const { openDialog } = useDialog();
+    const { data: area } = useGetArea();
+    console.log(area);
+
     const { mutateAsync: signUp } = useSignUp();
-    const { register, watch, control, handleSubmit, reset } = useForm<TSignUpForm>({
+    const { control, handleSubmit, reset, register } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
             password: '',
             passwordCheck: '',
-            role: 'ADMIN',
+            role: '',
         },
     });
 
@@ -53,7 +54,6 @@ const AccountRegister = () => {
     };
 
     const onSubmit = (formData: TSignUpForm) => {
-        console.log(formData);
         openDialog({
             title: '계정 생성',
             description: '계정을 생성하시겠습니까?',
@@ -62,8 +62,8 @@ const AccountRegister = () => {
                 name: '확인',
                 onClick: async () => {
                     await signUp(formData).then((res) => {
-                        if (res.code === 'SUCCESS') alert('계정이 생성 되었습니다.');
-                        else alert('계정 생성에 실패하였습니다.');
+                        if (res.code === 'SUCCESS') showToast.success('계정이 생성 되었습니다.');
+                        else showToast.error('계정 생성에 실패하였습니다.');
                     });
                 },
             },
@@ -123,35 +123,37 @@ const AccountRegister = () => {
                     placeholder="password check"
                     type="password"
                 />
-                <Stack sx={{ gap: '12px' }}>
-                    <Typography sx={{ fontSize: '14px' }}>권한</Typography>
-                    <Controller
-                        name="role"
+                <LabelAndSelect
+                    labelValue="권한"
+                    fieldName="role"
+                    control={control}
+                    selectArr={[
+                        { value: 'ADMIN', label: '총 관리자' },
+                        { value: 'VICE_ADMIN_HEAD_OFFICER', label: '부 관리자(한국지사)' },
+                        {
+                            value: 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER',
+                            label: '부 관리자(농림부)',
+                        },
+                        { value: 'VILLAGE_HEAD', label: '면장' },
+                    ]}
+                    placeholder="role"
+                />
+                {/* {watch('role')?.startsWith('VICE_ADMIN') && (
+                    <LabelAndSelect
+                        labelValue="지역"
+                        fieldName='location'
                         control={control}
-                        render={({ field }) => (
-                            <Select {...field}>
-                                <MenuItem value="ADMIN">총 관리자</MenuItem>
-                                <MenuItem value="VICE_ADMIN_HEAD_OFFICER">
-                                    {'부 관리자(한국지사)'}
-                                </MenuItem>
-                                <MenuItem value="VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER">
-                                    {'부 관리자(농림부)'}
-                                </MenuItem>
-                                <MenuItem value="VILLAGE_HEAD">면장</MenuItem>
-                            </Select>
-                        )}
+                        selectArr={
+                            area?.map((v) => {
+                                return {
+                                    value: v.areaName,
+                                    label: v.areaName,
+                                };
+                            }) || []
+                        }
+                        placeholder="location"
                     />
-                </Stack>
-                {watch('role').startsWith('VICE_ADMIN') && (
-                    <Stack sx={{ gap: '12px' }}>
-                        <Typography sx={{ fontSize: '14px' }}>관리 지역</Typography>
-                        <Select>
-                            <MenuItem value="지역 1">지역 1</MenuItem>
-                            <MenuItem value="지역 2">지역 2</MenuItem>
-                            <MenuItem value="지역 3">지역 3</MenuItem>
-                        </Select>
-                    </Stack>
-                )}
+                )} */}
             </Stack>
         </Stack>
     );
