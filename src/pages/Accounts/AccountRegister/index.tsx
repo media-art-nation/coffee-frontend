@@ -127,6 +127,7 @@ const AccountRegister = () => {
                     labelValue="권한"
                     fieldName="role"
                     control={control}
+                    sx={{ width: '100%' }}
                     selectArr={[
                         { value: 'ADMIN', label: '총 관리자' },
                         { value: 'VICE_ADMIN_HEAD_OFFICER', label: '부 관리자(한국지사)' },
@@ -142,6 +143,7 @@ const AccountRegister = () => {
                     <LabelAndSelect
                         labelValue="지역"
                         fieldName='location'
+                        sx={{ width: '100%' }}
                         control={control}
                         selectArr={
                             area?.map((v) => {
