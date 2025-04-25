@@ -11,8 +11,8 @@ import { useDialog } from '@/hooks/useDialog';
 type TProfileEditForm = {
     username: string;
     password: string;
-    photo: File | null;
-    idCard?: any;
+    passwordCheck: string;
+    idCard?: File | null;
 };
 
 const MyProfileEdit = () => {
@@ -23,8 +23,8 @@ const MyProfileEdit = () => {
         defaultValues: {
             username: '',
             password: '',
+            passwordCheck: '',
             idCard: null,
-            photo: null,
         },
     });
 
@@ -91,15 +91,23 @@ const MyProfileEdit = () => {
                     sx={{ width: '100%' }}
                     fieldName="password"
                     register={register}
-                    labelValue="패스워드"
+                    labelValue="비밀번호 확인"
                     placeholder="password"
+                    type="password"
+                />
+                <LabelAndInput
+                    sx={{ width: '100%' }}
+                    fieldName="passwordCheck"
+                    register={register}
+                    labelValue="비밀번호 확인"
+                    placeholder="password check"
                     type="password"
                 />
                 {/* 부관리자의 경우에만 IDCard 노출 */}
                 {role.startsWith('VICE_ADMIN') && (
                     <Stack gap={'10px'}>
                         <Typography sx={{ fontSize: '14px' }}>ID Card</Typography>
-                        <AddPhoto fieldName="photo" watch={watch} setValue={setValue} />
+                        <AddPhoto fieldName="idCard" watch={watch} setValue={setValue} />
                     </Stack>
                 )}
             </Stack>
