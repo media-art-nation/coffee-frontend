@@ -12,6 +12,7 @@ import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
 import { palette } from '@/themes';
 import { TChipColor } from '@/typings/Chip';
+import { TRequestServiceType } from '@/typings/Requests';
 import { showToast } from '@/utils/showToast';
 
 import { REQUEST_STATUS } from '../constants';
@@ -22,6 +23,14 @@ type RequestDetailsLayoutProps = {
 
 type TRequestDetailInput = {
     rejectedReason: string;
+};
+
+const SERVICE_TYPE: Record<TRequestServiceType, string> = {
+    VILLAGE_HEAD: '면장',
+    FARMER: '농부',
+    TREES_TRANSACTION: '나무 수령',
+    PURCHASE: '수매',
+    SECTION: '지역',
 };
 
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
@@ -48,6 +57,8 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
             })
             .catch(() => showToast.error('요청에 실패했습니다.'));
     };
+
+    console.log(details, 'layout');
 
     if (!details) return null;
     return (
@@ -84,7 +95,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
                             요청 분류
                         </Typography>
-                        <Typography>수매 등록</Typography>
+                        <Typography>{SERVICE_TYPE[details.serviceType]}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
@@ -121,52 +132,52 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         </Stack>
                     </>
                 )}
-
                 {/* 요청 상세 정보 */}
                 {children}
-                {/* 승인, 거절 버튼 */}
-                {details.status !== 'REJECTED' &&
-                    (showTextArea ? (
-                        <Stack sx={{ gap: '15px' }}>
-                            <Typography variant="title/semibold">거절 사유 입력</Typography>
-                            <TextArea
-                                register={register}
-                                fieldName="rejectedReason"
-                                placeholder="거절 사유를 입력해주세요."
-                            />
-                            <Stack
-                                sx={{
-                                    'justifyContent': 'flex-end',
-                                    'flexDirection': 'row',
-                                    'gap': '10px',
-                                    'padding': '0 0 30px 0',
-                                    '& .MuiButton-root': { height: '40px' },
-                                }}
-                            >
-                                <Button variant="containedGrey" onClick={toggleShowTextArea}>
-                                    취소
-                                </Button>
-                                <Button variant="containedRed" onClick={handleRejectRequest}>
-                                    완료
-                                </Button>
-                            </Stack>
-                        </Stack>
-                    ) : (
+                {/* 승인, 거절 버튼 - PENDING*/}
+                {details.status === 'PENDING' && !showTextArea && (
+                    <Stack
+                        sx={{
+                            'margin': 'auto',
+                            'flexDirection': 'row',
+                            'gap': '10px',
+                            '& .MuiButton-root': { height: '40px' },
+                            'padding': '0 0 30px 0',
+                        }}
+                    >
+                        <Button variant="containedRed" onClick={toggleShowTextArea}>
+                            거절
+                        </Button>
+                        <Button variant="containedGrey">승인</Button>
+                    </Stack>
+                )}
+                {/* 거절 사유 입력 form */}
+                {showTextArea && (
+                    <Stack sx={{ gap: '15px' }}>
+                        <Typography variant="title/semibold">거절 사유 입력</Typography>
+                        <TextArea
+                            register={register}
+                            fieldName="rejectedReason"
+                            placeholder="거절 사유를 입력해주세요."
+                        />
                         <Stack
                             sx={{
-                                'margin': 'auto',
+                                'justifyContent': 'flex-end',
                                 'flexDirection': 'row',
                                 'gap': '10px',
-                                '& .MuiButton-root': { height: '40px' },
                                 'padding': '0 0 30px 0',
+                                '& .MuiButton-root': { height: '40px' },
                             }}
                         >
-                            <Button variant="containedRed" onClick={toggleShowTextArea}>
-                                거절
+                            <Button variant="containedGrey" onClick={toggleShowTextArea}>
+                                취소
                             </Button>
-                            <Button variant="containedGrey">승인</Button>
+                            <Button variant="containedRed" onClick={handleRejectRequest}>
+                                완료
+                            </Button>
                         </Stack>
-                    ))}
+                    </Stack>
+                )}
             </Stack>
         </Stack>
     );
