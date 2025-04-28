@@ -2,30 +2,22 @@ import { useNavigate } from 'react-router';
 
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 
+import { GetVillageHeadListRes, useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-type TDummy = {
-    id: string;
-    name: string;
-    section: string;
-    managingCnt: number;
-};
 const VillageHeadList = () => {
     const navigate = useNavigate();
-    const dummy = [
-        { id: '1', name: 'dummy', section: 'dummy', managingCnt: 5 },
-        { id: '2', name: 'dummy', section: 'dummy', managingCnt: 5 },
-        { id: '3', name: 'dummy', section: 'dummy', managingCnt: 5 },
-    ];
-    const renderRow = (row: TDummy) => {
+    const { data } = useGetVillageHeadList();
+
+    const renderRow = (row: GetVillageHeadListRes) => {
         return (
             <TableRow key={row.id} onClick={() => navigate(`/village-heads/${row.id}`)}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.section}</TableCell>
-                <TableCell>{row.managingCnt}</TableCell>
+                <TableCell>{row.appUserId}</TableCell>
+                <TableCell>{row.appUserName}</TableCell>
+                <TableCell>{row.sectionName}</TableCell>
+                <TableCell>{row.farmerCount}</TableCell>
                 <TableCell>
                     <Button variant="containedRed">삭제</Button>
                 </TableCell>
@@ -38,7 +30,7 @@ const VillageHeadList = () => {
             <PageLayout>
                 <Table
                     headData={['아이디', '이름', '섹션명', '관리 농부 숫자', '액션']}
-                    bodyData={dummy}
+                    bodyData={data}
                     renderRow={renderRow}
                 />
             </PageLayout>
