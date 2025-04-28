@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 
 import { Button, Stack } from '@mui/material';
 
+import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
 import AddPhoto from '@/components/AddPhoto';
 import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
@@ -11,7 +13,10 @@ type TVillageHeaderDetail = {
     photo: File | null;
 };
 const VillageHeadDetails = () => {
+    const { id } = useParams();
     const methods = useForm<TVillageHeaderDetail>({ defaultValues: { photo: null } });
+    const { data } = useGetVillageHeadDetails(id);
+    console.log({ data });
     return (
         <Stack>
             <Title title="면장 상세 정보">
