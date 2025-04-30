@@ -12,19 +12,17 @@ export type CreateApprovalFarmerRegisterReq = {
 const createApprovalFarmerRegister = async (
     param: CreateApprovalFarmerRegisterReq
 ): Promise<AxiosResponse> => {
+    const query = new URLSearchParams({
+        name: param.name,
+        villageHeadId: String(param.villageHeadId),
+        approverId: String('1'),
+    }).toString();
     const formData = new FormData();
 
-    formData.append('name', param.name);
-    if (param.villageHeadId) {
-        formData.append('villageHeadId', param.villageHeadId.toString());
-    }
-    if (param.approverId) {
-        formData.append('approverId', 'admin');
-    }
     if (param.identificationPhoto) {
         formData.append('identificationPhoto', param.identificationPhoto);
     }
-    return await axiosInstance.post('/approval/farmer', formData, {
+    return await axiosInstance.post(`/approval/farmer?${query}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
