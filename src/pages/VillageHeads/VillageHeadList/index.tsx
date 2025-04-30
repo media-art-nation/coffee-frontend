@@ -30,7 +30,7 @@ const VillageHeadList = () => {
             <PageLayout>
                 <Table
                     headData={['아이디', '이름', '섹션명', '관리 농부 숫자', '액션']}
-                    bodyData={data}
+                    bodyData={data || undefined}
                     renderRow={renderRow}
                 />
             </PageLayout>

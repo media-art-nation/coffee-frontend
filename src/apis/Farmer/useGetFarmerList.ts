@@ -1,5 +1,6 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
+import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { axiosInstance } from '@/apis/axiosInstance';
 
 export type GetFarmerListRes = {
@@ -18,7 +19,8 @@ const getFarmerList = async (): Promise<GetFarmerListRes[]> => {
 };
 
 export const useGetFarmerList = () => {
-    return useMutation({
-        mutationFn: () => getFarmerList(),
+    return useQuery({
+        queryKey: QUERY_KEYS.FARMER.getFarmerList(),
+        queryFn: () => getFarmerList(),
     });
 };

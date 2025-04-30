@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 
 import { Stack, TableCell, TableRow } from '@mui/material';
 
-import { GetFarmerListRes, useGetFarmerList } from '@/apis/FarmerController/useGetFarmerList';
+import { GetFarmerListRes, useGetFarmerList } from '@/apis/Farmer/useGetFarmerList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
@@ -25,7 +25,7 @@ const FarmerList = () => {
             <PageLayout>
                 <Table
                     headData={['이름', '관할 면장', '섹션명']}
-                    bodyData={farmerList}
+                    bodyData={farmerList || undefined}
                     renderRow={renderRow}
                 />
             </PageLayout>
