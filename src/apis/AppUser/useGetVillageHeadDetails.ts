@@ -22,7 +22,6 @@ const getVillageHeadDetails = async (
     param: GetVillageHeadDetailsReq
 ): Promise<GetVillageHeadDetailsRes> => {
     return await axiosInstance.get(`/app-user/village-heads/${param}`).then((res) => {
-        console.log({ res });
         if (res.data.code === 'SUCCESS') {
             return res.data.response;
         }
