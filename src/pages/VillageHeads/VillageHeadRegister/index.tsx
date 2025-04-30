@@ -1,29 +1,33 @@
 import { useForm } from 'react-hook-form';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
+import {
+    CreateApprovalVillageHeadRegisterReq,
+    useCreateApprovalVillageHeadRegister,
+} from '@/apis/Approval/useCreateApprovalVillageHeadRegister';
+import { useGetArea } from '@/apis/Area/useGetArea';
+import { QUERY_KEYS } from '@/apis/QueryKeys';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
-type TVillageHeadRegister = {
-    managingArea: string;
-    name: string;
-    id: string;
-    password: string;
-    accountInfo: {
-        bankName: string;
-        account: string;
-    };
-    contract: File;
-    passbook: File;
-};
 const VillageHeadRegister = () => {
-    const methods = useForm<TVillageHeadRegister>();
-    const onSubmit = (data: TVillageHeadRegister) => {
-        console.log(data);
+    const { data: areaData } = useGetArea();
+    const { mutateAsync: createVillageHead } = useCreateApprovalVillageHeadRegister();
+    const queryClient = useQueryClient();
+    const methods = useForm<CreateApprovalVillageHeadRegisterReq>();
+    const onSubmit = (data: CreateApprovalVillageHeadRegisterReq) => {
+        createVillageHead(data).then((res) => {
+            if (res?.data?.code === 'SUCCESS') {
+                queryClient.invalidateQueries({
+                    queryKey: QUERY_KEYS.APP_USER.getVillageHeadList(),
+                });
+            }
+        });
     };
     return (
         <Stack>
@@ -42,24 +46,24 @@ const VillageHeadRegister = () => {
             <PageLayout gap={'10px'}>
                 <LabelAndSelect
                     labelValue="관리 지역"
-                    fieldName="managingArea"
+                    fieldName="sectionId"
                     control={methods.control}
                     placeholder={'관리 지역'}
-                    selectArr={[
-                        { value: '0', label: '경기도' },
-                        { value: '1', label: '서울' },
-                        { value: '2', label: '부산' },
-                    ]}
+                    selectArr={
+                        areaData?.map((area) => {
+                            return { value: String(area.id), label: area.areaName };
+                        }) || []
+                    }
                 />
                 <LabelAndInput
                     labelValue="이름"
-                    fieldName="name"
+                    fieldName="username"
                     register={methods.register}
                     placeholder="이름"
                 />
                 <LabelAndInput
                     labelValue="아이디"
-                    fieldName="id"
+                    fieldName="userId"
                     register={methods.register}
                     placeholder="ID"
                 />
@@ -72,26 +76,29 @@ const VillageHeadRegister = () => {
                 <Stack sx={{ gap: '12px' }}>
                     <Typography sx={{ fontSize: '14px' }}>계좌 정보</Typography>
                     <Stack direction={'row'} gap="15px">
-                        <TextField
-                            {...methods.register('accountInfo.bankName')}
-                            placeholder={'은행명'}
-                        />
+                        <TextField {...methods.register('bankName')} placeholder={'은행명'} />
                         <TextField
                             sx={{ width: '500px' }}
-                            {...methods.register('accountInfo.account')}
+                            {...methods.register('accountInfo')}
                             placeholder={'계좌 번호'}
                         />
                     </Stack>
                 </Stack>
                 <LabelAndSelectFile
+                    labelValue="신분증"
+                    fieldName={'identificationPhoto'}
+                    watch={methods.watch}
+                    setValue={methods.setValue}
+                />
+                <LabelAndSelectFile
                     labelValue="계약서"
-                    fieldName={'contract'}
+                    fieldName={'contractFile'}
                     watch={methods.watch}
                     setValue={methods.setValue}
                 />
                 <LabelAndSelectFile
                     labelValue="통장 사본"
-                    fieldName={'passbook'}
+                    fieldName={'bankbookPhoto'}
                     watch={methods.watch}
                     setValue={methods.setValue}
                 />
