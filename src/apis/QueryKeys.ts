@@ -9,4 +9,9 @@ export const QUERY_KEYS = {
             param,
         ],
     },
+    FARMER: {
+        all: () => [...QUERY_KEYS.ALL, 'farmer'],
+        getFarmerList: () => [...QUERY_KEYS.FARMER.all(), 'farmerList'],
+        getFarmerDetail: (param: string) => [...QUERY_KEYS.FARMER.all(), 'farmerDetail', param],
+    },
 };

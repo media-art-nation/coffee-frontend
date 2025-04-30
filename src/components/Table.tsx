@@ -29,7 +29,7 @@ const Table = <T,>({ headData, bodyData, renderRow, isLoading }: TableProps<T>) 
                         })}
                     </TableRow>
                 </TableHead>
-                {bodyData ? (
+                {bodyData && bodyData.length > 0 ? (
                     <TableBody>{bodyData.map((item) => renderRow(item))}</TableBody>
                 ) : isLoading ? (
                     <TableBody>
