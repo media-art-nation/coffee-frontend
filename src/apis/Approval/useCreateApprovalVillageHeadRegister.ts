@@ -10,31 +10,34 @@ export type CreateApprovalVillageHeadRegisterReq = {
     bankName?: string;
     accountInfo?: string;
     sectionId: number;
-    approverId: number;
     identificationPhoto: File;
     contractFile: File;
     bankbookPhoto: File;
+    approverId: number;
 };
 
 const createApprovalVillageHeadRegister = async (
     param: CreateApprovalVillageHeadRegisterReq
 ): Promise<AxiosResponse> => {
+    const queryParams: Record<string, string> = {
+        userId: param.userId,
+        username: param.username,
+        password: param.password,
+        sectionId: String(param.sectionId),
+        approverId: String(param.approverId),
+    };
+
+    if (param.bankName) queryParams.bankName = param.bankName;
+    if (param.accountInfo) queryParams.accountInfo = param.accountInfo;
+
+    const query = new URLSearchParams(queryParams).toString();
+
     const formData = new FormData();
-
-    formData.append('userId', param.userId);
-    formData.append('username', param.username);
-    formData.append('password', param.password);
-    formData.append('sectionId', param.sectionId.toString());
-    formData.append('approverId', 'admin'); //[TODO] 문의 필요
-
-    if (param.bankName) formData.append('bankName', param.bankName);
-    if (param.accountInfo) formData.append('accountInfo', param.accountInfo);
-
     formData.append('identificationPhoto', param.identificationPhoto);
     formData.append('contractFile', param.contractFile);
     formData.append('bankbookPhoto', param.bankbookPhoto);
 
-    return await axiosInstance.post(`/approval/village-head`, formData, {
+    return await axiosInstance.post(`/approval/village-head?${query}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
