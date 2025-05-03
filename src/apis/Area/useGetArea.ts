@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { TArea } from '@/typings/Area';
 
 import { axiosInstance } from '../axiosInstance';
@@ -14,7 +15,7 @@ const getArea = async (): Promise<GetAreaRes> => {
 
 export const useGetArea = () => {
     return useQuery<GetAreaRes>({
-        queryKey: ['area'],
+        queryKey: QUERY_KEYS.AREA.getAreaList(),
         queryFn: getArea,
     });
 };
