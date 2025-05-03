@@ -14,4 +14,9 @@ export const QUERY_KEYS = {
         getFarmerList: () => [...QUERY_KEYS.FARMER.all(), 'farmerList'],
         getFarmerDetail: (param: string) => [...QUERY_KEYS.FARMER.all(), 'farmerDetail', param],
     },
+    AREA: {
+        all: () => [...QUERY_KEYS.ALL, 'area'],
+        getAreaList: () => [...QUERY_KEYS.AREA.all(), 'areaList'],
+        getAreaWithSectionList: () => [...QUERY_KEYS.AREA.all(), 'areaWithSectionList'],
+    },
 };
