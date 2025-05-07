@@ -8,7 +8,8 @@ type GetApprovalDetailsReq = string | undefined;
 type GetApprovalDetailsRes =
     | TVillageHeadApprovalDetails
     | TFarmerApprovalDetails
-    | TSectionApprovalDetails;
+    | TSectionApprovalDetails
+    | TTreeTransactionApprovalDetails;
 
 type TApprovalBase = {
     id: number | null;
@@ -48,6 +49,13 @@ export type TPurchaseApprovalDetails = TApprovalBase & {
     quantity: number;
     totalPrice: number;
     unitPrice: number;
+};
+
+export type TTreeTransactionApprovalDetails = TApprovalBase & {
+    farmerId: number;
+    quantity: number;
+    receivedDate: string;
+    species: string;
 };
 
 const getApprovalDetails = async <T = GetApprovalDetailsRes>(
