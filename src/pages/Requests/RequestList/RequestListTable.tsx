@@ -23,11 +23,7 @@ const RequestListTable = () => {
         serviceTypes: Object.entries(watchedValues.serviceTypes)
             .map(([key, val]) => (val ? (key as TRequestServiceType) : null))
             .filter((v) => v !== null),
-        pageable: {
-            page: 0,
-            size: 10,
-            sort: 'id',
-        },
+        pageable: watchedValues.pageable,
     });
 
     const renderRow = (row: TRequestListTableRow) => {

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { Pagination, Stack } from '@mui/material';
@@ -38,14 +40,24 @@ const RequestList = () => {
         },
     });
 
+    const handleChangePage = (_: React.ChangeEvent<unknown>, page: number) => {
+        methods.setValue('pageable.page', page - 1);
+    };
+
+    console.log(methods.watch('pageable'));
+
     return (
         <FormProvider {...methods}>
-            <Stack sx={{ width: '100%' }} component="form">
+            <Stack sx={{ width: '100%', maxHeight: '100%', flex: '1' }} component="form">
                 <Title title="요청 목록" />
-                <Stack sx={{ gap: '20px', padding: '0 32px' }}>
+                <Stack sx={{ gap: '20px', padding: '0 32px', flex: '1', overflow: 'hidden' }}>
                     <RequestListFilter />
                     <RequestListTable />
-                    <Pagination count={3} />
+                    <Pagination
+                        count={3}
+                        page={methods.watch('pageable.page') + 1}
+                        onChange={handleChangePage}
+                    />
                 </Stack>
             </Stack>
         </FormProvider>
