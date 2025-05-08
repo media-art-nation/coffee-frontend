@@ -26,6 +26,8 @@ const RequestListTable = () => {
         pageable: watchedValues.pageable,
     });
 
+    console.log(data, 'data');
+
     const renderRow = (row: TRequestListTableRow) => {
         return (
             <TableRow

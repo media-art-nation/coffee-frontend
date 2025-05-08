@@ -44,8 +44,6 @@ const RequestList = () => {
         methods.setValue('pageable.page', page - 1);
     };
 
-    console.log(methods.watch('pageable'));
-
     return (
         <FormProvider {...methods}>
             <Stack sx={{ width: '100%', maxHeight: '100%', flex: '1' }} component="form">

@@ -13,8 +13,6 @@ const TreesTransactionRequestDetails = () => {
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails<TTreeTransactionApprovalDetails>(id);
 
-    console.log(details, 'details');
-
     if (!details) return null;
     return (
         <RequestDetailsLayout>

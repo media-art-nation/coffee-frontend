@@ -6,6 +6,7 @@ import { useParams } from 'react-router';
 import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { getCookies } from '@/apis/AppUser/cookie';
 import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
@@ -36,6 +37,7 @@ const SERVICE_TYPE: Record<TRequestServiceType, string> = {
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const { watch, register } = useForm<TRequestDetailInput>();
     const [showTextArea, setShowTextArea] = useState(false);
+    const role = getCookies('role');
 
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails(id);
@@ -57,8 +59,6 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
             })
             .catch(() => showToast.error('요청에 실패했습니다.'));
     };
-
-    console.log(details, 'layout');
 
     if (!details) return null;
     return (
@@ -135,7 +135,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                 {/* 요청 상세 정보 */}
                 {children}
                 {/* 승인, 거절 버튼 - PENDING*/}
-                {details.status === 'PENDING' && !showTextArea && (
+                {role === 'ADMIN' && details.status === 'PENDING' && !showTextArea && (
                     <Stack
                         sx={{
                             'margin': 'auto',
