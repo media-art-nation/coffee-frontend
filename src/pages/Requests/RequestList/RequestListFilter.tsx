@@ -2,8 +2,11 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { Checkbox, FormControlLabel, FormGroup, Stack, Typography } from '@mui/material';
 
+import { getCookies } from '@/apis/AppUser/cookie';
+
 const RequestListFilter = () => {
     const { control } = useFormContext();
+    const role = getCookies('role');
 
     return (
         <Stack sx={{ gap: '16px' }}>
@@ -13,23 +16,12 @@ const RequestListFilter = () => {
                 </Typography>
                 <FormGroup sx={{ flexDirection: 'row', gap: '8px' }}>
                     <Controller
-                        name="serviceTypes.PURCHASE"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControlLabel
-                                control={<Checkbox {...field} checked={field.value} />}
-                                sx={{ fontSize: '14px' }}
-                                label={<Typography fontSize={14}>수매 승인 요청</Typography>}
-                            />
-                        )}
-                    />
-                    <Controller
                         name="serviceTypes.VILLAGE_HEAD"
                         control={control}
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>면장 등록 요청</Typography>}
+                                label={<Typography fontSize={14}>면장 관리</Typography>}
                             />
                         )}
                     />
@@ -39,7 +31,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>농부 등록 요청</Typography>}
+                                label={<Typography fontSize={14}>농부 관리</Typography>}
                             />
                         )}
                     />
@@ -49,17 +41,33 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>나무 수령 승인 요청</Typography>}
+                                label={<Typography fontSize={14}>나무 수령 관리</Typography>}
                             />
                         )}
                     />
+                    {
+                        // 부관리자 - 농림부의 경우 수매 관리에 대한 요청 확인 불가능
+                        role !== 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER' && (
+                            <Controller
+                                name="serviceTypes.PURCHASE"
+                                control={control}
+                                render={({ field }) => (
+                                    <FormControlLabel
+                                        control={<Checkbox {...field} checked={field.value} />}
+                                        sx={{ fontSize: '14px' }}
+                                        label={<Typography fontSize={14}>수매 관리</Typography>}
+                                    />
+                                )}
+                            />
+                        )
+                    }
                     <Controller
                         name="serviceTypes.SECTION"
                         control={control}
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>지역 생성 요청</Typography>}
+                                label={<Typography fontSize={14}>지역 관리</Typography>}
                             />
                         )}
                     />

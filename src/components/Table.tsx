@@ -21,7 +21,7 @@ type TableProps<T> = {
 const Table = <T,>({ headData, bodyData, renderRow, isLoading }: TableProps<T>) => {
     return (
         <TableContainer sx={{ width: '100%', height: '100%' }}>
-            <MuiTable sx={{ height: '100%' }} stickyHeader>
+            <MuiTable stickyHeader>
                 <TableHead>
                     <TableRow>
                         {headData.map((item) => {

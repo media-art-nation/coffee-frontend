@@ -1,8 +1,19 @@
+import { useParams } from 'react-router-dom';
+
 import { Stack, Typography } from '@mui/material';
+
+import {
+    TTreeTransactionApprovalDetails,
+    useGetApprovalDetails,
+} from '@/apis/Approval/useGetApprovalDetails';
 
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const TreesTransactionRequestDetails = () => {
+    const { id } = useParams();
+    const { data: details } = useGetApprovalDetails<TTreeTransactionApprovalDetails>(id);
+
+    if (!details) return null;
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '30px' }}>
@@ -50,15 +61,15 @@ const TreesTransactionRequestDetails = () => {
                 >
                     <Stack>
                         <Typography>나무 수령 일자</Typography>
-                        <Typography>나무 수령 일자</Typography>
+                        <Typography>{details.receivedDate}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>나무 수량</Typography>
-                        <Typography>나무 수량</Typography>
+                        <Typography>{details.quantity}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>나무 종</Typography>
-                        <Typography>나무 종</Typography>
+                        <Typography>{details.species}</Typography>
                     </Stack>
                 </Stack>
             </Stack>

@@ -14,8 +14,8 @@ const VillageHeadRequestDetails = () => {
     const { id } = useParams();
 
     const { data: details } = useGetApprovalDetails<TVillageHeadApprovalDetails>(id);
-    if (!id) return null;
 
+    console.log(details);
     if (!details) return null;
     return (
         <RequestDetailsLayout>
