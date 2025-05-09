@@ -11,6 +11,7 @@ import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
 import { TChipColor } from '@/typings/Chip';
 import { TRequestServiceType } from '@/typings/Requests';
@@ -58,6 +59,23 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                 console.log(res);
             })
             .catch(() => showToast.error('요청에 실패했습니다.'));
+    };
+
+    const { openDialog } = useDialog();
+    const handleDeleteApproval = () => {
+        openDialog({
+            title: '요청 삭제',
+            description: '삭제된 요청은 되돌릴 수 없습니다.',
+            variant: 'alert',
+            primaryAction: {
+                name: '확인',
+                onClick: () => {},
+            },
+            secondaryAction: {
+                name: '취소',
+                onClick: () => {},
+            },
+        });
     };
 
     if (!details) return null;
@@ -149,6 +167,23 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             거절
                         </Button>
                         <Button variant="containedGrey">승인</Button>
+                    </Stack>
+                )}
+                {/* 삭제 버튼 - PENDING */}
+                {/* TODO: 본인이 작성한 경우에만 삭제 버튼 노출 */}
+                {details.status === 'PENDING' && (
+                    <Stack
+                        sx={{
+                            'margin': 'auto',
+                            'flexDirection': 'row',
+                            'gap': '10px',
+                            '& .MuiButton-root': { height: '40px' },
+                            'padding': '0 0 30px 0',
+                        }}
+                    >
+                        <Button variant="containedRed" onClick={handleDeleteApproval}>
+                            삭제
+                        </Button>
                     </Stack>
                 )}
                 {/* 거절 사유 입력 form */}
