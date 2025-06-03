@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
-    loadEnv(mode, process.cwd(), '');
+    const env = loadEnv(mode, process.cwd());
 
     return {
         plugins: [react(), tsconfigPaths(), svgr()],
@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
         server: {
             proxy: {
                 '/api': {
-                    target: 'https://dubbi-coffee-531048086785.asia-northeast3.run.app',
+                    target: env.VITE_API_URL,
                     changeOrigin: true,
                     secure: false,
                     rewrite: (path) => path.replace(/^\/api/, ''),
