@@ -12,6 +12,7 @@ type LabelAndSelectProps<T extends FieldValues> = StackProps & {
     fieldName: Path<T>;
     placeholder?: string;
     selectArr: { value: string; label: string }[];
+    disabled?: boolean;
 };
 
 const LabelAndSelect = <T extends FieldValues>({
@@ -21,6 +22,7 @@ const LabelAndSelect = <T extends FieldValues>({
     fieldName,
     placeholder = '',
     selectArr,
+    disabled = false,
     ...props
 }: LabelAndSelectProps<T>) => {
     return (
@@ -46,6 +48,7 @@ const LabelAndSelect = <T extends FieldValues>({
                                 <Typography>{placeholder}</Typography>
                             );
                         }}
+                        disabled={disabled}
                     >
                         {selectArr.map((item) => (
                             <MenuItem key={item.value} value={item.value}>

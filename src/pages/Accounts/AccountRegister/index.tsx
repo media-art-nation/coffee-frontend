@@ -17,15 +17,16 @@ export type TSignUpForm = {
     password: string;
     passwordCheck: string;
     role: '' | TRole;
+    location?: string;
+    section?: string;
 };
 
 const AccountRegister = () => {
     const { openDialog } = useDialog();
     const { data: area } = useGetArea();
-    console.log(area);
 
     const { mutateAsync: signUp } = useSignUp();
-    const { control, handleSubmit, reset, register } = useForm<TSignUpForm>({
+    const { control, handleSubmit, reset, register, watch } = useForm<TSignUpForm>({
         defaultValues: {
             userId: '',
             username: '',
@@ -62,8 +63,10 @@ const AccountRegister = () => {
                 name: '확인',
                 onClick: async () => {
                     await signUp(formData).then((res) => {
-                        if (res.code === 'SUCCESS') showToast.success('계정이 생성 되었습니다.');
-                        else showToast.error('계정 생성에 실패하였습니다.');
+                        if (res.code === 'SUCCESS') {
+                            showToast.success('계정이 생성 되었습니다.');
+                            reset();
+                        } else showToast.error('계정 생성에 실패하였습니다.');
                     });
                 },
             },
@@ -129,7 +132,6 @@ const AccountRegister = () => {
                     control={control}
                     sx={{ width: '100%' }}
                     selectArr={[
-                        { value: 'ADMIN', label: '총 관리자' },
                         { value: 'VICE_ADMIN_HEAD_OFFICER', label: '부 관리자(한국지사)' },
                         {
                             value: 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER',
@@ -139,10 +141,25 @@ const AccountRegister = () => {
                     ]}
                     placeholder="role"
                 />
-                {/* {watch('role')?.startsWith('VICE_ADMIN') && (
+                <LabelAndSelect
+                    labelValue="지역"
+                    fieldName="location"
+                    sx={{ width: '100%' }}
+                    control={control}
+                    selectArr={
+                        area?.map((v) => {
+                            return {
+                                value: v.areaName,
+                                label: v.areaName,
+                            };
+                        }) || []
+                    }
+                    placeholder="area"
+                />
+                {watch('role') === 'VILLAGE_HEAD' && (
                     <LabelAndSelect
-                        labelValue="지역"
-                        fieldName='location'
+                        labelValue="섹션"
+                        fieldName="section"
                         sx={{ width: '100%' }}
                         control={control}
                         selectArr={
@@ -153,9 +170,10 @@ const AccountRegister = () => {
                                 };
                             }) || []
                         }
-                        placeholder="location"
+                        placeholder="지역을 선택하세요."
+                        disabled={!watch('location')}
                     />
-                )} */}
+                )}
             </Stack>
         </Stack>
     );

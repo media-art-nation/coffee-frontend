@@ -18,7 +18,6 @@ type TProfileEditForm = {
 const MyProfileEdit = () => {
     const { openDialog } = useDialog();
     const role = getCookies('role');
-    console.log(role, 'role');
     const { watch, setValue, handleSubmit, register } = useForm<TProfileEditForm>({
         defaultValues: {
             username: '',
@@ -91,7 +90,7 @@ const MyProfileEdit = () => {
                     sx={{ width: '100%' }}
                     fieldName="password"
                     register={register}
-                    labelValue="비밀번호 확인"
+                    labelValue="새 비밀번호"
                     placeholder="password"
                     type="password"
                 />
@@ -99,7 +98,7 @@ const MyProfileEdit = () => {
                     sx={{ width: '100%' }}
                     fieldName="passwordCheck"
                     register={register}
-                    labelValue="비밀번호 확인"
+                    labelValue="새 비밀번호 확인"
                     placeholder="password check"
                     type="password"
                 />
