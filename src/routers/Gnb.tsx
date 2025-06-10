@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material';
 
 import Logo from '@assets/logo.png';
 
-import { removeCookies } from '@/apis/AppUser/cookie';
+import { getCookies, removeCookies } from '@/apis/AppUser/cookie';
 import { palette } from '@/themes';
 
 const GNB_HEIGHT = 60;
@@ -15,11 +15,13 @@ type GnbProps = {
 const Gnb = ({ isLoginPage }: GnbProps) => {
     const isLogin = true;
     const navigate = useNavigate();
+    const userId = getCookies('userId');
 
     const handleClickLogout = () => {
         removeCookies('accessToken');
         removeCookies('role');
         removeCookies('appUserId');
+        removeCookies('userId');
         navigate('/login');
     };
 
@@ -50,7 +52,7 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
             />
             {isLogin && !isLoginPage && (
                 <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
-                    <Typography>{`{ 아이디 }`}</Typography>
+                    <Typography>{userId}</Typography>
                     <Typography
                         sx={{ cursor: 'pointer' }}
                         onClick={() => navigate('/my-profile-edit')}

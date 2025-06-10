@@ -5,11 +5,13 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Chip, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { useDeleteApproval } from '@/apis/Approval/useDeleteApproval';
 import { useGetApproval } from '@/apis/Approval/useGetApproval';
 import Table from '@/components/Table';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
 import { TRequestListTableRow, TRequestServiceType, TRequestStatus } from '@/typings/Requests';
+import { showToast } from '@/utils/showToast';
 
 import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constants';
 
@@ -30,14 +32,21 @@ const RequestListTable = () => {
         pageable: watchedValues.pageable,
     });
 
-    const handleDeleteApproval = () => {
+    const { mutateAsync: deleteApproval } = useDeleteApproval();
+    const handleDeleteApproval = (approvalId: number) => {
         openDialog({
             title: '요청 삭제',
             description: '삭제된 요청은 되돌릴 수 없습니다.',
             variant: 'alert',
             primaryAction: {
                 name: '확인',
-                onClick: () => {},
+                onClick: async () => {
+                    const res = await deleteApproval({ approvalId });
+                    console.log(res);
+                    if (res.code === 'SUCCESS') {
+                        showToast.success(res.message);
+                    } else showToast.error(res.message);
+                },
             },
             secondaryAction: {
                 name: '취소',
@@ -69,7 +78,7 @@ const RequestListTable = () => {
                             sx={{ width: '20px', color: palette.grey[500], cursor: 'pointer' }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handleDeleteApproval();
+                                handleDeleteApproval(row.id);
                             }}
                         />
                     </Stack>

@@ -33,9 +33,11 @@ const Login = () => {
     const onSubmit = async (formData: TLoginForm) => {
         await signIn(formData).then((res) => {
             if (res.code === 'SUCCESS') {
-                setCookies('accessToken', res.response.accessToken);
-                setCookies('role', res.response.role);
-                setCookies('appUserId', res.response.appUserId);
+                const { accessToken, role, appUserId, userId } = res.response;
+                setCookies('accessToken', accessToken);
+                setCookies('role', role);
+                setCookies('appUserId', appUserId);
+                setCookies('userId', userId);
 
                 navigate(roleRouteMap[res.response.role as TRole]);
             } else {

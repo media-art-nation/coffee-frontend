@@ -7,6 +7,7 @@ import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { getCookies } from '@/apis/AppUser/cookie';
+import { useApproveApproval } from '@/apis/Approval/useApproveApproval';
 import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
@@ -41,35 +42,33 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const role = getCookies('role');
 
     const { id } = useParams();
+    const { openDialog } = useDialog();
+
     const { data: details } = useGetApprovalDetails(id);
+    console.log(details, 'approval details');
 
     const { mutateAsync: rejectApproval } = useRejectApproval();
+    const { mutateAsync: approveApproval } = useApproveApproval();
 
     const toggleShowTextArea = () => {
         setShowTextArea((prev) => !prev);
     };
 
-    const handleRejectRequest = async () => {
-        if (!id || watch('rejectedReason') === '') return;
-        await rejectApproval({
-            approvalId: id,
-            rejectedReason: watch('rejectedReason'),
-        })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch(() => showToast.error('요청에 실패했습니다.'));
-    };
+    if (!id) return null;
 
-    const { openDialog } = useDialog();
-    const handleDeleteApproval = () => {
+    const handleApproveRequest = () => {
         openDialog({
-            title: '요청 삭제',
-            description: '삭제된 요청은 되돌릴 수 없습니다.',
-            variant: 'alert',
+            title: '요청 승인',
+            description: '승인 하시겠습니까?',
+            variant: 'confirm',
             primaryAction: {
                 name: '확인',
-                onClick: () => {},
+                onClick: async () => {
+                    await approveApproval(id).then((res) => {
+                        if (res.code === 'SUCCESS') showToast.success('승인 처리 되었습니다.');
+                        else showToast.error(res.message);
+                    });
+                },
             },
             secondaryAction: {
                 name: '취소',
@@ -77,6 +76,52 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
             },
         });
     };
+
+    const handleRejectRequest = () => {
+        if (watch('rejectedReason') === '') {
+            showToast.error('거절 사유를 입력해주세요.');
+            return;
+        }
+
+        openDialog({
+            title: '승인 요청 거절',
+            description: '거절 하시겠습니까?',
+            variant: 'alert',
+            primaryAction: {
+                name: '확인',
+                onClick: async () => {
+                    await rejectApproval({
+                        approvalId: id,
+                        rejectedReason: watch('rejectedReason'),
+                    })
+                        .then((res) => {
+                            console.log(res);
+                        })
+                        .catch(() => showToast.error('요청에 실패했습니다.'));
+                },
+            },
+            secondaryAction: {
+                name: '취소',
+                onClick: () => {},
+            },
+        });
+    };
+
+    // const handleDeleteApproval = () => {
+    //     openDialog({
+    //         title: '요청 삭제',
+    //         description: '삭제된 요청은 되돌릴 수 없습니다.',
+    //         variant: 'alert',
+    //         primaryAction: {
+    //             name: '확인',
+    //             onClick: () => {},
+    //         },
+    //         secondaryAction: {
+    //             name: '취소',
+    //             onClick: () => {},
+    //         },
+    //     });
+    // };
 
     if (!details) return null;
     return (
@@ -166,12 +211,14 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Button variant="containedRed" onClick={toggleShowTextArea}>
                             거절
                         </Button>
-                        <Button variant="containedGrey">승인</Button>
+                        <Button variant="containedGrey" onClick={handleApproveRequest}>
+                            승인
+                        </Button>
                     </Stack>
                 )}
                 {/* 삭제 버튼 - PENDING */}
                 {/* TODO: 본인이 작성한 경우에만 삭제 버튼 노출 */}
-                {details.status === 'PENDING' && (
+                {/* {details.status === 'PENDING' && (
                     <Stack
                         sx={{
                             'margin': 'auto',
@@ -185,7 +232,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             삭제
                         </Button>
                     </Stack>
-                )}
+                )} */}
                 {/* 거절 사유 입력 form */}
                 {showTextArea && (
                     <Stack sx={{ gap: '15px' }}>
