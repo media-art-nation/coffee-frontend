@@ -20,8 +20,8 @@ export type DialogProps = {
     onClose: () => void;
     title: string;
     description?: string;
-    primaryAction: ActionType;
-    secondaryAction: ActionType;
+    primaryAction?: ActionType;
+    secondaryAction?: ActionType;
     variant: 'confirm' | 'alert';
 };
 
@@ -75,7 +75,9 @@ const Dialog = ({
                     >
                         {title}
                     </Typography>
-                    <Typography sx={{ color: palette.grey[600] }}>{description}</Typography>
+                    <Typography sx={{ color: palette.grey[600], whiteSpace: 'pre-line' }}>
+                        {description}
+                    </Typography>
                 </Stack>
             </DialogTitle>
             <DialogActions
@@ -84,24 +86,28 @@ const Dialog = ({
                     '& > button': { height: '38px', width: 'content-fit', padding: '0 16px' },
                 }}
             >
-                <Button
-                    variant="containedGrey"
-                    onClick={() => {
-                        secondaryAction.onClick();
-                        onClose();
-                    }}
-                >
-                    {secondaryAction.name}
-                </Button>
-                <Button
-                    variant={variant === 'confirm' ? 'containedBlue' : 'containedRed'}
-                    onClick={() => {
-                        primaryAction.onClick();
-                        onClose();
-                    }}
-                >
-                    {primaryAction.name}
-                </Button>
+                {secondaryAction && (
+                    <Button
+                        variant="containedGrey"
+                        onClick={() => {
+                            secondaryAction.onClick();
+                            onClose();
+                        }}
+                    >
+                        {secondaryAction.name}
+                    </Button>
+                )}
+                {primaryAction && (
+                    <Button
+                        variant={variant === 'confirm' ? 'containedBlue' : 'containedRed'}
+                        onClick={() => {
+                            primaryAction.onClick();
+                            onClose();
+                        }}
+                    >
+                        {primaryAction.name}
+                    </Button>
+                )}
             </DialogActions>
         </MuiDialog>
     );

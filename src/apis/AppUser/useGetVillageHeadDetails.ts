@@ -11,6 +11,7 @@ type GetVillageHeadDetailsRes = {
     identificationPhotoUrl: string;
     contractFileUrl: string;
     bankbookPhotoUrl: string;
+    areaInfo: { longitude: number; latitude: number; areaName: string };
     sectionInfo: {
         longitude: number;
         latitude: number;
@@ -21,7 +22,7 @@ type GetVillageHeadDetailsRes = {
 const getVillageHeadDetails = async (
     param: GetVillageHeadDetailsReq
 ): Promise<GetVillageHeadDetailsRes> => {
-    return await axiosInstance.get(`/app-user/village-heads/${param}`).then((res) => {
+    return await axiosInstance.get(`/app-user/village-head/${param}`).then((res) => {
         if (res.data.code === 'SUCCESS') {
             return res.data.response;
         }
