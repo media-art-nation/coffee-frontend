@@ -1,26 +1,28 @@
-import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 
-import { Button, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
-import AddPhoto from '@/components/AddPhoto';
 import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { palette } from '@/themes';
 
-type TVillageHeaderDetail = {
-    photo: File | null;
-};
 const VillageHeadDetails = () => {
     const { id } = useParams();
-    const methods = useForm<TVillageHeaderDetail>({ defaultValues: { photo: null } });
+    const navigate = useNavigate();
     const { data } = useGetVillageHeadDetails(id);
-    console.log({ data });
+
     return (
         <Stack>
             <Title title="면장 상세 정보">
-                <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
+                <Button
+                    variant="containedGrey"
+                    sx={{ width: '86px', wordBreak: 'keep-all' }}
+                    onClick={() => {
+                        navigate(`/village-heads/edit/${id}`);
+                    }}
+                >
                     수정
                 </Button>
                 <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
@@ -29,7 +31,8 @@ const VillageHeadDetails = () => {
             </Title>
             <PageLayout gap={'50px'}>
                 <Stack direction={'row'} gap={'20px'} sx={{ alignItems: 'center' }}>
-                    <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
+                    {/* //[TODO] 사진 요소 받아오기 api 연동*/}
+                    <Box sx={{ width: '120px', height: '160px', background: palette.grey[100] }} />
                     <Stack
                         sx={{
                             height: '100%',
@@ -37,15 +40,15 @@ const VillageHeadDetails = () => {
                             justifyContent: 'space-between',
                         }}
                     >
-                        <LabelValue label="섹션명" value="{섹션명}" />
-                        <LabelValue label="이름" value="{이름}" />
-                        <LabelValue label="아이디" value="{아이디}" />
+                        <LabelValue label="섹션명" value={data?.sectionInfo.sectionName || ''} />
+                        <LabelValue label="이름" value={data?.username || ''} />
+                        <LabelValue label="아이디" value={data?.userId || ''} />
                     </Stack>
                 </Stack>
                 <Stack gap={'50px'}>
-                    <LabelValue label="계좌정보" value="{계좌정보}" />
-                    <LabelValue label="계약서" value="계약서.pdf" />
-                    <LabelValue label="통장사본" value="통장사본.pdf" />
+                    <LabelValue label="계좌정보" value={data?.accountInfo || ''} />
+                    <LabelValue label="계약서" value={data?.contractFileUrl || ''} link={true} />
+                    <LabelValue label="통장사본" value={data?.bankbookPhotoUrl || ''} link={true} />
                 </Stack>
             </PageLayout>
         </Stack>

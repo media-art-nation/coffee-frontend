@@ -3,24 +3,25 @@ import { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '@/apis/axiosInstance';
 
-export type CreateApprovalVillageHeadRegisterReq = {
+type UpdateApprovalVillageHeadReq = {
+    appUserId: string;
     userId: string;
     username: string;
     password: string;
     bankName?: string;
     accountInfo?: string;
     sectionId: number;
+    approverId: string;
     identificationPhoto: File;
     contractFile: File;
     bankbookPhoto: File;
-    approverId: string;
-    photo?: string; //[TODO] 아직 받아오고 있지 않음.
 };
 
-const createApprovalVillageHeadRegister = async (
-    param: CreateApprovalVillageHeadRegisterReq
+const updateApprovalVillageHead = async (
+    param: UpdateApprovalVillageHeadReq
 ): Promise<AxiosResponse> => {
     const queryParams: Record<string, string> = {
+        appUserId: param.appUserId,
         userId: param.userId,
         username: param.username,
         password: param.password,
@@ -38,16 +39,15 @@ const createApprovalVillageHeadRegister = async (
     formData.append('contractFile', param.contractFile);
     formData.append('bankbookPhoto', param.bankbookPhoto);
 
-    return await axiosInstance.post(`/approval/village-head?${query}`, formData, {
+    return await axiosInstance.patch(`/approval/village-head?${query}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     });
 };
 
-export const useCreateApprovalVillageHeadRegister = () => {
+export const useUpdateApprovalVillageHead = () => {
     return useMutation({
-        mutationFn: (param: CreateApprovalVillageHeadRegisterReq) =>
-            createApprovalVillageHeadRegister(param),
+        mutationFn: (param: UpdateApprovalVillageHeadReq) => updateApprovalVillageHead(param),
     });
 };

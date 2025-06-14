@@ -31,12 +31,13 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({ children }) 
         secondaryAction,
     }: Omit<DialogProps, 'open' | 'onClose'>) => {
         setIsOpenDialog(true);
-
-        const primaryActionFunc = primaryAction.onClick;
-        primaryAction.onClick = () => {
-            setIsOpenDialog(false);
-            primaryActionFunc();
-        };
+        if (primaryAction) {
+            const primaryActionFunc = primaryAction.onClick;
+            primaryAction.onClick = () => {
+                setIsOpenDialog(false);
+                primaryActionFunc();
+            };
+        }
 
         setDialogProps({
             title,
