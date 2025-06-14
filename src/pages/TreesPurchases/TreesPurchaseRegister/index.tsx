@@ -4,7 +4,7 @@ import { Button, Stack } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
-    TApprovalPurchaseInput,
+    CreateApprovalPurchaseReq,
     useCreateApprovalPurchase,
 } from '@/apis/Approval/useCreateApprovalPurchase';
 import CustomDatePicker from '@/components/CustomDatePicker';
@@ -12,13 +12,45 @@ import LabelAndInput from '@/components/LabelAndInput';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 const TreesPurchaseRegister = () => {
-    const { mutateAsync } = useCreateApprovalPurchase();
-    const methods = useForm<TApprovalPurchaseInput>();
-    const onSubmit = (data: TApprovalPurchaseInput) => {
+    const { openDialog } = useDialog();
+    const { mutateAsync: createPurchase } = useCreateApprovalPurchase();
+    const methods = useForm<CreateApprovalPurchaseReq>({
+        defaultValues: { purchaseDate: dayjs(new Date()).format('YYYY-MM-DD') },
+    });
+    const onSubmit = (data: CreateApprovalPurchaseReq) => {
         console.log('제출 데이터:', data);
-        mutateAsync({ param: data, approverId: 1 });
+        createPurchase(data)
+            .then((res) => {
+                if (res?.data?.code === 'SUCCESS') {
+                    openDialog({
+                        title: '수매 내역 등록 요청을 성공했습니다.',
+                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        variant: 'confirm',
+                        primaryAction: {
+                            name: '확인',
+                            onClick: () => {
+                                methods.reset();
+                            },
+                        },
+                    });
+                }
+            })
+            .catch((err) => {
+                openDialog({
+                    title: '수매 내역 등록 요청에 실패하였습니다.',
+                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    variant: 'alert',
+                    primaryAction: {
+                        name: '확인',
+                        onClick: () => {
+                            methods.reset();
+                        },
+                    },
+                });
+            });
     };
     return (
         <Stack>

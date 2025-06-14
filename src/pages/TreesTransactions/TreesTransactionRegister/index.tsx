@@ -4,7 +4,7 @@ import { Button, Stack } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 
 import {
-    TApprovalTreeTransactionInput,
+    CreateApprovalTreeTransactionReq,
     useCreateApprovalTreeTransaction,
 } from '@/apis/Approval/useCreateApprovalTreeTransaction';
 import { useGetFarmerList } from '@/apis/Farmer/useGetFarmerList';
@@ -14,14 +14,47 @@ import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 const TreesTransactionRegister = () => {
-    const { mutateAsync } = useCreateApprovalTreeTransaction();
+    const { openDialog } = useDialog();
+    const { mutateAsync: createTreeTransaction } = useCreateApprovalTreeTransaction();
     const { data: farmerList } = useGetFarmerList();
-    const methods = useForm<TApprovalTreeTransactionInput>();
-    const onSubmit = (data: TApprovalTreeTransactionInput) => {
-        console.log('제출 데이터:', data);
-        mutateAsync({ param: data, approverId: 1 });
+    const methods = useForm<CreateApprovalTreeTransactionReq>({
+        defaultValues: {
+            receivedDate: dayjs(new Date()).format('YYYY-MM-DD'),
+        },
+    });
+    const onSubmit = (data: CreateApprovalTreeTransactionReq) => {
+        createTreeTransaction(data)
+            .then((res) => {
+                if (res?.data?.code === 'SUCCESS') {
+                    openDialog({
+                        title: '나무 수령 등록 요청을 성공했습니다.',
+                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        variant: 'confirm',
+                        primaryAction: {
+                            name: '확인',
+                            onClick: () => {
+                                methods.reset();
+                            },
+                        },
+                    });
+                }
+            })
+            .catch((err) => {
+                openDialog({
+                    title: '나무 수령 등록 요청에 실패하였습니다.',
+                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    variant: 'alert',
+                    primaryAction: {
+                        name: '확인',
+                        onClick: () => {
+                            methods.reset();
+                        },
+                    },
+                });
+            });
     };
     return (
         <Stack>
