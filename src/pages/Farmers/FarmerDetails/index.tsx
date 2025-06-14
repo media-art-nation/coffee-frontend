@@ -28,9 +28,29 @@ const FarmerDetails = () => {
             <Title title="농부 상세 정보" />
             <PageLayout gap={'27px'}>
                 <Stack direction={'row'} gap={'20px'}>
-                    <Box sx={{ width: '120px', height: '160px', background: palette.grey[50] }} />
+                    {farmerDetails?.identificationPhotoUrl ? (
+                        <Box
+                            sx={{ width: '120px', height: '160px' }}
+                            component={'img'}
+                            src={farmerDetails.identificationPhotoUrl}
+                            alt={'identification photo url'}
+                        />
+                    ) : (
+                        <Box
+                            display={'flex'}
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                background: palette.grey[100],
+                            }}
+                        >
+                            <Typography>사진 없음</Typography>
+                        </Box>
+                    )}
                     <Stack>
-                        <LabelValue label="관리 지역" value={farmerDetails?.sectionName || ''} />
+                        <LabelValue label="관리 섹션" value={farmerDetails?.sectionName || ''} />
                         <LabelValue label="이름" value={farmerDetails?.farmerName || ''} />
                     </Stack>
                 </Stack>

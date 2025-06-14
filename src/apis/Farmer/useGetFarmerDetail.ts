@@ -12,6 +12,7 @@ type GetFarmerDetailReq = string | undefined;
 type GetFarmerDetailRes = {
     sectionName: string;
     farmerName: string;
+    identificationPhotoUrl: string;
     treesTransactions: TTreeTransaction[];
 };
 const getFarmerDetail = async (param: GetFarmerDetailReq): Promise<GetFarmerDetailRes> => {

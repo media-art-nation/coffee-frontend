@@ -1,19 +1,24 @@
 import { useForm } from 'react-hook-form';
 
 import { Button, Stack, Typography } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
 import {
     CreateApprovalFarmerRegisterReq,
     useCreateApprovalFarmerRegister,
 } from '@/apis/Approval/useCreateApprovalFarmerRegister';
+import { QUERY_KEYS } from '@/apis/QueryKeys';
 import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 const FarmerRegister = () => {
+    const { openDialog } = useDialog();
+    const queryClient = useQueryClient();
     const { data: villageHeadList } = useGetVillageHeadList();
     const { mutateAsync: farmerRegisterMutateAsync } = useCreateApprovalFarmerRegister();
     const methods = useForm<CreateApprovalFarmerRegisterReq>({
@@ -25,8 +30,38 @@ const FarmerRegister = () => {
         },
     });
     const onSubmit = (data: CreateApprovalFarmerRegisterReq) => {
-        console.log('제출 데이터:', data);
-        farmerRegisterMutateAsync(data);
+        farmerRegisterMutateAsync(data)
+            .then((res) => {
+                if (res.data.code === 'SUCCESS') {
+                    queryClient.invalidateQueries({
+                        queryKey: QUERY_KEYS.FARMER.getFarmerList(),
+                    });
+                    openDialog({
+                        title: '농부 등록 요청을 성공했습니다.',
+                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        variant: 'confirm',
+                        primaryAction: {
+                            name: '확인',
+                            onClick: () => {
+                                methods.reset();
+                            },
+                        },
+                    });
+                }
+            })
+            .catch((err) => {
+                openDialog({
+                    title: '농부 등록 요청에 실패하였습니다.',
+                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    variant: 'alert',
+                    primaryAction: {
+                        name: '확인',
+                        onClick: () => {
+                            methods.reset();
+                        },
+                    },
+                });
+            });
     };
     return (
         <Stack>

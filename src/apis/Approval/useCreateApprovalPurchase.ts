@@ -3,8 +3,7 @@ import { AxiosResponse } from 'axios';
 
 import { axiosInstance } from '@/apis/axiosInstance';
 
-export type TApprovalPurchaseInput = {
-    id: number;
+export type CreateApprovalPurchaseReq = {
     deduction: number;
     paymentAmount: number;
     purchaseDate: string;
@@ -12,16 +11,9 @@ export type TApprovalPurchaseInput = {
     totalPrice: number;
     unitPrice: number;
 };
-type CreateApprovalPurchaseReq = {
-    param: TApprovalPurchaseInput;
-    approverId: number;
-};
 
 const createApprovalPurchase = async (param: CreateApprovalPurchaseReq): Promise<AxiosResponse> => {
-    return await axiosInstance.post(
-        `/approval/purchase?approverId=${param.approverId}`,
-        param.param
-    );
+    return await axiosInstance.post(`/approval/purchase?approverId=1`, param);
 };
 
 export const useCreateApprovalPurchase = () => {

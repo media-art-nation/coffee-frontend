@@ -40,7 +40,7 @@ const CustomDatePicker: React.FC<DatePickerProps<Dayjs>> = ({ ...props }) => {
                                     <InputAdornment position="end">
                                         <CalendarBlank />
                                     </InputAdornment>
-                                ), // 기본 달력 아이콘 제거
+                                ),
                             },
                         }}
                     />

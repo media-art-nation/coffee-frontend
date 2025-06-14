@@ -15,7 +15,7 @@ const createApprovalFarmerRegister = async (
     const query = new URLSearchParams({
         name: param.name,
         villageHeadId: String(param.villageHeadId),
-        approverId: String('1'),
+        approverId: '1',
     }).toString();
     const formData = new FormData();
 
