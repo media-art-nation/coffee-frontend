@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 
 import { Button, Stack } from '@mui/material';
 
+import { useGetArea } from '@/apis/Area/useGetArea';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
@@ -14,6 +15,7 @@ type TSectionInput = {
 };
 const SectionRegister = () => {
     const methods = useForm<TSectionInput>();
+    const { data: areaList } = useGetArea();
     return (
         <Stack>
             <Title title="섹션 생성">
@@ -24,10 +26,11 @@ const SectionRegister = () => {
                 <LabelAndSelect
                     labelValue="지역"
                     control={methods.control}
-                    selectArr={[
-                        { value: '1', label: '경기도' },
-                        { value: '2', label: '부산' },
-                    ]}
+                    selectArr={
+                        areaList?.map((area) => {
+                            return { value: String(area.id), label: area.areaName || '' };
+                        }) || []
+                    }
                     fieldName="area"
                     placeholder="지역을 선택해주세요"
                 />
