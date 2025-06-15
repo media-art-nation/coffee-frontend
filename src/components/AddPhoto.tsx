@@ -8,13 +8,25 @@ import { Plus } from '@phosphor-icons/react';
 import { palette } from '@/themes';
 
 type AddPhotoProps<T extends FieldValues> = {
+    currentUrl?: string;
     fieldName: Path<T>;
     watch: UseFormWatch<T>;
     setValue: UseFormSetValue<T>;
 };
-const AddPhoto = <T extends FieldValues>({ fieldName, setValue }: AddPhotoProps<T>) => {
+const AddPhoto = <T extends FieldValues>({
+    fieldName,
+    watch,
+    setValue,
+    currentUrl,
+}: AddPhotoProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-    // const file: File | null = watch(fieldName) as File | null;
+    const value = watch(fieldName) as File | null;
+    const previewUrl = React.useMemo(() => {
+        if (value instanceof File) {
+            return URL.createObjectURL(value); // 새로 업로드된 파일
+        }
+        return null;
+    }, [value]);
 
     const handleClick = () => {
         fileInputRef.current?.click();
@@ -43,9 +55,25 @@ const AddPhoto = <T extends FieldValues>({ fieldName, setValue }: AddPhotoProps<
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
             />
-            <IconButton onClick={handleClick}>
-                <Plus />
-            </IconButton>
+            {currentUrl ? (
+                <img
+                    src={currentUrl}
+                    alt="current image"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onClick={handleClick}
+                />
+            ) : previewUrl ? (
+                <img
+                    src={previewUrl}
+                    alt="preview"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    onClick={handleClick}
+                />
+            ) : (
+                <IconButton onClick={handleClick}>
+                    <Plus />
+                </IconButton>
+            )}
         </Stack>
     );
 };

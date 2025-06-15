@@ -8,6 +8,12 @@ export const QUERY_KEYS = {
             'villageHeadDetails',
             param,
         ],
+        getViceAdminList: () => [...QUERY_KEYS.APP_USER.all(), 'viceAdminList'],
+        getViceAdminDetail: (param: string) => [
+            ...QUERY_KEYS.APP_USER.all(),
+            'viceAdminDetail',
+            param,
+        ],
     },
     FARMER: {
         all: () => [...QUERY_KEYS.ALL, 'farmer'],

@@ -2,30 +2,21 @@ import { useNavigate } from 'react-router';
 
 import { Stack, TableCell, TableRow } from '@mui/material';
 
+import { GetViceAdminListRes, useGetViceAdminList } from '@/apis/AppUser/useGetViceAdminList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-type TDummy = {
-    id: number;
-    name: string;
-    userId: string;
-    managingArea: string;
-};
-
 const ViceAdminList = () => {
-    const dummy: TDummy[] = [
-        { id: 1, name: 'dummy', userId: 'dummy', managingArea: '경기' },
-        { id: 2, name: 'dummy', userId: 'dummy', managingArea: '경기' },
-    ];
+    const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
 
-    const renderRow = (row: TDummy) => {
+    const renderRow = (row: GetViceAdminListRes) => {
         return (
             <TableRow key={row.id} onClick={() => navigate(`/vice-admins/${row.id}`)}>
-                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.userName}</TableCell>
                 <TableCell>{row.userId}</TableCell>
-                <TableCell>{row.managingArea}</TableCell>
+                <TableCell>{row.areaInfo.areaName}</TableCell>
             </TableRow>
         );
     };
@@ -35,8 +26,9 @@ const ViceAdminList = () => {
             <PageLayout>
                 <Table
                     headData={['이름', '아이디', '관리 지역']}
-                    bodyData={dummy}
+                    bodyData={viceAdminList}
                     renderRow={renderRow}
+                    isLoading={isLoading}
                 />
             </PageLayout>
         </Stack>
