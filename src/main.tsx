@@ -14,6 +14,7 @@ import { theme } from '@/themes/index.ts';
 
 import App from './App.tsx';
 import './index.css';
+import './locales/i18n.ts';
 
 const queryClient = new QueryClient();
 

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Stack, Typography } from '@mui/material';
@@ -11,6 +12,7 @@ import { palette } from '@/themes';
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const SectionRequestDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails<TSectionApprovalDetails>(id);
 
@@ -18,8 +20,8 @@ const SectionRequestDetails = () => {
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '30px' }}>
-                <Typography variant="h3/bold">내용</Typography>
-                <Typography variant="title/semibold">지역 및 섹션 정보</Typography>
+                <Typography variant="h3/bold">{t('내용')}</Typography>
+                <Typography variant="title/semibold">{t('지역 및 섹션 정보')}</Typography>
                 <Stack
                     sx={{
                         'gap': '15px',
@@ -34,16 +36,16 @@ const SectionRequestDetails = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>관리 지역</Typography>
-                        <Typography>관리 지역 명</Typography>
+                        <Typography>{t('지역')}</Typography>
+                        <Typography>{details.areaName}</Typography>
                     </Stack>
                     <Stack>
-                        <Typography>섹션</Typography>
+                        <Typography>{t('섹션')}</Typography>
                         <Typography>{details.sectionName}</Typography>
                     </Stack>
                 </Stack>
                 <Stack sx={{ width: '900px', height: '400px', backgroundColor: palette.grey[100] }}>
-                    구글맵
+                    Google Map
                 </Stack>
             </Stack>
         </RequestDetailsLayout>

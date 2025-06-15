@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack, Typography } from '@mui/material';
 
@@ -16,9 +17,9 @@ type TProfileEditForm = {
 };
 
 const MyProfileEdit = () => {
+    const { t } = useTranslation();
     const { openDialog } = useDialog();
     const role = getCookies('role');
-    console.log(role, 'role');
     const { watch, setValue, handleSubmit, register } = useForm<TProfileEditForm>({
         defaultValues: {
             username: '',
@@ -30,15 +31,15 @@ const MyProfileEdit = () => {
 
     const handleClickCancel = () => {
         openDialog({
-            title: '계정 수정 취소',
-            description: '계정 수정을 취소하시겠습니까?',
+            title: t('계정 수정 취소'),
+            description: t('계정 수정을 취소하시겠습니까?'),
             variant: 'alert',
             primaryAction: {
-                name: '확인',
+                name: t('확인'),
                 onClick: () => {},
             },
             secondaryAction: {
-                name: '닫기',
+                name: t('닫기'),
                 onClick: () => {},
             },
         });
@@ -47,22 +48,22 @@ const MyProfileEdit = () => {
     const onSubmit = (formData: TProfileEditForm) => {
         console.log(formData);
         openDialog({
-            title: '내 정보 수정',
-            description: '정보를 수정하시겠습니까?',
+            title: t('내 정보 수정'),
+            description: t('정보를 수정하시겠습니까?'),
             variant: 'confirm',
             primaryAction: {
-                name: '확인',
+                name: t('확인'),
                 onClick: () => {},
             },
             secondaryAction: {
-                name: '닫기',
+                name: t('닫기'),
                 onClick: () => {},
             },
         });
     };
     return (
         <Stack sx={{ width: '100%' }} component="form" onSubmit={handleSubmit(onSubmit)}>
-            <Title title="내 정보 수정">
+            <Title title={t('내 정보 수정')}>
                 <Stack
                     sx={{
                         'flexDirection': 'row',
@@ -72,10 +73,10 @@ const MyProfileEdit = () => {
                     }}
                 >
                     <Button variant="containedGrey" onClick={handleClickCancel}>
-                        취소
+                        {t('취소')}
                     </Button>
                     <Button variant="containedBlue" type="submit">
-                        수정
+                        {t('수정')}
                     </Button>
                 </Stack>
             </Title>
@@ -84,23 +85,23 @@ const MyProfileEdit = () => {
                     sx={{ width: '100%' }}
                     fieldName="username"
                     register={register}
-                    labelValue="이름"
-                    placeholder="username"
+                    labelValue={t('이름')}
+                    placeholder={t('이름')}
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
                     fieldName="password"
                     register={register}
-                    labelValue="비밀번호 확인"
-                    placeholder="password"
+                    labelValue={t('새 비밀번호')}
+                    placeholder={t('새 비밀번호')}
                     type="password"
                 />
                 <LabelAndInput
                     sx={{ width: '100%' }}
                     fieldName="passwordCheck"
                     register={register}
-                    labelValue="비밀번호 확인"
-                    placeholder="password check"
+                    labelValue={t('새 비밀번호 확인')}
+                    placeholder={t('새 비밀번호 확인')}
                     type="password"
                 />
                 {/* 부관리자의 경우에만 IDCard 노출 */}

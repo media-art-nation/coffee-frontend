@@ -1,10 +1,12 @@
 import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Checkbox, FormControlLabel, FormGroup, Stack, Typography } from '@mui/material';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 
 const RequestListFilter = () => {
+    const { t } = useTranslation();
     const { control } = useFormContext();
     const role = getCookies('role');
 
@@ -12,7 +14,7 @@ const RequestListFilter = () => {
         <Stack sx={{ gap: '16px' }}>
             <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: '40px' }}>
                 <Typography variant="body1/semibold" sx={{ flexShrink: '0' }}>
-                    요청 분류
+                    {t('요청 분류')}
                 </Typography>
                 <FormGroup sx={{ flexDirection: 'row', gap: '8px' }}>
                     <Controller
@@ -21,7 +23,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>면장 관리</Typography>}
+                                label={<Typography fontSize={14}>{t('면장 관리')}</Typography>}
                             />
                         )}
                     />
@@ -31,7 +33,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>농부 관리</Typography>}
+                                label={<Typography fontSize={14}>{t('농부 관리')}</Typography>}
                             />
                         )}
                     />
@@ -41,7 +43,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>나무 수령 관리</Typography>}
+                                label={<Typography fontSize={14}>{t('나무수령 관리')}</Typography>}
                             />
                         )}
                     />
@@ -55,7 +57,9 @@ const RequestListFilter = () => {
                                     <FormControlLabel
                                         control={<Checkbox {...field} checked={field.value} />}
                                         sx={{ fontSize: '14px' }}
-                                        label={<Typography fontSize={14}>수매 관리</Typography>}
+                                        label={
+                                            <Typography fontSize={14}>{t('수매 관리')}</Typography>
+                                        }
                                     />
                                 )}
                             />
@@ -85,7 +89,7 @@ const RequestListFilter = () => {
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
                                 sx={{ fontSize: '14px' }}
-                                label={<Typography fontSize={14}>대기</Typography>}
+                                label={<Typography fontSize={14}>{t('대기')}</Typography>}
                             />
                         )}
                     />
@@ -95,7 +99,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>승인</Typography>}
+                                label={<Typography fontSize={14}>{t('승인')}</Typography>}
                             />
                         )}
                     />
@@ -105,7 +109,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>거절</Typography>}
+                                label={<Typography fontSize={14}>{t('거절')}</Typography>}
                             />
                         )}
                     />

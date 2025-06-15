@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Box, Stack, Typography } from '@mui/material';
@@ -11,6 +12,7 @@ import { palette } from '@/themes';
 import RequestDetailsLayout from './RequestDetailsLayout';
 
 const FarmerRequestDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
 
     const { data: details } = useGetApprovalDetails<TFarmerApprovalDetails>(id);
@@ -22,8 +24,8 @@ const FarmerRequestDetails = () => {
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '20px' }}>
-                <Typography variant="h3/bold">내용</Typography>
-                <Typography variant="title/semibold">농부 정보</Typography>
+                <Typography variant="h3/bold">{t('내용')}</Typography>
+                <Typography variant="title/semibold">{t('농부 정보')}</Typography>
                 <Stack sx={{ flexDirection: 'row', gap: '30px', alignItems: 'center' }}>
                     <Box
                         sx={{
@@ -49,15 +51,15 @@ const FarmerRequestDetails = () => {
                         }}
                     >
                         <Stack>
-                            <Typography>관리 지역</Typography>
-                            <Typography>관리 지역 명</Typography>
+                            <Typography>{t('지역')}</Typography>
+                            <Typography>{details.areaName}</Typography>
                         </Stack>
                         <Stack>
-                            <Typography>섹션</Typography>
-                            <Typography>섹션 명</Typography>
+                            <Typography>{t('섹션')}</Typography>
+                            <Typography>{details.sectionName}</Typography>
                         </Stack>
                         <Stack>
-                            <Typography>이름</Typography>
+                            <Typography>{t('이름')}</Typography>
                             <Typography>{details.name}</Typography>
                         </Stack>
                     </Stack>

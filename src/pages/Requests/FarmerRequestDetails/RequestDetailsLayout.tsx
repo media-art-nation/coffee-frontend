@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { getCookies } from '@/apis/AppUser/cookie';
+import { useApproveApproval } from '@/apis/Approval/useApproveApproval';
 import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
@@ -36,52 +38,97 @@ const SERVICE_TYPE: Record<TRequestServiceType, string> = {
 };
 
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
+    const { t } = useTranslation();
     const { watch, register } = useForm<TRequestDetailInput>();
     const [showTextArea, setShowTextArea] = useState(false);
     const role = getCookies('role');
 
     const { id } = useParams();
+    const { openDialog } = useDialog();
+
     const { data: details } = useGetApprovalDetails(id);
+    console.log(details, 'approval details');
 
     const { mutateAsync: rejectApproval } = useRejectApproval();
+    const { mutateAsync: approveApproval } = useApproveApproval();
 
     const toggleShowTextArea = () => {
         setShowTextArea((prev) => !prev);
     };
 
-    const handleRejectRequest = async () => {
-        if (!id || watch('rejectedReason') === '') return;
-        await rejectApproval({
-            approvalId: id,
-            rejectedReason: watch('rejectedReason'),
-        })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch(() => showToast.error('요청에 실패했습니다.'));
-    };
+    if (!id) return null;
 
-    const { openDialog } = useDialog();
-    const handleDeleteApproval = () => {
+    const handleApproveRequest = () => {
         openDialog({
-            title: '요청 삭제',
-            description: '삭제된 요청은 되돌릴 수 없습니다.',
-            variant: 'alert',
+            title: t('요청 승인'),
+            description: t('승인 하시겠습니까?'),
+            variant: 'confirm',
             primaryAction: {
-                name: '확인',
-                onClick: () => {},
+                name: t('확인'),
+                onClick: async () => {
+                    await approveApproval(id).then((res) => {
+                        if (res.code === 'SUCCESS') showToast.success(t('승인 처리 되었습니다.'));
+                        else showToast.error(res.message);
+                    });
+                },
             },
             secondaryAction: {
-                name: '취소',
+                name: t('취소'),
                 onClick: () => {},
             },
         });
     };
 
+    const handleRejectRequest = () => {
+        if (watch('rejectedReason') === '') {
+            showToast.error(t('거절 사유를 입력해주세요.'));
+            return;
+        }
+
+        openDialog({
+            title: t('승인 요청 거절'),
+            description: t('거절 하시겠습니까?'),
+            variant: 'alert',
+            primaryAction: {
+                name: t('확인'),
+                onClick: async () => {
+                    await rejectApproval({
+                        approvalId: id,
+                        rejectedReason: watch('rejectedReason'),
+                    })
+                        .then((res) => {
+                            console.log(res);
+                        })
+                        .catch(() => showToast.error(t('요청에 실패했습니다.')));
+                },
+            },
+            secondaryAction: {
+                name: t('취소'),
+                onClick: () => {},
+            },
+        });
+    };
+
+    // const handleDeleteApproval = () => {
+    //     openDialog({
+    //         title: t('요청 삭제'),
+    //         description: t('삭제된 내용은 되돌릴 수 없습니다.'),
+    //         variant: 'alert',
+    //         primaryAction: {
+    //             name: t('확인'),
+    //             onClick: () => {},
+    //         },
+    //         secondaryAction: {
+    //             name: t('취소'),
+    //             onClick: () => {},
+    //         },
+    //     });
+    // };
+
     if (!details) return null;
     return (
         <Stack sx={{ width: '100%' }}>
-            <Title title="요청 상세" />
+            <Title title={t('요청 상세')} />
             {/* 요청 기본 정보 */}
             <Stack sx={{ padding: '0 32px', gap: '30px' }}>
                 <Stack
@@ -104,28 +151,28 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                 >
                     <Stack>
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
-                            요청 일시
+                            {t('요청 일시')}
                         </Typography>
                         <Typography>{dayjs().format('YYYY-MM-DD hh:mm')}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
-                            요청 분류
+                            {t('요청 분류')}
                         </Typography>
-                        <Typography>{SERVICE_TYPE[details.serviceType]}</Typography>
+                        <Typography>{`${t(SERVICE_TYPE[details.serviceType])}/${details.method}`}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
-                            담당자
+                            {t('담당자')}
                         </Typography>
-                        <Typography>담당자 명</Typography>
+                        <Typography>{details.requesterName}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
-                            요청 상태
+                            {t('요청 상태')}
                         </Typography>
                         <Chip
                             color={REQUEST_STATUS[details.status].color as TChipColor}
@@ -136,7 +183,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                 {/* 거절 사유 */}
                 {details?.status === 'REJECTED' && (
                     <>
-                        <Typography variant="title/semibold">거절 사유</Typography>
+                        <Typography variant="title/semibold">{t('거절 사유')}</Typography>
                         <Stack
                             sx={{
                                 border: `1px solid ${palette.grey[50]}`,
@@ -164,14 +211,16 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         }}
                     >
                         <Button variant="containedRed" onClick={toggleShowTextArea}>
-                            거절
+                            {t('거절')}
                         </Button>
-                        <Button variant="containedGrey">승인</Button>
+                        <Button variant="containedGrey" onClick={handleApproveRequest}>
+                            {t('승인')}
+                        </Button>
                     </Stack>
                 )}
                 {/* 삭제 버튼 - PENDING */}
                 {/* TODO: 본인이 작성한 경우에만 삭제 버튼 노출 */}
-                {details.status === 'PENDING' && (
+                {/* {details.status === 'PENDING' && (
                     <Stack
                         sx={{
                             'margin': 'auto',
@@ -185,15 +234,15 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             삭제
                         </Button>
                     </Stack>
-                )}
+                )} */}
                 {/* 거절 사유 입력 form */}
                 {showTextArea && (
                     <Stack sx={{ gap: '15px' }}>
-                        <Typography variant="title/semibold">거절 사유 입력</Typography>
+                        <Typography variant="title/semibold">{t('거절 사유 입력')}</Typography>
                         <TextArea
                             register={register}
                             fieldName="rejectedReason"
-                            placeholder="거절 사유를 입력해주세요."
+                            placeholder={t('거절 사유 입력')}
                         />
                         <Stack
                             sx={{
@@ -205,10 +254,10 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             }}
                         >
                             <Button variant="containedGrey" onClick={toggleShowTextArea}>
-                                취소
+                                {t('취소')}
                             </Button>
                             <Button variant="containedRed" onClick={handleRejectRequest}>
-                                완료
+                                {t('완료')}
                             </Button>
                         </Stack>
                     </Stack>

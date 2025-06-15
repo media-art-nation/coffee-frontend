@@ -39,23 +39,23 @@ const TreesPurchaseRequestDetails = () => {
                     </Stack>
                     <Stack>
                         <Typography>수량</Typography>
-                        <Typography>{details.quantity}</Typography>
+                        <Typography>{details.quantity.toLocaleString('ko-KR')}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>단가</Typography>
-                        <Typography>{details.unitPrice}</Typography>
+                        <Typography>{details.unitPrice.toLocaleString('ko-KR')}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>총액</Typography>
-                        <Typography>{details.totalPrice}</Typography>
+                        <Typography>{details.totalPrice.toLocaleString('ko-KR')}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>차감액</Typography>
-                        <Typography>{details.deduction}</Typography>
+                        <Typography>{details.deduction.toLocaleString('ko-KR')}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>지급액</Typography>
-                        <Typography>{details.paymentAmount}</Typography>
+                        <Typography>{details.paymentAmount.toLocaleString('ko-KR')}</Typography>
                     </Stack>
                 </Stack>
             </Stack>

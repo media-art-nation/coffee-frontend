@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { TRequestServiceType, TRequestStatus } from '@/typings/Requests';
+import { TRequestMethod, TRequestServiceType, TRequestStatus } from '@/typings/Requests';
 
 import { axiosInstance } from '../axiosInstance';
 
@@ -16,12 +16,21 @@ type TApprovalBase = {
     rejectedReason: string | null;
     serviceType: TRequestServiceType;
     status: TRequestStatus;
+    requesterName: string;
+    method: TRequestMethod;
 };
 
 export type TFarmerApprovalDetails = TApprovalBase & {
     identificationPhotoUrl: string | null;
     name: string;
-    villageHeadId: 9;
+    villageHeadId: number;
+    areaId: number;
+    areaName: string;
+    method: TRequestMethod;
+    rejectedReason: string | null;
+    requesterName: string;
+    sectionId: number;
+    sectionName: string;
 };
 
 export type TVillageHeadApprovalDetails = TApprovalBase & {
@@ -30,9 +39,12 @@ export type TVillageHeadApprovalDetails = TApprovalBase & {
     bankbookPhotoUrl: string | null;
     contractFileUrl: string | null;
     identificationPhotoUrl: string | null;
-    sectionId: number;
     userId: string;
     username: string;
+    areaId: number;
+    areaName: string;
+    sectionId: number;
+    sectionName: string;
 };
 
 export type TSectionApprovalDetails = TApprovalBase & {
@@ -40,6 +52,7 @@ export type TSectionApprovalDetails = TApprovalBase & {
     latitude: number;
     longitude: number;
     sectionName: string;
+    areaName: string;
 };
 
 export type TPurchaseApprovalDetails = TApprovalBase & {

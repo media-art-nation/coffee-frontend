@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
@@ -14,6 +15,7 @@ export type TLoginForm = {
 };
 
 const Login = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { mutateAsync: signIn } = useSignIn();
     const { register, handleSubmit } = useForm<TLoginForm>({
@@ -33,9 +35,11 @@ const Login = () => {
     const onSubmit = async (formData: TLoginForm) => {
         await signIn(formData).then((res) => {
             if (res.code === 'SUCCESS') {
-                setCookies('accessToken', res.response.accessToken);
-                setCookies('role', res.response.role);
-                setCookies('appUserId', res.response.appUserId);
+                const { accessToken, role, appUserId, userId } = res.response;
+                setCookies('accessToken', accessToken);
+                setCookies('role', role);
+                setCookies('appUserId', appUserId);
+                setCookies('userId', userId);
 
                 navigate(roleRouteMap[res.response.role as TRole]);
             } else {
@@ -63,11 +67,11 @@ const Login = () => {
                     '& .MuiFormControl-root, .MuiButton-root': { width: '60%' },
                 }}
             >
-                <Typography variant="h1/bold">로그인</Typography>
-                <TextField placeholder="아이디" {...register('userId')} />
-                <TextField placeholder="패스워드" {...register('password')} type="password" />
+                <Typography variant="h1/bold">{t('로그인')}</Typography>
+                <TextField placeholder={t('아이디')} {...register('userId')} />
+                <TextField placeholder={t('비밀번호')} {...register('password')} type="password" />
                 <Button variant="containedBlue" type="submit">
-                    로그인
+                    {t('로그인')}
                 </Button>
             </Stack>
         </Stack>
