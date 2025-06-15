@@ -1,4 +1,5 @@
 import {
+    Button,
     CircularProgress,
     Stack,
     Table,
@@ -19,20 +20,26 @@ import { TAreaWithSections } from '@/typings/Area';
 const LocationList = () => {
     const { data: areaWithSectionList, isLoading: areaWithSectionListLoading } =
         useGetAreaWithSectionList();
-    const headData = ['지역명', '섹션명'];
+    const headData = ['지역명', '섹션명', '삭제'];
     const renderRow = (row: TAreaWithSections) => {
         if (row.sections.length > 0) {
             return row.sections.map((item) => (
                 <TableRow key={item.id}>
                     <TableCell>{row.areaName}</TableCell>
                     <TableCell>{item.sectionName}</TableCell>
+                    <TableCell>
+                        <Button variant="containedRed">삭제</Button>
+                    </TableCell>
                 </TableRow>
             ));
         } else {
             return (
                 <TableRow key={row.id}>
                     <TableCell>{row.areaName}</TableCell>
-                    <TableCell>없음</TableCell>
+                    <TableCell>-</TableCell>
+                    <TableCell>
+                        <Button variant="containedRed">삭제</Button>
+                    </TableCell>
                 </TableRow>
             );
         }
