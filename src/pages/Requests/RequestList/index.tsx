@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Pagination, Stack } from '@mui/material';
 
@@ -18,6 +19,7 @@ type TRequestListFilterForm = {
 };
 
 const RequestList = () => {
+    const { t } = useTranslation();
     const methods = useForm<TRequestListFilterForm>({
         defaultValues: {
             statuses: {
@@ -47,7 +49,7 @@ const RequestList = () => {
     return (
         <FormProvider {...methods}>
             <Stack sx={{ width: '100%', maxHeight: '100%', flex: '1' }} component="form">
-                <Title title="요청 목록" />
+                <Title title={t('요청 목록')} />
                 <Stack sx={{ gap: '20px', padding: '0 32px', flex: '1', overflow: 'hidden' }}>
                     <RequestListFilter />
                     <RequestListTable />

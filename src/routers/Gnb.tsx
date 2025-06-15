@@ -1,7 +1,12 @@
+import { useState } from 'react';
+
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { Stack, Typography } from '@mui/material';
+import { MenuItem, Select, Stack, Typography } from '@mui/material';
 
+import Ko from '@assets/ko.png';
+import Lo from '@assets/lo.png';
 import Logo from '@assets/logo.png';
 
 import { getCookies, removeCookies } from '@/apis/AppUser/cookie';
@@ -13,6 +18,7 @@ type GnbProps = {
 };
 
 const Gnb = ({ isLoginPage }: GnbProps) => {
+    const { t, i18n } = useTranslation();
     const isLogin = true;
     const navigate = useNavigate();
     const userId = getCookies('userId');
@@ -25,6 +31,14 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
         navigate('/login');
     };
 
+    const [lang, setLang] = useState(i18n.language);
+    const handleChangeLang = (e: any) => {
+        setLang(e.target.value);
+        i18n.changeLanguage(e.target.value);
+    };
+
+    const isVillageHead = getCookies('role') === 'VILLAGE_HEAD' ? true : false;
+
     return (
         <Stack
             sx={{
@@ -34,7 +48,7 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
                 'backgroundColor': palette.blue[500],
                 'padding': '0 20px 0 15px',
                 'flexDirection': 'row',
-                'justifyContent': isLoginPage ? 'center' : 'space-between',
+                'justifyContent': 'space-between',
                 'alignItems': 'center',
                 'height': GNB_HEIGHT,
                 'minHeight': GNB_HEIGHT,
@@ -48,22 +62,64 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
+                    cursor: 'pointer',
                 }}
+                onClick={() => navigate(isVillageHead ? '/village-heads/farmers' : '/requests')}
             />
-            {isLogin && !isLoginPage && (
-                <Stack sx={{ flexDirection: 'row', gap: '15px' }}>
-                    <Typography>{userId}</Typography>
-                    <Typography
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => navigate('/my-profile-edit')}
-                    >
-                        내 정보 수정
-                    </Typography>
-                    <Typography sx={{ cursor: 'pointer' }} onClick={handleClickLogout}>
-                        로그아웃
-                    </Typography>
+            <Stack direction={'row'} gap={2}>
+                <Stack>
+                    <Select size="small" value={lang} onChange={handleChangeLang}>
+                        <MenuItem value={'ko'}>
+                            <Stack direction={'row'} gap={1}>
+                                <Stack
+                                    sx={{
+                                        width: '20px',
+                                        height: '20px',
+                                        backgroundImage: `url(${Ko})`,
+                                        backgroundSize: 'contain',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center',
+                                    }}
+                                />
+                                한국어
+                            </Stack>
+                        </MenuItem>
+                        <MenuItem value={'lo'}>
+                            <Stack direction={'row'} gap={1}>
+                                <Stack
+                                    sx={{
+                                        height: '20px',
+                                        width: '20px',
+                                        backgroundImage: `url(${Lo})`,
+                                        backgroundSize: 'contain',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center',
+                                    }}
+                                />
+                                {t('라오스어')}
+                            </Stack>
+                        </MenuItem>
+                    </Select>
                 </Stack>
-            )}
+                {isLogin && !isLoginPage && (
+                    <Stack sx={{ flexDirection: 'row', gap: '15px', alignItems: 'center' }}>
+                        <Typography flexShrink={0}>{userId}</Typography>
+                        <Typography
+                            flexShrink={0}
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => navigate('/my-profile-edit')}
+                        >
+                            {t('내 정보 수정')}
+                        </Typography>
+                        <Typography
+                            sx={{ cursor: 'pointer', flexShrink: 0 }}
+                            onClick={handleClickLogout}
+                        >
+                            {t('로그아웃')}
+                        </Typography>
+                    </Stack>
+                )}
+            </Stack>
         </Stack>
     );
 };

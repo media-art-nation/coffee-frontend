@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router';
 
 import { ExpandMore } from '@mui/icons-material';
@@ -30,20 +31,20 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무 수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무 수령 등록', path: '/village-heads/trees-transactions/register' },
+                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
+                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매 내역 등록', path: '/trees-purchases/register' },
+                { label: '수매내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
-            label: '부 관리자 관리',
-            children: [{ label: '부 관리자 목록', path: '/vice-admins' }],
+            label: '부관리자 관리',
+            children: [{ label: '부관리자 목록', path: '/vice-admins' }],
         },
         {
             label: '지역 관리',
@@ -55,7 +56,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
         },
         {
             label: '계정 관리',
-            children: [{ label: '계성 생성', path: '/accounts/register' }],
+            children: [{ label: '계정 생성', path: '/accounts/register' }],
         },
     ],
     // 부관리자(농림부)
@@ -71,8 +72,8 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무 수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무 수령 등록', path: '/village-heads/trees-transactions/register' },
+                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
+                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         {
@@ -100,15 +101,15 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무 수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무 수령 등록', path: '/village-heads/trees-transactions/register' },
+                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
+                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매 내역 등록', path: '/trees-purchases/register' },
+                { label: '수매내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
@@ -128,6 +129,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
 };
 
 const Lnb = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
@@ -167,7 +169,7 @@ const Lnb = () => {
                             }}
                         >
                             <Typography sx={{ fontSize: '14px', color: palette.grey[800] }}>
-                                {v.label}
+                                {t(v.label)}
                             </Typography>
                         </AccordionSummary>
                         {v.children && (
@@ -206,7 +208,7 @@ const Lnb = () => {
                                                         : palette.grey[700],
                                                 }}
                                             >
-                                                {c.label}
+                                                {t(c.label)}
                                             </Typography>
                                         </Stack>
                                     );

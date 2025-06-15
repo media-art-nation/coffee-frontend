@@ -7,6 +7,7 @@ import {
     useGetApprovalDetails,
 } from '@/apis/Approval/useGetApprovalDetails';
 import { palette } from '@/themes';
+import { getFileName } from '@/utils/getFileName';
 
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
@@ -45,7 +46,7 @@ const VillageHeadRequestDetails = () => {
                     >
                         <Stack>
                             <Typography>관리 지역</Typography>
-                            <Typography>관리 지역 명</Typography>
+                            <Typography>{details.areaName}</Typography>
                         </Stack>
                         <Stack>
                             <Typography>섹션</Typography>
@@ -82,7 +83,7 @@ const VillageHeadRequestDetails = () => {
                     </Stack>
                     <Stack>
                         <Typography>계약서</Typography>
-                        <Typography>계약서.pdf</Typography>
+                        <Typography>{getFileName(details.contractFileUrl)}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>통장 사본</Typography>
