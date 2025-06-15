@@ -21,7 +21,6 @@ const TreesPurchaseRegister = () => {
         defaultValues: { purchaseDate: dayjs(new Date()).format('YYYY-MM-DD') },
     });
     const onSubmit = (data: CreateApprovalPurchaseReq) => {
-        console.log('제출 데이터:', data);
         createPurchase(data)
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {

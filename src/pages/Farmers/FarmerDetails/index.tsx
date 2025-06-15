@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 
 import { TTreeTransaction, useGetFarmerDetail } from '@/apis/Farmer/useGetFarmerDetail';
 import LabelValue from '@/components/LabelValue';
+import NoPhoto from '@/components/NoPhoto';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
-import { palette } from '@/themes';
 
 const FarmerDetails = () => {
     const { id } = useParams();
@@ -36,18 +36,7 @@ const FarmerDetails = () => {
                             alt={'identification photo url'}
                         />
                     ) : (
-                        <Box
-                            display={'flex'}
-                            sx={{
-                                width: '120px',
-                                height: '160px',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                background: palette.grey[100],
-                            }}
-                        >
-                            <Typography>사진 없음</Typography>
-                        </Box>
+                        <NoPhoto />
                     )}
                     <Stack>
                         <LabelValue label="관리 섹션" value={farmerDetails?.sectionName || ''} />

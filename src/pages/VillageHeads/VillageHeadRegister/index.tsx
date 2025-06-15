@@ -110,7 +110,7 @@ const VillageHeadRegister = () => {
 
     return (
         <Stack>
-            <Title title="면장 등록">
+            <Title title={id ? '면장 정보 수정' : '면장 등록'}>
                 <Button
                     variant="containedGrey"
                     sx={{ width: '86px', wordBreak: 'keep-all' }}

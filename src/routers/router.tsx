@@ -23,6 +23,7 @@ import TreesPurchaseRegister from '@/pages/TreesPurchases/TreesPurchaseRegister'
 import TreesTransactionList from '@/pages/TreesTransactions/TreesTransactionList';
 import TreesTransactionRegister from '@/pages/TreesTransactions/TreesTransactionRegister';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
+import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
 import ViceAdminList from '@/pages/ViceAdmins/ViceAdminList';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
                 path: 'vice-admins', // 부 관리자
                 children: [
                     { index: true, element: <ViceAdminList /> },
+                    { path: 'edit/:id', element: <ViceAdminEdit /> },
                     { path: ':id', element: <ViceAdminDetails /> },
                 ],
             },
