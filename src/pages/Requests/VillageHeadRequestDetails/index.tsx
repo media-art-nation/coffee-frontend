@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Box, Stack, Typography } from '@mui/material';
@@ -13,24 +14,41 @@ import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
 const VillageHeadRequestDetails = () => {
     const { id } = useParams();
+    const { t } = useTranslation();
 
     const { data: details } = useGetApprovalDetails<TVillageHeadApprovalDetails>(id);
 
-    console.log(details);
     if (!details) return null;
     return (
         <RequestDetailsLayout>
             <Stack sx={{ gap: '30px' }}>
-                <Typography variant="h3/bold">내용</Typography>
-                <Typography variant="title/semibold">면장 정보</Typography>
+                <Typography variant="h3/bold">{t('내용')}</Typography>
+                <Typography variant="title/semibold">{t('면장 정보')}</Typography>
                 <Stack sx={{ flexDirection: 'row', gap: '30px', alignItems: 'center' }}>
-                    <Box
-                        sx={{
-                            width: '120px',
-                            height: '160px',
-                            backgroundColor: palette.grey[50],
-                        }}
-                    />
+                    {details.identificationPhotoUrl ? (
+                        <Box
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundImage: `url(${details.identificationPhotoUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                            }}
+                        />
+                    ) : (
+                        <Stack
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundColor: palette.grey[50],
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color={palette.grey[400]}>No Image</Typography>
+                        </Stack>
+                    )}
                     <Stack
                         sx={{
                             'gap': '15px',
@@ -45,19 +63,19 @@ const VillageHeadRequestDetails = () => {
                         }}
                     >
                         <Stack>
-                            <Typography>관리 지역</Typography>
+                            <Typography>{t('지역')}</Typography>
                             <Typography>{details.areaName}</Typography>
                         </Stack>
                         <Stack>
-                            <Typography>섹션</Typography>
-                            <Typography>섹션 명</Typography>
+                            <Typography>{t('섹션')}</Typography>
+                            <Typography>{details.sectionName}</Typography>
                         </Stack>
                         <Stack>
-                            <Typography>이름</Typography>
+                            <Typography>{t('이름')}</Typography>
                             <Typography>{details.username}</Typography>
                         </Stack>
                         <Stack>
-                            <Typography>아이디</Typography>
+                            <Typography>{t('아이디')}</Typography>
                             <Typography>{details.userId}</Typography>
                         </Stack>
                     </Stack>
@@ -76,18 +94,18 @@ const VillageHeadRequestDetails = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>계좌 정보</Typography>
+                        <Typography>{t('계좌 정보')}</Typography>
                         <Typography>
                             {details.bankName} / {details.accountInfo}
                         </Typography>
                     </Stack>
                     <Stack>
-                        <Typography>계약서</Typography>
+                        <Typography>{t('계약서')}</Typography>
                         <Typography>{getFileName(details.contractFileUrl)}</Typography>
                     </Stack>
                     <Stack>
-                        <Typography>통장 사본</Typography>
-                        <Typography>통장 사본.pdf</Typography>
+                        <Typography>{t('통장 사본')}</Typography>
+                        <Typography>{getFileName(details.bankbookPhotoUrl)}</Typography>
                     </Stack>
                 </Stack>
             </Stack>

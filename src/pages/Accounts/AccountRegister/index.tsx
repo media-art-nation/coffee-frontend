@@ -5,6 +5,7 @@ import { Button, Stack } from '@mui/material';
 
 import { useSignUp } from '@/apis/AppUser/useSignUp';
 import { useGetArea } from '@/apis/Area/useGetArea';
+import { useGetAreaSectionList } from '@/apis/Area/useGetAreaSection';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
@@ -12,20 +13,21 @@ import { useDialog } from '@/hooks/useDialog';
 import { TRole } from '@/typings/User';
 import { showToast } from '@/utils/showToast';
 
-export type TSignUpForm = {
+type TSignUpForm = {
     userId: string;
     username: string;
     password: string;
     passwordCheck: string;
     role: '' | TRole;
-    location?: string;
-    section?: string;
+    areaId: number;
+    sectionId?: number;
+    idCardFile?: File;
 };
 
 const AccountRegister = () => {
     const { t } = useTranslation();
     const { openDialog } = useDialog();
-    const { data: area } = useGetArea();
+    const { data: areas } = useGetArea();
 
     const { mutateAsync: signUp } = useSignUp();
     const { control, handleSubmit, reset, register, watch } = useForm<TSignUpForm>({
@@ -37,6 +39,12 @@ const AccountRegister = () => {
             role: '',
         },
     });
+
+    const watchedAreaId = watch('areaId');
+
+    const { data: areaWithSections } = useGetAreaSectionList(
+        watchedAreaId ? watchedAreaId.toString() : undefined
+    );
 
     const handleClickCancel = () => {
         openDialog({
@@ -57,6 +65,14 @@ const AccountRegister = () => {
     };
 
     const onSubmit = (formData: TSignUpForm) => {
+        const { passwordCheck: _, sectionId, areaId, ...rest } = formData;
+
+        const payload = {
+            ...rest,
+            areaId: Number(areaId),
+            sectionId: sectionId ? Number(sectionId) : undefined,
+        };
+
         openDialog({
             title: t('계정 생성'),
             description: t('계정을 생성하시겠습니까?'),
@@ -64,7 +80,7 @@ const AccountRegister = () => {
             primaryAction: {
                 name: t('확인'),
                 onClick: async () => {
-                    await signUp(formData).then((res) => {
+                    await signUp(payload).then((res) => {
                         if (res.code === 'SUCCESS') {
                             showToast.success(t('계정이 생성 되었습니다.'));
                             reset();
@@ -145,13 +161,13 @@ const AccountRegister = () => {
                 />
                 <LabelAndSelect
                     labelValue={t('지역')}
-                    fieldName="location"
+                    fieldName="areaId"
                     sx={{ width: '100%' }}
                     control={control}
                     selectArr={
-                        area?.map((v) => {
+                        areas?.map((v) => {
                             return {
-                                value: v.areaName,
+                                value: v.id?.toString(),
                                 label: v.areaName,
                             };
                         }) || []
@@ -161,19 +177,21 @@ const AccountRegister = () => {
                 {watch('role') === 'VILLAGE_HEAD' && (
                     <LabelAndSelect
                         labelValue={t('섹션')}
-                        fieldName="section"
+                        fieldName="sectionId"
                         sx={{ width: '100%' }}
                         control={control}
                         selectArr={
-                            area?.map((v) => {
-                                return {
-                                    value: v.areaName,
-                                    label: v.areaName,
-                                };
-                            }) || []
+                            (areaWithSections &&
+                                areaWithSections[0]?.sections?.map((v) => {
+                                    return {
+                                        value: v.id?.toString(),
+                                        label: v.sectionName,
+                                    };
+                                })) ||
+                            []
                         }
                         placeholder={t('섹션')}
-                        disabled={!watch('location')}
+                        disabled={!watch('areaId')}
                     />
                 )}
             </Stack>

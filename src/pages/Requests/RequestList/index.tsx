@@ -50,14 +50,27 @@ const RequestList = () => {
         <FormProvider {...methods}>
             <Stack sx={{ width: '100%', maxHeight: '100%', flex: '1' }} component="form">
                 <Title title={t('요청 목록')} />
-                <Stack sx={{ gap: '20px', padding: '0 32px', flex: '1', overflow: 'hidden' }}>
+                <Stack
+                    sx={{
+                        gap: '20px',
+                        padding: '0 32px',
+                        flex: '1',
+                        overflow: 'hidden',
+                    }}
+                >
                     <RequestListFilter />
                     <RequestListTable />
-                    <Pagination
-                        count={3}
-                        page={methods.watch('pageable.page') + 1}
-                        onChange={handleChangePage}
-                    />
+                    <Stack
+                        sx={{
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Pagination
+                            count={3}
+                            page={methods.watch('pageable.page') + 1}
+                            onChange={handleChangePage}
+                        />
+                    </Stack>
                 </Stack>
             </Stack>
         </FormProvider>

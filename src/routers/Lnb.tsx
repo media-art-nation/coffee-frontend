@@ -142,6 +142,7 @@ const Lnb = () => {
                 minWidth: '216px',
                 gap: '5px',
                 borderRight: `1px solid ${palette.grey[200]}`,
+                flex: 1,
             }}
         >
             {lnbData[role].map((v) => {

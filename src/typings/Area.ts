@@ -5,7 +5,7 @@ export type TArea = {
     longitude: number;
 };
 
-type TSection = {
+export type TSection = {
     id: number;
     sectionName: string;
     latitude: number;

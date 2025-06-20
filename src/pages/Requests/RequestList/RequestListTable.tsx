@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { DeleteOutline } from '@mui/icons-material';
-import { Chip, Stack, TableCell, TableRow } from '@mui/material';
+import { Chip, IconButton, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { useDeleteApproval } from '@/apis/Approval/useDeleteApproval';
@@ -44,7 +44,6 @@ const RequestListTable = () => {
                 name: t('확인'),
                 onClick: async () => {
                     const res = await deleteApproval({ approvalId });
-                    console.log(res);
                     if (res.code === 'SUCCESS') {
                         showToast.success(res.message);
                     } else showToast.error(res.message);
@@ -57,6 +56,8 @@ const RequestListTable = () => {
         });
     };
 
+    console.log(data?.content);
+
     const renderRow = (row: TRequestListTableRow) => {
         return (
             <TableRow
@@ -66,7 +67,7 @@ const RequestListTable = () => {
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
-                <TableCell>{dayjs(row.createdAt).format('YYYY. MM. DD HH:mm')}</TableCell>
+                <TableCell>{dayjs(row.createdAt).format('YYYY.MM.DD HH:mm')}</TableCell>
                 <TableCell>{row.requesterName}</TableCell>
                 <TableCell>
                     <Chip
@@ -75,15 +76,16 @@ const RequestListTable = () => {
                     />
                 </TableCell>
                 <TableCell>
-                    <Stack sx={{ justifyContent: 'center' }}>
-                        <DeleteOutline
-                            sx={{ width: '20px', color: palette.grey[500], cursor: 'pointer' }}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleDeleteApproval(row.id);
-                            }}
-                        />
-                    </Stack>
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteApproval(row.id);
+                        }}
+                    >
+                        <DeleteOutline sx={{ color: palette.grey[500] }} />
+                    </IconButton>
                 </TableCell>
             </TableRow>
         );
