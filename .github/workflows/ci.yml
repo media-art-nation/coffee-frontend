@@ -6,6 +6,7 @@ on:
 
 jobs:
     build:
+        if: ${{ github.repository == 'media-art-nation/coffee-frontend' }}
         runs-on: ubuntu-latest
 
         steps:
