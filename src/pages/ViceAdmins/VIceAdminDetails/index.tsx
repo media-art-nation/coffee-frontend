@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, Typography } from '@mui/material';
@@ -9,23 +10,27 @@ import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 
 const ViceAdminDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: viceAdminDetail } = useGetViceAdminDetails(id);
     const navigate = useNavigate();
 
     return (
         <Stack>
-            <Title title="부 관리자 상세">
+            <Title title={t('부관리자 상세')}>
                 <Button variant="containedBlue" onClick={() => navigate(`/vice-admins/edit/${id}`)}>
-                    수정
+                    {t('수정')}
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
-                <LabelValue label="이름" value={viceAdminDetail?.username || ''} />
+                <LabelValue label={t('이름')} value={viceAdminDetail?.username || ''} />
 
-                <LabelValue label="아이디" value={viceAdminDetail?.userId || ''} />
+                <LabelValue label={t('아이디')} value={viceAdminDetail?.userId || ''} />
 
-                <LabelValue label="관리 지역" value={viceAdminDetail?.areaInfo.areaName || ''} />
+                <LabelValue
+                    label={t('관리 지역')}
+                    value={viceAdminDetail?.areaInfo.areaName || ''}
+                />
                 <Stack gap={'27px'}>
                     <Typography variant="title/medium">ID Card</Typography>
                     {viceAdminDetail?.idCardUrl ? (

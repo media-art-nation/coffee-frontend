@@ -71,7 +71,7 @@ const RequestListFilter = () => {
                         render={({ field }) => (
                             <FormControlLabel
                                 control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>지역 관리</Typography>}
+                                label={<Typography fontSize={14}>{t('지역 관리')}</Typography>}
                             />
                         )}
                     />
@@ -79,7 +79,7 @@ const RequestListFilter = () => {
             </Stack>
             <Stack sx={{ flexDirection: 'row', alignItems: 'center', gap: '40px' }}>
                 <Typography variant="body1/semibold" sx={{ flexShrink: '0' }}>
-                    요청 상태
+                    {t('요청 상태')}
                 </Typography>
                 <FormGroup sx={{ flexDirection: 'row', gap: '8px' }}>
                     <Controller

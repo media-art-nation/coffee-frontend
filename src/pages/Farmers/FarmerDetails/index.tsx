@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Box, Stack, TableCell, TableRow, Typography } from '@mui/material';
@@ -11,6 +12,7 @@ import Table from '@/components/Table';
 import Title from '@/components/Title';
 
 const FarmerDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const { data: farmerDetails } = useGetFarmerDetail(id);
 
@@ -25,7 +27,7 @@ const FarmerDetails = () => {
     };
     return (
         <Stack>
-            <Title title="농부 상세 정보" />
+            <Title title={t('농부 상세 정보')} />
             <PageLayout gap={'27px'}>
                 <Stack direction={'row'} gap={'20px'}>
                     {farmerDetails?.identificationPhotoUrl ? (
@@ -44,9 +46,9 @@ const FarmerDetails = () => {
                     </Stack>
                 </Stack>
                 <Stack gap={'27px'}>
-                    <Typography variant="title/semibold">나무 수령 목록</Typography>
+                    <Typography variant="title/semibold">{t('나무수령 목록')}</Typography>
                     <Table
-                        headData={['나무 종', '나무 수량', '수령 일자']}
+                        headData={[t('나무 종'), t('나무 수량'), t('수령 일자')]}
                         bodyData={farmerDetails?.treesTransactions || undefined}
                         renderRow={renderRow}
                     />

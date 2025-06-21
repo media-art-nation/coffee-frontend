@@ -52,13 +52,13 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const handleApproveRequest = () => {
         openDialog({
             title: t('요청 승인'),
-            description: t('승인 하시겠습니까?'),
+            description: t('요청을 승인하시겠습니까?'),
             variant: 'confirm',
             primaryAction: {
                 name: t('확인'),
                 onClick: async () => {
                     await approveApproval(id).then((res) => {
-                        if (res.code === 'SUCCESS') showToast.success(t('승인 처리 되었습니다.'));
+                        if (res.code === 'SUCCESS') showToast.success(t('승인 처리되었습니다.'));
                         else showToast.error(res.message);
                     });
                 },
@@ -78,7 +78,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
 
         openDialog({
             title: t('승인 요청 거절'),
-            description: t('거절 하시겠습니까?'),
+            description: t('거절하시겠습니까?'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),

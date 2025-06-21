@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
@@ -15,6 +16,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const TreesPurchaseRegister = () => {
+    const { t } = useTranslation();
     const { openDialog } = useDialog();
     const { mutateAsync: createPurchase } = useCreateApprovalPurchase();
     const methods = useForm<CreateApprovalPurchaseReq>({
@@ -25,11 +27,11 @@ const TreesPurchaseRegister = () => {
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     openDialog({
-                        title: '수매 내역 등록 요청을 성공했습니다.',
-                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        title: t('수매 내역 등록 요청 성공'),
+                        description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 methods.reset();
                             },
@@ -39,11 +41,11 @@ const TreesPurchaseRegister = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: '수매 내역 등록 요청에 실패하였습니다.',
-                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    title: t('수매 내역 등록 요청 실패'),
+                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
-                        name: '확인',
+                        name: t('확인'),
                         onClick: () => {
                             methods.reset();
                         },
@@ -53,19 +55,19 @@ const TreesPurchaseRegister = () => {
     };
     return (
         <Stack>
-            <Title title="수매 내역 등록">
-                <Button variant="containedGrey">취소</Button>
+            <Title title={t('수매 내역 등록')}>
+                <Button variant="containedGrey">{t('취소')}</Button>
                 <Button
                     variant="containedBlue"
                     onClick={() => {
                         methods.handleSubmit(onSubmit)();
                     }}
                 >
-                    등록
+                    {t('등록')}
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
-                <LabelComponentsLayout labelValue="거래 일자">
+                <LabelComponentsLayout labelValue={t('거래일자')}>
                     <CustomDatePicker
                         value={dayjs(methods.watch('purchaseDate'))}
                         onChange={(newValue: Dayjs | null) =>
@@ -77,40 +79,40 @@ const TreesPurchaseRegister = () => {
                     />
                 </LabelComponentsLayout>
                 {/* <LabelAndInput
-                    labelValue="나무 종"
+                    labelValue={t("나무 종")}
                     fieldName="tree"
                     register={methods.register}
-                    placeholder="나무 종에 대해서 입력해주세요."
+                    placeholder={t("나무 종을 입력해주세요.")}
                 /> */}
                 <LabelAndInput
-                    labelValue="수량"
+                    labelValue={t('수량')}
                     fieldName="quantity"
                     register={methods.register}
-                    placeholder="수량을 입력해주세요."
+                    placeholder={t('수량을 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="단가"
+                    labelValue={t('단가')}
                     fieldName="unitPrice"
                     register={methods.register}
-                    placeholder="단가를 입력해주세요."
+                    placeholder={t('단가를 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="총액"
+                    labelValue={t('총액')}
                     fieldName="totalPrice"
                     register={methods.register}
-                    placeholder="총액을 입력해주세요."
+                    placeholder={t('총액을 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="차감액"
+                    labelValue={t('차감액')}
                     fieldName="deduction"
                     register={methods.register}
-                    placeholder="차감액을 입력해주세요."
+                    placeholder={t('차감액을 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="지급액"
+                    labelValue={t('지급액')}
                     fieldName="paymentAmount"
                     register={methods.register}
-                    placeholder="지급액을 입력해주세요."
+                    placeholder={t('지급액을 입력해주세요.')}
                 />
             </PageLayout>
         </Stack>

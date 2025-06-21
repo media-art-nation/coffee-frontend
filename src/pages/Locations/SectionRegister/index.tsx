@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack } from '@mui/material';
 
@@ -14,17 +15,18 @@ type TSectionInput = {
     section: string;
 };
 const SectionRegister = () => {
+    const { t } = useTranslation();
     const methods = useForm<TSectionInput>();
     const { data: areaList } = useGetArea();
     return (
         <Stack>
-            <Title title="섹션 생성">
-                <Button variant="containedGrey">취소</Button>
-                <Button variant="containedBlue">등록</Button>
+            <Title title={t('섹션 생성')}>
+                <Button variant="containedGrey">{t('취소')}</Button>
+                <Button variant="containedBlue">{t('등록')}</Button>
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndSelect
-                    labelValue="지역"
+                    labelValue={t('지역')}
                     control={methods.control}
                     selectArr={
                         areaList?.map((area) => {
@@ -32,13 +34,13 @@ const SectionRegister = () => {
                         }) || []
                     }
                     fieldName="area"
-                    placeholder="지역을 선택해주세요"
+                    placeholder={t('지역 선택')}
                 />
-                <LabelComponentsLayout labelValue="섹션 검색">
+                <LabelComponentsLayout labelValue={t('섹션 검색')}>
                     <SearchTextField
                         fieldName="area"
                         register={methods.register}
-                        placeholder="지역을 검색해주세요."
+                        placeholder={t('섹션 검색')}
                     />
                 </LabelComponentsLayout>
             </PageLayout>

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
@@ -17,6 +18,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const TreesTransactionRegister = () => {
+    const { t } = useTranslation();
     const { openDialog } = useDialog();
     const { mutateAsync: createTreeTransaction } = useCreateApprovalTreeTransaction();
     const { data: farmerList } = useGetFarmerList();
@@ -30,11 +32,11 @@ const TreesTransactionRegister = () => {
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     openDialog({
-                        title: '나무 수령 등록 요청을 성공했습니다.',
-                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        title: t('나무수령 등록 요청 성공'),
+                        description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 methods.reset();
                             },
@@ -44,11 +46,11 @@ const TreesTransactionRegister = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: '나무 수령 등록 요청에 실패하였습니다.',
-                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    title: t('나무수령 등록 요청 실패'),
+                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
-                        name: '확인',
+                        name: t('확인'),
                         onClick: () => {
                             methods.reset();
                         },
@@ -58,16 +60,16 @@ const TreesTransactionRegister = () => {
     };
     return (
         <Stack>
-            <Title title="나무 수령 등록">
-                <Button variant="containedGrey">취소</Button>
+            <Title title={t('나무수령 등록')}>
+                <Button variant="containedGrey">{t('취소')}</Button>
                 <Button variant="containedBlue" onClick={() => methods.handleSubmit(onSubmit)()}>
-                    등록
+                    {t('등록')}
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndSelect
                     sx={{ width: '300px' }}
-                    labelValue="농부"
+                    labelValue={t('농부')}
                     selectArr={
                         farmerList?.map((farmer) => {
                             return { value: farmer.id.toString(), label: farmer.farmerName };
@@ -75,9 +77,9 @@ const TreesTransactionRegister = () => {
                     }
                     control={methods.control}
                     fieldName="farmerId"
-                    placeholder="선택"
+                    placeholder={t('농부 선택')}
                 />
-                <LabelComponentsLayout labelValue="수령 일자">
+                <LabelComponentsLayout labelValue={t('수령 일자')}>
                     <CustomDatePicker
                         value={dayjs(methods.watch('receivedDate'))}
                         onChange={(newValue: Dayjs | null) =>
@@ -89,16 +91,16 @@ const TreesTransactionRegister = () => {
                     />
                 </LabelComponentsLayout>
                 <LabelAndInput
-                    labelValue="나무 종"
+                    labelValue={t('나무 종')}
                     fieldName="species"
                     register={methods.register}
-                    placeholder="나무 종에 대해서 입력해주세요."
+                    placeholder={t('나무 종을 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="수량"
+                    labelValue={t('수량')}
                     fieldName="quantity"
                     register={methods.register}
-                    placeholder="수량을 입력해주세요."
+                    placeholder={t('수량을 입력해주세요.')}
                 />
             </PageLayout>
         </Stack>

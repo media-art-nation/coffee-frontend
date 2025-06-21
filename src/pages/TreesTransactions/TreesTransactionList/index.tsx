@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
@@ -15,6 +16,7 @@ type TDummy = {
     receiptDate: Date;
 };
 const TreesTransactionList = () => {
+    const { t } = useTranslation();
     const dummy: TDummy[] = [
         {
             id: 1,
@@ -52,17 +54,17 @@ const TreesTransactionList = () => {
     };
     return (
         <Stack>
-            <Title title="나무 수령 목록">
+            <Title title={t('나무수령 목록')}>
                 <Button
                     variant="containedBlue"
                     onClick={() => navigate('/village-heads/trees-transactions/register')}
                 >
-                    나무 수령 등록
+                    {t('나무수령 등록')}
                 </Button>
             </Title>
             <PageLayout>
                 <Table
-                    headData={['농부', '나무 종', '나무 수량', '수령 일자']}
+                    headData={[t('농부'), t('나무 종'), t('나무 수량'), t('수령 일자')]}
                     bodyData={dummy}
                     renderRow={renderRow}
                 />

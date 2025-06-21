@@ -1,6 +1,9 @@
+import { useTranslation } from 'react-i18next';
+
+import { DeleteOutline } from '@mui/icons-material';
 import {
-    Button,
     CircularProgress,
+    IconButton,
     Stack,
     Table,
     TableBody,
@@ -15,12 +18,14 @@ import noData from '@assets/noData.svg';
 import { useGetAreaWithSectionList } from '@/apis/Area/useGetAreaWithSection';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { palette } from '@/themes';
 import { TAreaWithSections } from '@/typings/Area';
 
 const LocationList = () => {
+    const { t } = useTranslation();
     const { data: areaWithSectionList, isLoading: areaWithSectionListLoading } =
         useGetAreaWithSectionList();
-    const headData = ['지역명', '섹션명', '삭제'];
+    const headData = [t('지역'), t('섹션'), ''];
     const renderRow = (row: TAreaWithSections) => {
         if (row.sections.length > 0) {
             return row.sections.map((item) => (
@@ -28,7 +33,15 @@ const LocationList = () => {
                     <TableCell>{row.areaName}</TableCell>
                     <TableCell>{item.sectionName}</TableCell>
                     <TableCell>
-                        <Button variant="containedRed">삭제</Button>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                        >
+                            <DeleteOutline sx={{ color: palette.grey[500] }} />
+                        </IconButton>
                     </TableCell>
                 </TableRow>
             ));
@@ -38,7 +51,15 @@ const LocationList = () => {
                     <TableCell>{row.areaName}</TableCell>
                     <TableCell>-</TableCell>
                     <TableCell>
-                        <Button variant="containedRed">삭제</Button>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                        >
+                            <DeleteOutline sx={{ color: palette.grey[500] }} />
+                        </IconButton>
                     </TableCell>
                 </TableRow>
             );
@@ -46,7 +67,7 @@ const LocationList = () => {
     };
     return (
         <Stack>
-            <Title title="지역 및 섹션 목록" />
+            <Title title={t('지역 및 섹션 목록')} />
             <PageLayout>
                 <TableContainer sx={{ width: '100%', height: '100%' }}>
                     <Table sx={{ height: '100%' }} stickyHeader>

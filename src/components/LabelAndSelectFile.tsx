@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { FieldValues, Path, PathValue, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack, StackProps, Typography } from '@mui/material';
 
@@ -20,6 +21,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
     setValue,
     ...props
 }: LabelAndSelectFileProps<T>) => {
+    const { t } = useTranslation();
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
     const file: File | null = watch(fieldName) as File | null;
 
@@ -45,7 +47,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
                         borderRadius: '4px',
                     }}
                 >
-                    {file ? file.name : '선택된 파일 없음'}
+                    {file ? file.name : t('선택된 파일 없음')}
                 </Typography>
                 <input
                     type="file"

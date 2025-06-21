@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
@@ -16,6 +18,8 @@ type TDummy = {
     payment: number;
 };
 const TreesPurchaseList = () => {
+    const { t } = useTranslation();
+
     const dummy = [
         {
             id: 1,
@@ -64,12 +68,20 @@ const TreesPurchaseList = () => {
     };
     return (
         <Stack>
-            <Title title="수매 목록">
-                <Button variant="containedBlue">수매 내역 등록</Button>
+            <Title title={t('수매 목록')}>
+                <Button variant="containedBlue">{}</Button>
             </Title>
             <PageLayout>
                 <Table
-                    headData={['담당자', '거래일자', '수량', '단가', '총액', '차감액', '지급액']}
+                    headData={[
+                        t('담당자'),
+                        t('거래일자'),
+                        t('수량'),
+                        t('단가'),
+                        t('총액'),
+                        t('차감액'),
+                        t('지급액'),
+                    ]}
                     bodyData={dummy}
                     renderRow={renderRow}
                 />

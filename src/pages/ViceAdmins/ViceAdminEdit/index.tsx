@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, Typography } from '@mui/material';
@@ -23,6 +24,7 @@ type TViceAdminDetailsInput = {
     idCardFile: File | null;
 };
 const ViceAdminEdit = () => {
+    const { t } = useTranslation();
     const queryClient = useQueryClient();
     const { openDialog } = useDialog();
     const { id } = useParams();
@@ -47,10 +49,10 @@ const ViceAdminEdit = () => {
                         queryKey: QUERY_KEYS.APP_USER.getViceAdminDetail(JSON.stringify(id)),
                     });
                     openDialog({
-                        title: '부 관리자 수정을 성공했습니다.',
+                        title: t('부관리자 수정 완료'),
                         variant: 'confirm',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 navigate(`/vice-admins/${id}`);
                             },
@@ -60,8 +62,8 @@ const ViceAdminEdit = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: '부 관리자 수정 작업을 실패하였습니다.',
-                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    title: t('부관리자 수정 실패'),
+                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
                         name: '확인',
@@ -74,46 +76,46 @@ const ViceAdminEdit = () => {
     };
     return (
         <Stack>
-            <Title title="부 관리자 정보 수정">
+            <Title title={t('부관리자 정보 수정')}>
                 <Button
                     variant="containedGrey"
                     sx={{ width: '86px', wordBreak: 'keep-all' }}
                     onClick={() => navigate(`/vice-admins/${id}`)}
                 >
-                    취소
+                    {t('취소')}
                 </Button>
                 <Button
                     variant="containedBlue"
                     sx={{ width: '86px', wordBreak: 'keep-all' }}
                     onClick={() => methods.handleSubmit(onSubmitEdit)()}
                 >
-                    수정
+                    {t('수정')}
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndInput
                     register={methods.register}
-                    labelValue="이름"
+                    labelValue={t('이름')}
                     fieldName="username"
-                    placeholder="이름을 입력해주세요."
+                    placeholder={t('이름을 입력해주세요.')}
                 />
                 <LabelAndInput
                     register={methods.register}
-                    labelValue="아이디"
+                    labelValue={t('아이디')}
                     fieldName="userId"
                     disabled={true}
-                    placeholder="아이디를 입력해주세요."
+                    placeholder={t('아이디를 입력해주세요.')}
                 />
                 <LabelAndSelect
                     control={methods.control}
-                    labelValue="관리 지역"
+                    labelValue={t('관리 지역')}
                     fieldName="areaId"
                     selectArr={
                         getAreaList?.map((area) => {
                             return { value: String(area.id), label: area.areaName };
                         }) || []
                     }
-                    placeholder="관리 지역을 선택해주세요."
+                    placeholder={t('관리 지역을 선택해주세요.')}
                 />
                 <Stack gap={'27px'}>
                     <Typography variant="title/medium">ID Card</Typography>
