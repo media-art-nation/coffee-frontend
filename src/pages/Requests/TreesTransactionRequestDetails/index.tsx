@@ -15,6 +15,7 @@ const TreesTransactionRequestDetails = () => {
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails<TTreeTransactionApprovalDetails>(id);
 
+    console.log(details, '수령 상세');
     if (!details) return null;
     return (
         <RequestDetailsLayout>
@@ -36,15 +37,15 @@ const TreesTransactionRequestDetails = () => {
                 >
                     <Stack>
                         <Typography>{t('지역')}</Typography>
-                        <Typography>지역 명</Typography>
+                        <Typography>{details.areaName}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>{t('섹션')}</Typography>
-                        <Typography>섹션 명</Typography>
+                        <Typography>{details.sectionName}</Typography>
                     </Stack>
                     <Stack>
                         <Typography>{t('농부')}</Typography>
-                        <Typography>농부명</Typography>
+                        <Typography>{details.farmerName}</Typography>
                     </Stack>
                 </Stack>
                 <Typography variant="title/semibold">{t('나무수령 정보')}</Typography>

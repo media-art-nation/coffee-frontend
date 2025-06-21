@@ -12,6 +12,7 @@ export type TRequestServiceType =
 export type TRequestListTableRow = {
     id: number;
     requesterName: string;
+    requesterId: number;
     approverName: string;
     status: TRequestStatus;
     method: TRequestMethod;
