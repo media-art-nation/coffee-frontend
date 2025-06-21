@@ -39,7 +39,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매내역 등록', path: '/trees-purchases/register' },
+                { label: '수매 내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
@@ -109,7 +109,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매내역 등록', path: '/trees-purchases/register' },
+                { label: '수매 내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
@@ -142,6 +142,7 @@ const Lnb = () => {
                 minWidth: '216px',
                 gap: '5px',
                 borderRight: `1px solid ${palette.grey[200]}`,
+                flex: 1,
             }}
         >
             {lnbData[role].map((v) => {

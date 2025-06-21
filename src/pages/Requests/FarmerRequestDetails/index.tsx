@@ -16,9 +16,6 @@ const FarmerRequestDetails = () => {
     const { id } = useParams();
 
     const { data: details } = useGetApprovalDetails<TFarmerApprovalDetails>(id);
-    const previewUrl =
-        'https://plus.unsplash.com/premium_photo-1664640733898-d5c3f71f44e1?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
-    // const { data: previewUrl } = useGetGcsImage(details?.identificationPhotoUrl ?? '');
 
     if (!details) return null;
     return (
@@ -27,16 +24,30 @@ const FarmerRequestDetails = () => {
                 <Typography variant="h3/bold">{t('내용')}</Typography>
                 <Typography variant="title/semibold">{t('농부 정보')}</Typography>
                 <Stack sx={{ flexDirection: 'row', gap: '30px', alignItems: 'center' }}>
-                    <Box
-                        sx={{
-                            width: '120px',
-                            height: '160px',
-                            backgroundColor: palette.grey[50],
-                            backgroundImage: previewUrl ? `url(${previewUrl})` : 'none',
-                            backgroundSize: 'cover',
-                            backgroundPosition: 'center',
-                        }}
-                    />
+                    {details.identificationPhotoUrl ? (
+                        <Box
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundImage: `url(${details.identificationPhotoUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                            }}
+                        />
+                    ) : (
+                        <Stack
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundColor: palette.grey[50],
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color={palette.grey[400]}>No Image</Typography>
+                        </Stack>
+                    )}
                     <Stack
                         sx={{
                             'gap': '15px',

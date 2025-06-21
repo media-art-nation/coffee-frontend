@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { Stack, TableCell, TableRow } from '@mui/material';
@@ -8,6 +9,7 @@ import Table from '@/components/Table';
 import Title from '@/components/Title';
 
 const FarmerList = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: farmerList } = useGetFarmerList();
     const renderRow = (row: GetFarmerListRes) => {
@@ -21,10 +23,10 @@ const FarmerList = () => {
     };
     return (
         <Stack>
-            <Title title="농부 목록" />
+            <Title title={t('농부 목록')} />
             <PageLayout>
                 <Table
-                    headData={['이름', '관할 면장', '섹션명']}
+                    headData={[t('이름'), t('면장'), t('섹션')]}
                     bodyData={farmerList || undefined}
                     renderRow={renderRow}
                 />

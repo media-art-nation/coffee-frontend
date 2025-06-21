@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { Button, Stack, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -17,6 +18,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const FarmerRegister = () => {
+    const { t } = useTranslation();
     const { openDialog } = useDialog();
     const queryClient = useQueryClient();
     const { data: villageHeadList } = useGetVillageHeadList();
@@ -37,11 +39,11 @@ const FarmerRegister = () => {
                         queryKey: QUERY_KEYS.FARMER.getFarmerList(),
                     });
                     openDialog({
-                        title: '농부 등록 요청을 성공했습니다.',
-                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        title: t('농부 등록 요청 성공'),
+                        description: t('관리자가 요청 승인 후 목록에서 확인가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 methods.reset();
                             },
@@ -51,11 +53,11 @@ const FarmerRegister = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: '농부 등록 요청에 실패하였습니다.',
-                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    title: t('농부 등록 요청 실패'),
+                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
-                        name: '확인',
+                        name: t('확인'),
                         onClick: () => {
                             methods.reset();
                         },
@@ -65,23 +67,23 @@ const FarmerRegister = () => {
     };
     return (
         <Stack>
-            <Title title="농부 등록">
-                <Button variant="containedGrey">취소</Button>
+            <Title title={t('농부 등록')}>
+                <Button variant="containedGrey">{t('취소')}</Button>
                 <Button
                     variant="containedBlue"
                     onClick={() => {
                         methods.handleSubmit(onSubmit)();
                     }}
                 >
-                    등록
+                    {t('등록')}
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
                 <LabelAndSelect
-                    labelValue="면장"
+                    labelValue={t('면장')}
                     control={methods.control}
                     fieldName="villageHeadId"
-                    placeholder="면장 선택"
+                    placeholder={t('면장 선택')}
                     selectArr={
                         villageHeadList?.map((head) => {
                             return { value: String(head.id), label: head.appUserName };
@@ -89,7 +91,7 @@ const FarmerRegister = () => {
                     }
                 />
                 <Stack gap={'30px'}>
-                    <Typography fontSize={'14px'}>사진</Typography>
+                    <Typography fontSize={'14px'}>{t('사진')}</Typography>
                     <AddPhoto
                         fieldName="identificationPhoto"
                         watch={methods.watch}
@@ -97,15 +99,15 @@ const FarmerRegister = () => {
                     />
                 </Stack>
                 <LabelAndInput
-                    labelValue="이름"
-                    placeholder="이름을 적어주세요."
+                    labelValue={t('이름')}
+                    placeholder={t('이름')}
                     register={methods.register}
                     fieldName="name"
                 />
                 {/*[TODO] 문의 필요 */}
                 {/* <LabelAndInput
-                    labelValue="아이디"
-                    placeholder="아이디를 적어주세요."
+                    labelValue={t("아이디")}
+                    placeholder={t('아이디')}
                     register={methods.register}
                     fieldName="farmerId"
                 /> */}

@@ -24,5 +24,10 @@ export const QUERY_KEYS = {
         all: () => [...QUERY_KEYS.ALL, 'area'],
         getAreaList: () => [...QUERY_KEYS.AREA.all(), 'areaList'],
         getAreaWithSectionList: () => [...QUERY_KEYS.AREA.all(), 'areaWithSectionList'],
+        getAreaSectionList: (areaId: string) => [
+            ...QUERY_KEYS.AREA.all(),
+            'areaSectionList',
+            areaId,
+        ],
     },
 };

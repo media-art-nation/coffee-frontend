@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { Stack, TableCell, TableRow } from '@mui/material';
@@ -8,6 +9,7 @@ import Table from '@/components/Table';
 import Title from '@/components/Title';
 
 const ViceAdminList = () => {
+    const { t } = useTranslation();
     const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
 
@@ -22,10 +24,10 @@ const ViceAdminList = () => {
     };
     return (
         <Stack>
-            <Title title={'부 관리자 목록'} />
+            <Title title={t('부관리자 목록')} />
             <PageLayout>
                 <Table
-                    headData={['이름', '아이디', '관리 지역']}
+                    headData={[t('이름'), t('아이디'), t('관리 지역')]}
                     bodyData={viceAdminList}
                     renderRow={renderRow}
                     isLoading={isLoading}

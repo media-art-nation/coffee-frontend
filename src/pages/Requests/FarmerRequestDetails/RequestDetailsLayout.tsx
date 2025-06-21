@@ -16,10 +16,9 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
 import { TChipColor } from '@/typings/Chip';
-import { TRequestServiceType } from '@/typings/Requests';
 import { showToast } from '@/utils/showToast';
 
-import { REQUEST_STATUS } from '../constants';
+import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constants';
 
 type RequestDetailsLayoutProps = {
     children: React.ReactNode;
@@ -29,17 +28,9 @@ type TRequestDetailInput = {
     rejectedReason: string;
 };
 
-const SERVICE_TYPE: Record<TRequestServiceType, string> = {
-    VILLAGE_HEAD: '면장',
-    FARMER: '농부',
-    TREES_TRANSACTION: '나무 수령',
-    PURCHASE: '수매',
-    SECTION: '지역',
-};
-
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const { t } = useTranslation();
-    const { watch, register } = useForm<TRequestDetailInput>();
+    const { watch, register, reset } = useForm<TRequestDetailInput>();
     const [showTextArea, setShowTextArea] = useState(false);
     const role = getCookies('role');
 
@@ -61,13 +52,13 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const handleApproveRequest = () => {
         openDialog({
             title: t('요청 승인'),
-            description: t('승인 하시겠습니까?'),
+            description: t('요청을 승인하시겠습니까?'),
             variant: 'confirm',
             primaryAction: {
                 name: t('확인'),
                 onClick: async () => {
                     await approveApproval(id).then((res) => {
-                        if (res.code === 'SUCCESS') showToast.success(t('승인 처리 되었습니다.'));
+                        if (res.code === 'SUCCESS') showToast.success(t('승인 처리되었습니다.'));
                         else showToast.error(res.message);
                     });
                 },
@@ -87,7 +78,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
 
         openDialog({
             title: t('승인 요청 거절'),
-            description: t('거절 하시겠습니까?'),
+            description: t('거절하시겠습니까?'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),
@@ -109,26 +100,44 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
         });
     };
 
-    // const handleDeleteApproval = () => {
-    //     openDialog({
-    //         title: t('요청 삭제'),
-    //         description: t('삭제된 내용은 되돌릴 수 없습니다.'),
-    //         variant: 'alert',
-    //         primaryAction: {
-    //             name: t('확인'),
-    //             onClick: () => {},
-    //         },
-    //         secondaryAction: {
-    //             name: t('취소'),
-    //             onClick: () => {},
-    //         },
-    //     });
-    // };
+    const handleDeleteApproval = () => {
+        openDialog({
+            title: t('요청 삭제'),
+            description: t('삭제된 내용은 되돌릴 수 없습니다.'),
+            variant: 'alert',
+            primaryAction: {
+                name: t('확인'),
+                onClick: () => {
+                    console.log('삭제!');
+                },
+            },
+            secondaryAction: {
+                name: t('취소'),
+                onClick: () => {},
+            },
+        });
+    };
 
     if (!details) return null;
     return (
         <Stack sx={{ width: '100%' }}>
-            <Title title={t('요청 상세')} />
+            <Title title={t('요청 상세')}>
+                {details.status === 'PENDING' && (
+                    <Stack
+                        sx={{
+                            'margin': 'auto',
+                            'flexDirection': 'row',
+                            'gap': '10px',
+                            '& .MuiButton-root': { height: '40px' },
+                            'padding': '0 0 30px 0',
+                        }}
+                    >
+                        <Button variant="outlinedRed" onClick={handleDeleteApproval}>
+                            삭제
+                        </Button>
+                    </Stack>
+                )}
+            </Title>
             {/* 요청 기본 정보 */}
             <Stack sx={{ padding: '0 32px', gap: '30px' }}>
                 <Stack
@@ -160,7 +169,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
                             {t('요청 분류')}
                         </Typography>
-                        <Typography>{`${t(SERVICE_TYPE[details.serviceType])}/${details.method}`}</Typography>
+                        <Typography>{`${t(REQUEST_SERVICE_TYPE[details.serviceType])} / ${t(REQUEST_METHOD[details.method])}`}</Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
@@ -218,23 +227,6 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         </Button>
                     </Stack>
                 )}
-                {/* 삭제 버튼 - PENDING */}
-                {/* TODO: 본인이 작성한 경우에만 삭제 버튼 노출 */}
-                {/* {details.status === 'PENDING' && (
-                    <Stack
-                        sx={{
-                            'margin': 'auto',
-                            'flexDirection': 'row',
-                            'gap': '10px',
-                            '& .MuiButton-root': { height: '40px' },
-                            'padding': '0 0 30px 0',
-                        }}
-                    >
-                        <Button variant="containedRed" onClick={handleDeleteApproval}>
-                            삭제
-                        </Button>
-                    </Stack>
-                )} */}
                 {/* 거절 사유 입력 form */}
                 {showTextArea && (
                     <Stack sx={{ gap: '15px' }}>
@@ -253,7 +245,13 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                                 '& .MuiButton-root': { height: '40px' },
                             }}
                         >
-                            <Button variant="containedGrey" onClick={toggleShowTextArea}>
+                            <Button
+                                variant="containedGrey"
+                                onClick={() => {
+                                    toggleShowTextArea();
+                                    reset();
+                                }}
+                            >
                                 {t('취소')}
                             </Button>
                             <Button variant="containedRed" onClick={handleRejectRequest}>

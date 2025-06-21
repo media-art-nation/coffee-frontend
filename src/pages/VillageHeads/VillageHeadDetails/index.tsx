@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Box, Button, Stack } from '@mui/material';
@@ -9,13 +10,14 @@ import Title from '@/components/Title';
 import { palette } from '@/themes';
 
 const VillageHeadDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const { data } = useGetVillageHeadDetails(id);
 
     return (
         <Stack>
-            <Title title="면장 상세 정보">
+            <Title title={t('면장 상세')}>
                 <Button
                     variant="containedGrey"
                     sx={{ width: '86px', wordBreak: 'keep-all' }}
@@ -23,10 +25,10 @@ const VillageHeadDetails = () => {
                         navigate(`/village-heads/edit/${id}`);
                     }}
                 >
-                    수정
+                    {t('수정')}
                 </Button>
                 <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
-                    승인
+                    {t('승인')}
                 </Button>
             </Title>
             <PageLayout gap={'50px'}>
@@ -40,15 +42,23 @@ const VillageHeadDetails = () => {
                             justifyContent: 'space-between',
                         }}
                     >
-                        <LabelValue label="섹션명" value={data?.sectionInfo.sectionName || ''} />
-                        <LabelValue label="이름" value={data?.username || ''} />
-                        <LabelValue label="아이디" value={data?.userId || ''} />
+                        <LabelValue label={t('섹션')} value={data?.sectionInfo.sectionName || ''} />
+                        <LabelValue label={t('이름')} value={data?.username || ''} />
+                        <LabelValue label={t('아이디')} value={data?.userId || ''} />
                     </Stack>
                 </Stack>
                 <Stack gap={'50px'}>
-                    <LabelValue label="계좌정보" value={data?.accountInfo || ''} />
-                    <LabelValue label="계약서" value={data?.contractFileUrl || ''} link={true} />
-                    <LabelValue label="통장사본" value={data?.bankbookPhotoUrl || ''} link={true} />
+                    <LabelValue label={t('계좌 정보')} value={data?.accountInfo || ''} />
+                    <LabelValue
+                        label={t('계약서')}
+                        value={data?.contractFileUrl || ''}
+                        link={true}
+                    />
+                    <LabelValue
+                        label={t('통장 사본')}
+                        value={data?.bankbookPhotoUrl || ''}
+                        link={true}
+                    />
                 </Stack>
             </PageLayout>
         </Stack>

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
@@ -21,6 +22,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const VillageHeadRegister = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { id } = useParams();
     const { openDialog } = useDialog();
@@ -44,11 +46,11 @@ const VillageHeadRegister = () => {
                         queryKey: QUERY_KEYS.APP_USER.getVillageHeadList(),
                     });
                     openDialog({
-                        title: '면장 등록 요청을 성공했습니다.',
-                        description: '관리자가 요청 승인 후 목록에서 확인가능합니다.',
+                        title: t('면장 등록 요청 성공'),
+                        description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 methods.reset();
                             },
@@ -58,11 +60,11 @@ const VillageHeadRegister = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: '면장 등록 요청에 실패하였습니다.',
-                    description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                    title: t('면장 등록 요청 실패'),
+                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
-                        name: '확인',
+                        name: t('확인'),
                         onClick: () => {
                             methods.reset();
                         },
@@ -80,8 +82,8 @@ const VillageHeadRegister = () => {
                             queryKey: QUERY_KEYS.APP_USER.getVillageHeadDetail(JSON.stringify(id)),
                         });
                         openDialog({
-                            title: '면장 수정 요청을 성공했습니다.',
-                            description: '관리자가 요청 승인 후 확인가능합니다.',
+                            title: t('면장 정보 수정 완료'),
+                            description: t('관리자가 요청 승인 후 확인 가능합니다.'),
                             variant: 'confirm',
                             primaryAction: {
                                 name: '확인',
@@ -94,11 +96,11 @@ const VillageHeadRegister = () => {
                 })
                 .catch((err) => {
                     openDialog({
-                        title: '면장 수정 요청에 실패하였습니다.',
-                        description: `에러 : ${err}.\n 관리자에게 문의 바랍니다.`,
+                        title: t('면장 정보 수정 실패'),
+                        description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                         variant: 'alert',
                         primaryAction: {
-                            name: '확인',
+                            name: t('확인'),
                             onClick: () => {
                                 methods.reset();
                             },
@@ -110,13 +112,13 @@ const VillageHeadRegister = () => {
 
     return (
         <Stack>
-            <Title title={id ? '면장 정보 수정' : '면장 등록'}>
+            <Title title={id ? t('면장 정보 수정') : t('면장 등록')}>
                 <Button
                     variant="containedGrey"
                     sx={{ width: '86px', wordBreak: 'keep-all' }}
                     onClick={() => navigate(`/village-heads/${id}`)}
                 >
-                    취소
+                    {t('취소')}
                 </Button>
                 {id ? (
                     <Button
@@ -124,7 +126,7 @@ const VillageHeadRegister = () => {
                         sx={{ width: '86px', wordBreak: 'keep-all' }}
                         onClick={() => methods.handleSubmit(onSubmitEdit)()}
                     >
-                        수정
+                        {t('수정')}
                     </Button>
                 ) : (
                     <Button
@@ -132,7 +134,7 @@ const VillageHeadRegister = () => {
                         sx={{ width: '86px', wordBreak: 'keep-all' }}
                         onClick={() => methods.handleSubmit(onSubmit)()}
                     >
-                        등록
+                        {t('등록')}
                     </Button>
                 )}
             </Title>
@@ -142,10 +144,10 @@ const VillageHeadRegister = () => {
                     <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
                 </Stack>
                 <LabelAndSelect
-                    labelValue="관리 세션"
+                    labelValue={t('관리 섹션')}
                     fieldName="sectionId"
                     control={methods.control}
-                    placeholder={'관리 세션'}
+                    placeholder={t('관리 섹션')}
                     selectArr={
                         areaData?.map((area) => {
                             return { value: String(area.id), label: area.areaName };
@@ -153,48 +155,48 @@ const VillageHeadRegister = () => {
                     }
                 />
                 <LabelAndInput
-                    labelValue="이름"
+                    labelValue={t('이름')}
                     fieldName="username"
                     register={methods.register}
-                    placeholder="이름"
+                    placeholder={t('이름을 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="아이디"
+                    labelValue={t('아이디')}
                     fieldName="userId"
                     register={methods.register}
-                    placeholder="ID"
+                    placeholder={t('아이디를 입력해주세요.')}
                 />
                 <LabelAndInput
-                    labelValue="패스워드"
+                    labelValue={t('비밀번호')}
                     fieldName="password"
                     register={methods.register}
-                    placeholder="password"
+                    placeholder={t('비밀번호를 입력해주세요.')}
                 />
                 <Stack sx={{ gap: '12px' }}>
-                    <Typography sx={{ fontSize: '14px' }}>계좌 정보</Typography>
+                    <Typography sx={{ fontSize: '14px' }}>{t('계좌 정보')}</Typography>
                     <Stack direction={'row'} gap="15px">
-                        <TextField {...methods.register('bankName')} placeholder={'은행명'} />
+                        <TextField {...methods.register('bankName')} placeholder={t('은행명')} />
                         <TextField
                             sx={{ width: '500px' }}
                             {...methods.register('accountInfo')}
-                            placeholder={'계좌 번호'}
+                            placeholder={t('계좌 번호')}
                         />
                     </Stack>
                 </Stack>
                 <LabelAndSelectFile
-                    labelValue="신분증"
+                    labelValue={t('사진')}
                     fieldName={'identificationPhoto'}
                     watch={methods.watch}
                     setValue={methods.setValue}
                 />
                 <LabelAndSelectFile
-                    labelValue="계약서"
+                    labelValue={t('계약서')}
                     fieldName={'contractFile'}
                     watch={methods.watch}
                     setValue={methods.setValue}
                 />
                 <LabelAndSelectFile
-                    labelValue="통장 사본"
+                    labelValue={t('통장 사본')}
                     fieldName={'bankbookPhoto'}
                     watch={methods.watch}
                     setValue={methods.setValue}

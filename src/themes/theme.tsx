@@ -50,6 +50,7 @@ declare module '@mui/material/Button' {
         containedWhite: true;
         containedRed: true;
         containedGrey: true;
+        outlinedRed: true;
         //------------------------아래부터 진짜
         Primary: true;
         Secondary: true;
@@ -180,6 +181,7 @@ export const theme = createTheme({
                     'minHeight': '44px',
                     '& .MuiOutlinedInput-root': {
                         'height': '44px',
+                        'fontSize': '14px',
                         '& input': {
                             padding: '12px 10px',
                         },
@@ -336,6 +338,7 @@ export const theme = createTheme({
                     },
                     'span': {
                         color: palette.grey[400],
+                        fontSize: '14px',
                     },
                 },
                 icon: {
@@ -381,6 +384,13 @@ export const theme = createTheme({
                         backgroundColor: palette.common.white,
                         border: `1px solid ${palette.grey[100]}`,
                         color: palette.grey[800],
+                    },
+                },
+                {
+                    props: { variant: 'outlinedRed' },
+                    style: {
+                        border: `1px solid ${palette.red.main}`,
+                        color: palette.red.main,
                     },
                 },
                 {
