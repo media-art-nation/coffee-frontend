@@ -1,0 +1,39 @@
+name: Deploy
+
+on:
+    push:
+        branches: ['develop']
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: 'yarn'
+
+            - name: Install Dependencies & Build (via build.sh)
+              run: |
+                  chmod +x ./build.sh
+                  ./build.sh
+
+            - name: Pushes to another repository
+              id: push_directory
+              uses: cpina/github-action-push-to-another-repository@main
+              env:
+                  API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
+              with:
+                  source-directory: 'output'
+                  destination-github-username: yuna872
+                  destination-repository-name: coffee-frontend
+                  user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
+                  commit-message: ${{ github.event.commits[0].message }}
+                  target-branch: develop
+
+            - name: Check Output
+              run: 'echo "📁 Repo pushed to: $DESTINATION_CLONED_DIRECTORY"'
