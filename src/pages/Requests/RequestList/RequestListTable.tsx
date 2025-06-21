@@ -6,6 +6,7 @@ import { DeleteOutline } from '@mui/icons-material';
 import { Chip, IconButton, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { getCookies } from '@/apis/AppUser/cookie';
 import { useDeleteApproval } from '@/apis/Approval/useDeleteApproval';
 import { useGetApproval } from '@/apis/Approval/useGetApproval';
 import Table from '@/components/Table';
@@ -21,6 +22,8 @@ const RequestListTable = () => {
     const navigate = useNavigate();
     const { watch } = useFormContext();
     const { openDialog } = useDialog();
+    const appUserId = getCookies('appUserId');
+    const role = getCookies('role');
 
     const watchedValues = watch();
 
@@ -76,16 +79,19 @@ const RequestListTable = () => {
                     />
                 </TableCell>
                 <TableCell>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteApproval(row.id);
-                        }}
-                    >
-                        <DeleteOutline sx={{ color: palette.grey[500] }} />
-                    </IconButton>
+                    {row.status === 'PENDING' &&
+                        (role === 'ADMIN' || row.requesterId === appUserId) && (
+                            <IconButton
+                                aria-label="delete"
+                                size="small"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteApproval(row.id);
+                                }}
+                            >
+                                <DeleteOutline sx={{ color: palette.grey[500] }} />
+                            </IconButton>
+                        )}
                 </TableCell>
             </TableRow>
         );

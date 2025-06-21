@@ -80,12 +80,16 @@ const AccountRegister = () => {
             primaryAction: {
                 name: t('확인'),
                 onClick: async () => {
-                    await signUp(payload).then((res) => {
-                        if (res.code === 'SUCCESS') {
-                            showToast.success(t('계정이 생성 되었습니다.'));
-                            reset();
-                        } else showToast.error(t('계정 생성에 실패하였습니다.'));
-                    });
+                    await signUp(payload)
+                        .then((res) => {
+                            if (res.code === 'SUCCESS') {
+                                showToast.success(t('계정이 생성 되었습니다.'));
+                                reset();
+                            } else showToast.error(t('계정 생성에 실패하였습니다.'));
+                        })
+                        .catch(() => {
+                            showToast.error(t('계정 생성에 실패하였습니다.'));
+                        });
                 },
             },
             secondaryAction: {

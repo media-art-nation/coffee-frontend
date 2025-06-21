@@ -66,9 +66,12 @@ export type TPurchaseApprovalDetails = TApprovalBase & {
 
 export type TTreeTransactionApprovalDetails = TApprovalBase & {
     farmerId: number;
+    farmerName: string;
+    sectionName: string;
     quantity: number;
     receivedDate: string;
     species: string;
+    areaName: string;
 };
 
 const getApprovalDetails = async <T = GetApprovalDetailsRes>(

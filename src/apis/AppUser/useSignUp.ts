@@ -15,7 +15,9 @@ type SignUpReq = {
 };
 
 const signUp = async (formData: SignUpReq) => {
-    const response = await axiosInstance.post('/app-user/sign-up', formData);
+    const response = await axiosInstance.post('/app-user/sign-up', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
     return response.data;
 };
 
