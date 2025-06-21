@@ -35,5 +35,8 @@ jobs:
                   commit-message: ${{ github.event.commits[0].message }}
                   target-branch: develop
 
+            - name: List output folder contents
+              run: ls -al output/
+
             - name: Check Output
               run: 'echo "📁 Repo pushed to: $DESTINATION_CLONED_DIRECTORY"'
