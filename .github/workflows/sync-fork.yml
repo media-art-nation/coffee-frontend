@@ -1,4 +1,4 @@
-name: Synchronize to forked repository
+name: Synchronize to forked repo
 on:
     push:
         branches:
