@@ -1,9 +1,3 @@
 {
-    "rewrites": [
-        { "source": "/(.*)", "destination": "/" },
-        {
-            "source": "/api/:path*",
-            "destination": "https://tedserp-478226014311.asia-northeast3.run.app/:path*"
-        }
-    ]
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
