@@ -2,13 +2,13 @@ import axios from 'axios';
 
 import { getCookies } from './AppUser/cookie';
 
-const baseURL =
-    import.meta.env.MODE === 'development'
-        ? '/api' // 개발 시 프록시 경로
-        : import.meta.env.VITE_API_URL;
+// const baseURL =
+//     import.meta.env.MODE === 'development'
+//         ? '/api' // 개발 시 프록시 경로
+//         : import.meta.env.VITE_API_URL;
 
 export const axiosInstance = axios.create({
-    baseURL,
+    baseURL: 'api',
     headers: {
         'Content-Type': 'application/json',
     },
