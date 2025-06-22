@@ -31,4 +31,8 @@ export const QUERY_KEYS = {
             areaId,
         ],
     },
+    PURCHASE: {
+        all: () => [...QUERY_KEYS.ALL, 'purchase'],
+        getPurchaseList: () => [...QUERY_KEYS.PURCHASE.all(), 'purchaseList'],
+    },
 };
