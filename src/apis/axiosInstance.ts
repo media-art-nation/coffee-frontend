@@ -8,7 +8,7 @@ import { getCookies } from './AppUser/cookie';
 //         : import.meta.env.VITE_API_URL;
 
 export const axiosInstance = axios.create({
-    baseURL: 'api',
+    baseURL: '/api',
     headers: {
         'Content-Type': 'application/json',
     },
