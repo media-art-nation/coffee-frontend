@@ -1,4 +1,4 @@
-name: Synchronize to forked repo
+name: Synchronize to repo
 on:
     push:
         branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
     sync:
-        name: Sync forked repo
+        name: Sync repo
         runs-on: ubuntu-latest
 
         steps:
@@ -26,7 +26,7 @@ jobs:
                   git remote add forked-repo https://yuna872:${{ secrets.PAT_TOKEN }}@github.com/yuna872/coffee-frontend-deploy.git
                   git remote -v
 
-            - name: Push to forked repo
+            - name: Push to repo
               run: |
                   git push -f forked-repo develop
 
