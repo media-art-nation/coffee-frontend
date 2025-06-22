@@ -2,7 +2,7 @@ name: Synchronize to forked repo
 on:
     push:
         branches:
-            - main
+            - develop
 
 jobs:
     sync:
@@ -15,7 +15,7 @@ jobs:
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
                   fetch-depth: 0
-                  ref: main
+                  ref: develop
 
             - name: Add remote-url
               run: |
