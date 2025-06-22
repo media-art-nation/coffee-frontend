@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 import { Button, Stack } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
@@ -16,6 +17,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 const TreesPurchaseRegister = () => {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const { openDialog } = useDialog();
     const { mutateAsync: createPurchase } = useCreateApprovalPurchase();
@@ -56,7 +58,15 @@ const TreesPurchaseRegister = () => {
     return (
         <Stack>
             <Title title={t('수매 내역 등록')}>
-                <Button variant="containedGrey">{t('취소')}</Button>
+                <Button
+                    variant="containedGrey"
+                    onClick={() => {
+                        methods.reset();
+                        navigate('/trees-purchases');
+                    }}
+                >
+                    {t('취소')}
+                </Button>
                 <Button
                     variant="containedBlue"
                     onClick={() => {

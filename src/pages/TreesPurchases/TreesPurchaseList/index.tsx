@@ -1,75 +1,40 @@
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
+import { GetPurchaseList, useGetPurchaseList } from '@/apis/PurChase/getPurchasList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-type TDummy = {
-    id: number;
-    manager: string;
-    purchaseDate: Date;
-    count: number;
-    price: number;
-    totalPrice: number;
-    minusPrice: number;
-    payment: number;
-};
 const TreesPurchaseList = () => {
     const { t } = useTranslation();
-
-    const dummy = [
-        {
-            id: 1,
-            manager: 'dummy',
-            purchaseDate: new Date(),
-            count: 5,
-            price: 51000,
-            totalPrice: 3100,
-            minusPrice: 3000,
-            payment: 100,
-        },
-        {
-            id: 2,
-            manager: 'dummy',
-            purchaseDate: new Date(),
-            count: 5,
-            price: 51000,
-            totalPrice: 3100,
-            minusPrice: 3000,
-            payment: 100,
-        },
-        {
-            id: 3,
-            manager: 'dummy',
-            purchaseDate: new Date(),
-            count: 5,
-            price: 51000,
-            totalPrice: 3100,
-            minusPrice: 3000,
-            payment: 100,
-        },
-    ];
-
-    const renderRow = (row: TDummy) => {
+    const { data: purchaseList } = useGetPurchaseList();
+    const navigate = useNavigate();
+    const renderRow = (row: GetPurchaseList) => {
         return (
-            <TableRow key={row.id}>
-                <TableCell>{row.manager}</TableCell>
+            <TableRow key={row.managerId}>
+                <TableCell>{row.managerName}</TableCell>
                 <TableCell>{dayjs(row.purchaseDate).format('YYYY-MM-DD')}</TableCell>
-                <TableCell>{row.count}</TableCell>
-                <TableCell>{row.price}</TableCell>
+                <TableCell>{row.quantity}</TableCell>
+                <TableCell>{row.unitPrice}</TableCell>
                 <TableCell>{row.totalPrice}</TableCell>
-                <TableCell>{row.minusPrice}</TableCell>
-                <TableCell>{row.payment}</TableCell>
+                <TableCell>{row.deduction}</TableCell>
+                <TableCell>{row.paymentAmount}</TableCell>
             </TableRow>
         );
     };
     return (
         <Stack>
             <Title title={t('수매 목록')}>
-                <Button variant="containedBlue">{}</Button>
+                <Button
+                    variant="containedBlue"
+                    onClick={() => navigate('/trees-purchases/register')}
+                >
+                    수매 내역 등록
+                </Button>
             </Title>
             <PageLayout>
                 <Table
@@ -82,7 +47,7 @@ const TreesPurchaseList = () => {
                         t('차감액'),
                         t('지급액'),
                     ]}
-                    bodyData={dummy}
+                    bodyData={purchaseList || []}
                     renderRow={renderRow}
                 />
             </PageLayout>
