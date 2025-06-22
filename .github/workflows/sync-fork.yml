@@ -19,7 +19,7 @@ jobs:
 
             - name: Add remote-url
               run: |
-                  git remote add forked-repo https://yuna872:${{ secrets.PAT }}@github.com/yuna872/coffee-frontend-deploy
+                  git remote add forked-repo https://yuna872:${{ secrets.PAT_TOKEN }}@github.com/yuna872/coffee-frontend-deploy
                   git config user.name yuna872
                   git config user.email yunae426@gmail.com
 
