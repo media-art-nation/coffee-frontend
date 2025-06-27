@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Stack } from '@mui/material';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { CreateAreaReq, useCreateArea } from '@/apis/Area/useCreateArea';
@@ -12,7 +13,7 @@ import SearchTextField from '@/components/SearchTextField';
 import Title from '@/components/Title';
 
 const LocationRegister = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const methods = useForm<CreateAreaReq>();
     const queryClient = useQueryClient();
     const { mutateAsync: createArea } = useCreateArea();
@@ -25,6 +26,20 @@ const LocationRegister = () => {
             }
         });
     };
+
+    // google map api
+    const containerStyle = {
+        width: '100%',
+        height: '400px',
+    };
+
+    const center = {
+        lng: 95.956,
+        lat: 21.9162,
+    };
+
+    console.log(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
+
     return (
         <Stack>
             <Title title={t('지역 생성')}>
@@ -41,6 +56,14 @@ const LocationRegister = () => {
                         placeholder={t('지역을 검색해주세요.')}
                     />
                 </LabelComponentsLayout>
+                <LoadScript
+                    googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                    language={i18n.language}
+                >
+                    <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+                        {/* 마커, 경로 등 여기에 추가 */}
+                    </GoogleMap>
+                </LoadScript>
             </PageLayout>
         </Stack>
     );
