@@ -11,19 +11,43 @@ import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import SearchTextField from '@/components/SearchTextField';
 import Title from '@/components/Title';
+import { useDialog } from '@/hooks/useDialog';
 
 const LocationRegister = () => {
     const { t, i18n } = useTranslation();
     const methods = useForm<CreateAreaReq>();
+    const { openDialog } = useDialog();
     const queryClient = useQueryClient();
     const { mutateAsync: createArea } = useCreateArea();
+
     const onSubmit = (data: CreateAreaReq) => {
         createArea(data).then((res) => {
             if (res?.data?.code === 'SUCCESS') {
                 queryClient.invalidateQueries({
                     queryKey: QUERY_KEYS.AREA.getAreaList(),
                 });
+                openDialog({
+                    title: t('지역 등록 요청 성공'),
+                    description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
+                    variant: 'confirm',
+                    primaryAction: {
+                        name: t('확인'),
+                        onClick: () => {
+                            methods.reset();
+                        },
+                    },
+                });
+                return;
             }
+            openDialog({
+                title: t('지역 등록 요청 실패'),
+                description: t('권한 확인 또는 관리자에게 문의해주세요.'),
+                variant: 'alert',
+                primaryAction: {
+                    name: t('확인'),
+                    onClick: () => {},
+                },
+            });
         });
     };
 

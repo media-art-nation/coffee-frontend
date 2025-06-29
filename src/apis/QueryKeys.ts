@@ -35,4 +35,8 @@ export const QUERY_KEYS = {
         all: () => [...QUERY_KEYS.ALL, 'purchase'],
         getPurchaseList: () => [...QUERY_KEYS.PURCHASE.all(), 'purchaseList'],
     },
+    TREE_TRANSACTION: {
+        all: () => [...QUERY_KEYS.ALL, 'treeTransaction'],
+        getTreeTransactionList: () => [...QUERY_KEYS.TREE_TRANSACTION.all(), 'treeTransactionList'],
+    },
 };
