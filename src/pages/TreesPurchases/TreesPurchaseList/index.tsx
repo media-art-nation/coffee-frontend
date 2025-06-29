@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { GetPurchaseList, useGetPurchaseList } from '@/apis/PurChase/getPurchasList';
+import { GetPurchaseList, useGetPurchaseList } from '@/apis/Purchase/getPurchaseList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';

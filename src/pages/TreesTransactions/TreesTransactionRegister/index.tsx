@@ -42,7 +42,17 @@ const TreesTransactionRegister = () => {
                             },
                         },
                     });
+                    return;
                 }
+                openDialog({
+                    title: t('나무수령 등록 요청 실패'),
+                    description: t('권한 확인 또는 관리자에게 문의해주세요.'),
+                    variant: 'alert',
+                    primaryAction: {
+                        name: t('확인'),
+                        onClick: () => {},
+                    },
+                });
             })
             .catch((err) => {
                 openDialog({

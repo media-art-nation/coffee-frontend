@@ -1,7 +1,9 @@
+import { QueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 import { getCookies } from './AppUser/cookie';
 
+export const queryClient = new QueryClient();
 // const baseURL =
 //     import.meta.env.MODE === 'development'
 //         ? '/api' // 개발 시 프록시 경로

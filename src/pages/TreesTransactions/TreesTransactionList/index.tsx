@@ -4,51 +4,26 @@ import { useNavigate } from 'react-router';
 import { Button, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
+import {
+    GetTreeTransactionList,
+    useGetTreeTransactionList,
+} from '@/apis/TreeTransaction/GetTreeTransactionList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
-type TDummy = {
-    id: number;
-    farmer: string;
-    tree: string;
-    count: number;
-    receiptDate: Date;
-};
 const TreesTransactionList = () => {
     const { t } = useTranslation();
-    const dummy: TDummy[] = [
-        {
-            id: 1,
-            farmer: 'dummy',
-            tree: 'dummy',
-            count: 5,
-            receiptDate: new Date(),
-        },
-        {
-            id: 2,
-            farmer: 'dummy',
-            tree: 'dummy',
-            count: 5,
-            receiptDate: new Date(),
-        },
-        {
-            id: 3,
-            farmer: 'dummy',
-            tree: 'dummy',
-            count: 5,
-            receiptDate: new Date(),
-        },
-    ];
+    const { data: treeTransactionList, isLoading } = useGetTreeTransactionList();
 
     const navigate = useNavigate();
-    const renderRow = (row: TDummy) => {
+    const renderRow = (row: GetTreeTransactionList) => {
         return (
             <TableRow key={row.id}>
-                <TableCell>{row.farmer}</TableCell>
-                <TableCell>{row.tree}</TableCell>
-                <TableCell>{row.count}</TableCell>
-                <TableCell>{dayjs(row.receiptDate).format('YYYY-MM-DD')}</TableCell>
+                <TableCell>{row.farmerName}</TableCell>
+                <TableCell>{row.species}</TableCell>
+                <TableCell>{row.quantity}</TableCell>
+                <TableCell>{dayjs(row.receivedDate).format('YYYY-MM-DD')}</TableCell>
             </TableRow>
         );
     };
@@ -65,7 +40,8 @@ const TreesTransactionList = () => {
             <PageLayout>
                 <Table
                     headData={[t('농부'), t('나무 종'), t('나무 수량'), t('수령 일자')]}
-                    bodyData={dummy}
+                    bodyData={treeTransactionList || []}
+                    isLoading={isLoading}
                     renderRow={renderRow}
                 />
             </PageLayout>
