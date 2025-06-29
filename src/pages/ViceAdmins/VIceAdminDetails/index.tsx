@@ -2,12 +2,14 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, Typography } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
 import LabelValue from '@/components/LabelValue';
 import NoPhoto from '@/components/NoPhoto';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { containerStyle } from '@/pages/Locations/LocationRegister';
 
 const ViceAdminDetails = () => {
     const { t } = useTranslation();
@@ -38,6 +40,23 @@ const ViceAdminDetails = () => {
                     ) : (
                         <NoPhoto />
                     )}
+                </Stack>
+                <Stack>
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={{
+                            lat: viceAdminDetail?.areaInfo.latitude || 0,
+                            lng: viceAdminDetail?.areaInfo.longitude || 0,
+                        }}
+                        zoom={13}
+                    >
+                        <Marker
+                            position={{
+                                lat: viceAdminDetail?.areaInfo.latitude || 0,
+                                lng: viceAdminDetail?.areaInfo.longitude || 0,
+                            }}
+                        />
+                    </GoogleMap>
                 </Stack>
             </PageLayout>
         </Stack>

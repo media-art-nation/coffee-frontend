@@ -16,6 +16,7 @@ type GetVillageHeadDetailsRes = {
         longitude: number;
         latitude: number;
         sectionName: string;
+        sectionId: number;
     };
 };
 

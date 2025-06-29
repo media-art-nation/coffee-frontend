@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, Typography } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
@@ -15,6 +16,7 @@ import LabelAndSelect from '@/components/LabelAndSelect';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import { containerStyle } from '@/pages/Locations/LocationRegister';
 
 type TViceAdminDetailsInput = {
     viceAdminId: number;
@@ -41,6 +43,8 @@ const ViceAdminEdit = () => {
             areaId: String(viceAdminDetail?.areaInfo.areaId || ''),
         },
     });
+
+    const areaInfo = getAreaList?.find((area) => String(area.id) === methods.watch('areaId'));
     const onSubmitEdit = (data: TViceAdminDetailsInput) => {
         updateViceAdmin({ ...data, areaId: Number(data.areaId) })
             .then((res) => {
@@ -127,6 +131,23 @@ const ViceAdminEdit = () => {
                     }
                     placeholder={t('관리 지역을 선택해주세요.')}
                 />
+                <Stack>
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={{
+                            lat: areaInfo?.latitude || 0,
+                            lng: areaInfo?.longitude || 0,
+                        }}
+                        zoom={13}
+                    >
+                        <Marker
+                            position={{
+                                lat: areaInfo?.latitude || 0,
+                                lng: areaInfo?.longitude || 0,
+                            }}
+                        />
+                    </GoogleMap>
+                </Stack>
                 <Stack gap={'27px'}>
                     <Typography variant="title/medium">ID Card</Typography>
                     <AddPhoto
