@@ -5,7 +5,7 @@ import { Button, Stack } from '@mui/material';
 
 import { useSignUp } from '@/apis/AppUser/useSignUp';
 import { useGetArea } from '@/apis/Area/useGetArea';
-import { useGetAreaSectionList } from '@/apis/Area/useGetAreaSection';
+import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
@@ -42,8 +42,8 @@ const AccountRegister = () => {
 
     const watchedAreaId = watch('areaId');
 
-    const { data: areaWithSections } = useGetAreaSectionList(
-        watchedAreaId ? watchedAreaId.toString() : undefined
+    const { data: areaWithSections } = useGetSectionList(
+        watchedAreaId ? Number(watchedAreaId) : undefined
     );
 
     const handleClickCancel = () => {

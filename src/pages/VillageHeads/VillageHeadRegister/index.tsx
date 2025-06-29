@@ -11,7 +11,8 @@ import {
     useCreateApprovalVillageHeadRegister,
 } from '@/apis/Approval/useCreateApprovalVillageHeadRegister';
 import { useUpdateApprovalVillageHead } from '@/apis/Approval/useUpdateApprovalVillageHead';
-import { useGetArea } from '@/apis/Area/useGetArea';
+import { useGetMyArea } from '@/apis/Area/useGetMyArea';
+import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
@@ -27,9 +28,10 @@ const VillageHeadRegister = () => {
     const { id } = useParams();
     const { openDialog } = useDialog();
     const { data: villageHead } = useGetVillageHeadDetails(id);
-    const { data: areaData } = useGetArea();
     const { mutateAsync: createVillageHead } = useCreateApprovalVillageHeadRegister();
     const { mutateAsync: updateVillageHead } = useUpdateApprovalVillageHead();
+    const { data: myArea } = useGetMyArea();
+    const { data: sectionList } = useGetSectionList(myArea?.id);
     const queryClient = useQueryClient();
     const methods = useForm<CreateApprovalVillageHeadRegisterReq>({
         defaultValues: {
@@ -150,7 +152,6 @@ const VillageHeadRegister = () => {
             </Title>
             <PageLayout gap={'10px'}>
                 <Stack gap={'10px'}>
-                    <Typography>Add Photo</Typography>
                     <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
                 </Stack>
                 <LabelAndSelect
@@ -159,8 +160,8 @@ const VillageHeadRegister = () => {
                     control={methods.control}
                     placeholder={t('관리 섹션')}
                     selectArr={
-                        areaData?.map((area) => {
-                            return { value: String(area.id), label: area.areaName };
+                        sectionList?.[0].sections?.map((section) => {
+                            return { value: String(section.id), label: section.sectionName };
                         }) || []
                     }
                 />

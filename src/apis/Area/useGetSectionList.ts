@@ -10,10 +10,9 @@ type GetAreaSectionListRes = {
     longitude: number;
     latitude: number;
     sections: TSection[];
-}[];
+};
 
-const getAreaSectionList = async (areaId: string | undefined): Promise<GetAreaSectionListRes> => {
-    if (!areaId) return [];
+const getSectionList = async (areaId: number | undefined): Promise<GetAreaSectionListRes[]> => {
     return await axiosInstance.get(`/area/${areaId}/with-sections`).then((res) => {
         if (res.data.code === 'SUCCESS') {
             return res.data.response;
@@ -22,10 +21,10 @@ const getAreaSectionList = async (areaId: string | undefined): Promise<GetAreaSe
     });
 };
 
-export const useGetAreaSectionList = (areaId: string | undefined) => {
+export const useGetSectionList = (areaId: number | undefined) => {
     return useQuery({
-        queryKey: QUERY_KEYS.AREA.getAreaSectionList(areaId || ''),
-        queryFn: () => getAreaSectionList(areaId),
+        queryKey: QUERY_KEYS.AREA.getSectionList(JSON.stringify(areaId) || ''),
+        queryFn: () => getSectionList(areaId),
         enabled: !!areaId,
     });
 };
