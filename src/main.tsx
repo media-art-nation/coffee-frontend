@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { GlobalStyles, ThemeProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LoadScript } from '@react-google-maps/api';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { DialogProvider } from '@/components/Dialog/DialogProvider.tsx';
@@ -31,13 +32,18 @@ createRoot(document.getElementById('root')!).render(
                         }}
                     />
                     <DialogProvider>
-                        <App />
-                        <ToastContainer
-                            position="top-center"
-                            theme="dark"
-                            hideProgressBar={true}
-                            autoClose={3000}
-                        />
+                        <LoadScript
+                            googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+                            libraries={['places']}
+                        >
+                            <App />
+                            <ToastContainer
+                                position="top-center"
+                                theme="dark"
+                                hideProgressBar={true}
+                                autoClose={3000}
+                            />
+                        </LoadScript>
                     </DialogProvider>
                 </ThemeProvider>
             </LocalizationProvider>

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
@@ -21,7 +22,12 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import { containerStyle } from '@/pages/Locations/LocationRegister';
 
+type CreateApprovalVillageHeadRegisterForm = Omit<
+    CreateApprovalVillageHeadRegisterReq,
+    'sectionId'
+> & { sectionId: string };
 const VillageHeadRegister = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -33,23 +39,29 @@ const VillageHeadRegister = () => {
     const { data: myArea } = useGetMyArea();
     const { data: sectionList } = useGetSectionList(myArea?.id);
     const queryClient = useQueryClient();
-    const methods = useForm<CreateApprovalVillageHeadRegisterReq>({
+    const methods = useForm<CreateApprovalVillageHeadRegisterForm>({
         defaultValues: {
             userId: villageHead?.userId,
             username: villageHead?.username,
             accountInfo: villageHead?.accountInfo,
+            sectionId: JSON.stringify(villageHead?.sectionInfo.sectionId),
         },
     });
-    const onSubmit = (data: CreateApprovalVillageHeadRegisterReq) => {
-        createVillageHead(data)
+    const onSubmit = (data: CreateApprovalVillageHeadRegisterForm, mode: 'edit' | 'create') => {
+        const submit = mode === 'edit' ? updateVillageHead : createVillageHead;
+        submit({ ...data, sectionId: Number(data.sectionId), appUserId: id || '' })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
                         queryKey: QUERY_KEYS.APP_USER.getVillageHeadList(),
                     });
                     openDialog({
-                        title: t('면장 등록 요청 성공'),
-                        description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
+                        title:
+                            mode === 'edit' ? t('면장 수정 요청 성공') : t('면장 등록 요청 성공'),
+                        description:
+                            mode === 'edit'
+                                ? t('관리자가 수정 승인 후 목록에서 확인 가능합니다.')
+                                : t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
                             name: t('확인'),
@@ -61,7 +73,7 @@ const VillageHeadRegister = () => {
                     return;
                 }
                 openDialog({
-                    title: t('면장 등록 요청 실패'),
+                    title: mode === 'edit' ? t('면장 수정 요청 실패') : t('면장 등록 요청 실패'),
                     description: t('권한 확인 또는 관리자에게 문의해주세요.'),
                     variant: 'alert',
                     primaryAction: {
@@ -72,7 +84,7 @@ const VillageHeadRegister = () => {
             })
             .catch((err) => {
                 openDialog({
-                    title: t('면장 등록 요청 실패'),
+                    title: mode === 'edit' ? t('면장 수정 요청 실패') : t('면장 등록 요청 실패'),
                     description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
                     variant: 'alert',
                     primaryAction: {
@@ -85,42 +97,9 @@ const VillageHeadRegister = () => {
             });
     };
 
-    const onSubmitEdit = (data: CreateApprovalVillageHeadRegisterReq) => {
-        if (id) {
-            updateVillageHead({ ...data, appUserId: id || '' }) //[TODO] appUserId에는 어떤 값이 들어가야 되는지 확인 필요.
-                .then((res) => {
-                    if (res?.data?.code === 'SUCCESS') {
-                        queryClient.invalidateQueries({
-                            queryKey: QUERY_KEYS.APP_USER.getVillageHeadDetail(JSON.stringify(id)),
-                        });
-                        openDialog({
-                            title: t('면장 정보 수정 완료'),
-                            description: t('관리자가 요청 승인 후 확인 가능합니다.'),
-                            variant: 'confirm',
-                            primaryAction: {
-                                name: '확인',
-                                onClick: () => {
-                                    methods.reset();
-                                },
-                            },
-                        });
-                    }
-                })
-                .catch((err) => {
-                    openDialog({
-                        title: t('면장 정보 수정 실패'),
-                        description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
-                        variant: 'alert',
-                        primaryAction: {
-                            name: t('확인'),
-                            onClick: () => {
-                                methods.reset();
-                            },
-                        },
-                    });
-                });
-        }
-    };
+    const sectionInfo = sectionList?.[0].sections.find(
+        (section) => String(section.id) === methods.watch('sectionId')
+    );
 
     return (
         <Stack>
@@ -136,7 +115,7 @@ const VillageHeadRegister = () => {
                     <Button
                         variant="containedBlue"
                         sx={{ width: '86px', wordBreak: 'keep-all' }}
-                        onClick={() => methods.handleSubmit(onSubmitEdit)()}
+                        onClick={() => methods.handleSubmit((data) => onSubmit(data, 'edit'))()}
                     >
                         {t('수정')}
                     </Button>
@@ -144,7 +123,7 @@ const VillageHeadRegister = () => {
                     <Button
                         variant="containedBlue"
                         sx={{ width: '86px', wordBreak: 'keep-all' }}
-                        onClick={() => methods.handleSubmit(onSubmit)()}
+                        onClick={() => methods.handleSubmit((data) => onSubmit(data, 'create'))()}
                     >
                         {t('등록')}
                     </Button>
@@ -165,6 +144,23 @@ const VillageHeadRegister = () => {
                         }) || []
                     }
                 />
+                <Stack>
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={{
+                            lat: sectionInfo?.latitude || 0,
+                            lng: sectionInfo?.longitude || 0,
+                        }}
+                        zoom={13}
+                    >
+                        <Marker
+                            position={{
+                                lat: sectionInfo?.latitude || 0,
+                                lng: sectionInfo?.longitude || 0,
+                            }}
+                        />
+                    </GoogleMap>
+                </Stack>
                 <LabelAndInput
                     labelValue={t('이름')}
                     fieldName="username"

@@ -2,11 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Box, Button, Stack } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
 import LabelValue from '@/components/LabelValue';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
+import { containerStyle } from '@/pages/Locations/LocationRegister';
 import { palette } from '@/themes';
 
 const VillageHeadDetails = () => {
@@ -59,6 +61,23 @@ const VillageHeadDetails = () => {
                         value={data?.bankbookPhotoUrl || ''}
                         link={true}
                     />
+                    <Stack>
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={{
+                                lat: data?.sectionInfo.latitude || 0,
+                                lng: data?.sectionInfo.longitude || 0,
+                            }}
+                            zoom={13}
+                        >
+                            <Marker
+                                position={{
+                                    lat: data?.sectionInfo.latitude || 0,
+                                    lng: data?.sectionInfo.longitude || 0,
+                                }}
+                            />
+                        </GoogleMap>
+                    </Stack>
                 </Stack>
             </PageLayout>
         </Stack>
