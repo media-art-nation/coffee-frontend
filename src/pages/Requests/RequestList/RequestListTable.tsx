@@ -23,7 +23,6 @@ const RequestListTable = () => {
     const { watch } = useFormContext();
     const { openDialog } = useDialog();
     const appUserId = getCookies('appUserId');
-    const role = getCookies('role');
 
     const watchedValues = watch();
 
@@ -79,19 +78,18 @@ const RequestListTable = () => {
                     />
                 </TableCell>
                 <TableCell>
-                    {row.status === 'PENDING' &&
-                        (role === 'ADMIN' || row.requesterId === appUserId) && (
-                            <IconButton
-                                aria-label="delete"
-                                size="small"
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    handleDeleteApproval(row.id);
-                                }}
-                            >
-                                <DeleteOutline sx={{ color: palette.grey[500] }} />
-                            </IconButton>
-                        )}
+                    {row.status === 'PENDING' && row.requesterId === appUserId && (
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteApproval(row.id);
+                            }}
+                        >
+                            <DeleteOutline sx={{ color: palette.grey[500] }} />
+                        </IconButton>
+                    )}
                 </TableCell>
             </TableRow>
         );
