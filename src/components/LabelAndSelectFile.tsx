@@ -66,7 +66,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
                         whiteSpace: 'noWrap',
                     }}
                 >
-                    파일 첨부
+                    {t('파일 첨부')}
                 </Button>
             </Stack>
         </LabelComponentsLayout>

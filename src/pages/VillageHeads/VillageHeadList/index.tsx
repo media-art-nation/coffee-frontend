@@ -1,12 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { Button, Stack, TableCell, TableRow } from '@mui/material';
+import { DeleteOutline } from '@mui/icons-material';
+import { IconButton, Stack, TableCell, TableRow } from '@mui/material';
 
 import { GetVillageHeadListRes, useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
+import { palette } from '@/themes';
 
 const VillageHeadList = () => {
     const { t } = useTranslation();
@@ -21,7 +23,9 @@ const VillageHeadList = () => {
                 <TableCell>{row.sectionName}</TableCell>
                 <TableCell>{row.farmerCount}</TableCell>
                 <TableCell>
-                    <Button variant="containedRed">{t('삭제')}</Button>
+                    <IconButton aria-label="delete" size="small">
+                        <DeleteOutline sx={{ color: palette.grey[500] }} />
+                    </IconButton>
                 </TableCell>
             </TableRow>
         );

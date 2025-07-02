@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, Stack, TextField, Typography } from '@mui/material';
 
 import { setCookies } from '@/apis/AppUser/cookie';
 import { useSignIn } from '@/apis/AppUser/useSignIn';
@@ -17,7 +17,7 @@ export type TLoginForm = {
 const Login = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { mutateAsync: signIn } = useSignIn();
+    const { mutateAsync: signIn, isPending } = useSignIn();
     const { register, handleSubmit } = useForm<TLoginForm>({
         defaultValues: {
             userId: '',
@@ -68,11 +68,23 @@ const Login = () => {
                 }}
             >
                 <Typography variant="h1/bold">{t('로그인')}</Typography>
-                <TextField placeholder={t('아이디')} {...register('userId')} />
-                <TextField placeholder={t('비밀번호')} {...register('password')} type="password" />
-                <Button variant="containedBlue" type="submit">
-                    {t('로그인')}
-                </Button>
+                {isPending ? (
+                    <Stack alignContent={'center'} justifyContent={'center'} height={'195px'}>
+                        <CircularProgress />
+                    </Stack>
+                ) : (
+                    <Stack width={'100%'} alignItems={'center'} gap="30px">
+                        <TextField placeholder={t('아이디')} {...register('userId')} />
+                        <TextField
+                            placeholder={t('비밀번호')}
+                            {...register('password')}
+                            type="password"
+                        />
+                        <Button variant="containedBlue" type="submit">
+                            {t('로그인')}
+                        </Button>
+                    </Stack>
+                )}
             </Stack>
         </Stack>
     );
