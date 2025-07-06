@@ -2,7 +2,6 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Button, Stack, Typography } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
 
 import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
 import {
@@ -10,6 +9,7 @@ import {
     useCreateApprovalFarmerRegister,
 } from '@/apis/Approval/useCreateApprovalFarmerRegister';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
+import { queryClient } from '@/apis/axiosInstance';
 import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
@@ -20,7 +20,6 @@ import { useDialog } from '@/hooks/useDialog';
 const FarmerRegister = () => {
     const { t } = useTranslation();
     const { openDialog } = useDialog();
-    const queryClient = useQueryClient();
     const { data: villageHeadList } = useGetVillageHeadList();
     const { mutateAsync: farmerRegisterMutateAsync } = useCreateApprovalFarmerRegister();
     const methods = useForm<CreateApprovalFarmerRegisterReq>({

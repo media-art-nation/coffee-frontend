@@ -1,9 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-import { DeleteOutline } from '@mui/icons-material';
 import {
     CircularProgress,
-    IconButton,
     Stack,
     Table,
     TableBody,
@@ -15,17 +13,27 @@ import {
 
 import noData from '@assets/noData.svg';
 
+import { getCookies } from '@/apis/AppUser/cookie';
+import { useDeleteSection } from '@/apis/Approval/useDeleteSection';
+import { useDeleteAreaAdmin } from '@/apis/Area/useDeleteAreaAdmin';
 import { useGetAreaWithSectionList } from '@/apis/Area/useGetAreaWithSection';
+import { useDeleteSectionAdmin } from '@/apis/Section/useDeleteSectionAdmin';
+import DeleteButton from '@/components/DeleteButton';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
-import { palette } from '@/themes';
+import { useDialog } from '@/hooks/useDialog';
 import { TAreaWithSections } from '@/typings/Area';
 
 const LocationList = () => {
     const { t } = useTranslation();
+    const { openDialog } = useDialog();
     const { data: areaWithSectionList, isLoading: areaWithSectionListLoading } =
         useGetAreaWithSectionList();
-    const headData = [t('지역'), t('섹션'), ''];
+    const { mutate: deleteSection } = useDeleteSection();
+    const { mutate: deleteSectionAdmin } = useDeleteSectionAdmin();
+    const { mutate: deleteAreaAdmin } = useDeleteAreaAdmin();
+    const headData = [t('지역'), t('섹션'), t('삭제')];
+    const role = getCookies('role');
     const renderRow = (row: TAreaWithSections) => {
         if (row.sections.length > 0) {
             return row.sections.map((item) => (
@@ -33,15 +41,26 @@ const LocationList = () => {
                     <TableCell>{row.areaName}</TableCell>
                     <TableCell>{item.sectionName}</TableCell>
                     <TableCell>
-                        <IconButton
-                            aria-label="delete"
-                            size="small"
-                            onClick={(e) => {
-                                e.stopPropagation();
+                        <DeleteButton
+                            onDelete={() => {
+                                openDialog({
+                                    title: t('해당 섹션을 삭제하시겠습니까?'),
+                                    description: t('섹션을 삭제하면 복구가 불가능합니다.'),
+                                    variant: 'alert',
+                                    primaryAction: {
+                                        name: t('확인'),
+                                        onClick: () => {
+                                            const submit =
+                                                role === 'ADMIN'
+                                                    ? deleteSectionAdmin
+                                                    : deleteSection;
+                                            submit({ sectionId: item.id });
+                                        },
+                                    },
+                                    secondaryAction: { name: t('취소'), onClick: () => {} },
+                                });
                             }}
-                        >
-                            <DeleteOutline sx={{ color: palette.grey[500] }} />
-                        </IconButton>
+                        />
                     </TableCell>
                 </TableRow>
             ));
@@ -51,15 +70,26 @@ const LocationList = () => {
                     <TableCell>{row.areaName}</TableCell>
                     <TableCell>-</TableCell>
                     <TableCell>
-                        <IconButton
-                            aria-label="delete"
-                            size="small"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                            }}
-                        >
-                            <DeleteOutline sx={{ color: palette.grey[500] }} />
-                        </IconButton>
+                        {role === 'ADMIN' ? (
+                            <DeleteButton
+                                onDelete={() => {
+                                    openDialog({
+                                        title: t('해당 지역을 삭제하시겠습니까?'),
+                                        description: t('섹션을 삭제하면 복구가 불가능합니다.'),
+                                        variant: 'alert',
+                                        primaryAction: {
+                                            name: t('확인'),
+                                            onClick: () => {
+                                                deleteAreaAdmin({ areaId: row.id });
+                                            },
+                                        },
+                                        secondaryAction: { name: t('취소'), onClick: () => {} },
+                                    });
+                                }}
+                            />
+                        ) : (
+                            '-'
+                        )}
                     </TableCell>
                 </TableRow>
             );
@@ -78,11 +108,7 @@ const LocationList = () => {
                                 })}
                             </TableRow>
                         </TableHead>
-                        {areaWithSectionList && areaWithSectionList.length > 0 ? (
-                            <TableBody>
-                                {areaWithSectionList.map((item) => renderRow(item))}
-                            </TableBody>
-                        ) : areaWithSectionListLoading ? (
+                        {areaWithSectionListLoading ? (
                             <TableBody>
                                 <TableRow>
                                     <TableCell colSpan={headData.length}>
@@ -97,6 +123,10 @@ const LocationList = () => {
                                         </Stack>
                                     </TableCell>
                                 </TableRow>
+                            </TableBody>
+                        ) : areaWithSectionList && areaWithSectionList.length > 0 ? (
+                            <TableBody>
+                                {areaWithSectionList.map((item) => renderRow(item))}
                             </TableBody>
                         ) : (
                             <TableBody>

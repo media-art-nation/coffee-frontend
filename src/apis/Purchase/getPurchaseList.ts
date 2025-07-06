@@ -4,6 +4,7 @@ import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { axiosInstance } from '@/apis/axiosInstance';
 
 export type GetPurchaseList = {
+    id: number;
     managerId: number;
     managerName: string;
     purchaseDate: string; //YYYY-MM-DD
