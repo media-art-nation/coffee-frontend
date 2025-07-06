@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { getCookies } from '@/apis/AppUser/cookie';
@@ -24,7 +24,7 @@ const SectionRegister = () => {
     const role = getCookies('role');
     const { mutateAsync: createSection } = useCreateSection();
     const { mutateAsync: createSectionAdmin } = useCreateSectionAdmin();
-
+    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'mm'>('mm');
     const methods = useForm<CreateSectionReq>({
         defaultValues: {
             areaId: 0,
@@ -84,7 +84,7 @@ const SectionRegister = () => {
         }).then((res) => {
             if (res?.data?.code === 'SUCCESS') {
                 openDialog({
-                    title: t('섹션 등록 요청 성공'),
+                    title: role === 'ADMIN' ? t('섹션 등록 성공') : t('섹션 등록 요청 성공'),
                     description:
                         role === 'ADMIN'
                             ? t('섹션 등록을 성공하였습니다.')
@@ -97,7 +97,7 @@ const SectionRegister = () => {
                 });
             } else {
                 openDialog({
-                    title: t('섹션 등록 요청 실패'),
+                    title: role === 'ADMIN' ? t('섹션 등록 실패') : t('섹션 등록 요청 실패'),
                     description: t('권한 확인 또는 관리자에게 문의해주세요.'),
                     variant: 'alert',
                     primaryAction: {
@@ -119,6 +119,26 @@ const SectionRegister = () => {
             </Title>
 
             <PageLayout gap="27px">
+                <LabelComponentsLayout labelValue={t('국가 선택')}>
+                    <Select
+                        value={selectedCountry}
+                        defaultValue="mm"
+                        onChange={(e) => {
+                            const newCountry = e.target.value as 'kr' | 'mm';
+                            setSelectedCountry(newCountry);
+
+                            // Autocomplete 업데이트
+                            if (autocompleteRef.current && inputRef.current) {
+                                autocompleteRef.current.setComponentRestrictions({
+                                    country: newCountry,
+                                });
+                            }
+                        }}
+                    >
+                        <MenuItem value="kr">대한민국</MenuItem>
+                        <MenuItem value="mm">미얀마</MenuItem>
+                    </Select>
+                </LabelComponentsLayout>
                 <LabelAndSelect
                     labelValue={t('지역')}
                     control={control}
@@ -149,7 +169,7 @@ const SectionRegister = () => {
                                         ref,
                                         {
                                             types: ['geocode'],
-                                            componentRestrictions: { country: 'kr' },
+                                            componentRestrictions: { country: selectedCountry },
                                         }
                                     );
 
