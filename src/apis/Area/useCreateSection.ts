@@ -11,7 +11,7 @@ export type CreateSectionReq = {
 };
 
 const createSection = async (param: CreateSectionReq) => {
-    return await axiosInstance.post('/approval/section', param);
+    return await axiosInstance.post('/approval/section?approverId=1', param);
 };
 
 export const useCreateSection = () => {

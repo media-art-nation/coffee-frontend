@@ -77,6 +77,7 @@ const SectionRegister = () => {
 
         submit({
             ...data,
+            areaId: Number(data.areaId),
             sectionName: data.sectionName.startsWith(areaName)
                 ? data.sectionName.slice(areaName.length).trim()
                 : data.sectionName,
