@@ -3,38 +3,30 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { DeleteOutline } from '@mui/icons-material';
-import { Chip, IconButton, TableCell, TableRow } from '@mui/material';
+import { Chip, IconButton, Pagination, Stack, TableCell, TableRow } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 import { useDeleteApproval } from '@/apis/Approval/useDeleteApproval';
-import { useGetApproval } from '@/apis/Approval/useGetApproval';
 import Table from '@/components/Table';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
-import { TRequestListTableRow, TRequestServiceType, TRequestStatus } from '@/typings/Requests';
+import { TRequestListRes, TRequestListTableRow } from '@/typings/Requests';
 import { showToast } from '@/utils/showToast';
 
 import { REQUEST_METHOD, REQUEST_SERVICE_TYPE, REQUEST_STATUS } from '../constants';
 
-const RequestListTable = () => {
+type RequestListTableProps = {
+    data: TRequestListRes;
+    isLoading: boolean;
+};
+
+const RequestListTable = ({ data, isLoading }: RequestListTableProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { watch } = useFormContext();
     const { openDialog } = useDialog();
     const appUserId = getCookies('appUserId');
-
-    const watchedValues = watch();
-
-    const { data, isLoading } = useGetApproval({
-        statuses: Object.entries(watchedValues.statuses)
-            .map(([key, val]) => (val ? (key as TRequestStatus) : null))
-            .filter((v) => v !== null),
-        serviceTypes: Object.entries(watchedValues.serviceTypes)
-            .map(([key, val]) => (val ? (key as TRequestServiceType) : null))
-            .filter((v) => v !== null),
-        pageable: watchedValues.pageable,
-    });
+    const { watch, setValue } = useFormContext();
 
     const { mutateAsync: deleteApproval } = useDeleteApproval();
     const handleDeleteApproval = (approvalId: number) => {
@@ -56,6 +48,10 @@ const RequestListTable = () => {
                 onClick: () => {},
             },
         });
+    };
+
+    const handleChangePage = (_: React.ChangeEvent<unknown>, page: number) => {
+        setValue('pageable.page', page - 1);
     };
 
     const renderRow = (row: TRequestListTableRow) => {
@@ -94,12 +90,25 @@ const RequestListTable = () => {
     };
 
     return (
-        <Table
-            headData={[t('요청 분류'), t('요청 일시'), t('담당자'), t('요청 상태'), '']}
-            bodyData={data?.content}
-            renderRow={renderRow}
-            isLoading={isLoading}
-        />
+        <>
+            <Table
+                headData={[t('요청 분류'), t('요청 일시'), t('담당자'), t('요청 상태'), '']}
+                bodyData={data?.content}
+                renderRow={renderRow}
+                isLoading={isLoading}
+            />
+            <Stack
+                sx={{
+                    alignItems: 'center',
+                }}
+            >
+                <Pagination
+                    count={data?.totalPages}
+                    page={watch('pageable.page') + 1}
+                    onChange={handleChangePage}
+                />
+            </Stack>
+        </>
     );
 };
 

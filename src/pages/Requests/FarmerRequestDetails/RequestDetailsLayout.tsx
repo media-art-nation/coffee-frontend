@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { Button, Chip, Divider, Stack, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 import { useApproveApproval } from '@/apis/Approval/useApproveApproval';
+import { useDeleteApproval } from '@/apis/Approval/useDeleteApproval';
 import { useGetApprovalDetails } from '@/apis/Approval/useGetApprovalDetails';
 import { useRejectApproval } from '@/apis/Approval/useRejectApproval';
 import TextArea from '@/components/TextArea';
@@ -30,6 +31,7 @@ type TRequestDetailInput = {
 
 const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { watch, register, reset } = useForm<TRequestDetailInput>();
     const [showTextArea, setShowTextArea] = useState(false);
     const role = getCookies('role');
@@ -38,10 +40,9 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const { openDialog } = useDialog();
 
     const { data: details } = useGetApprovalDetails(id);
-    console.log(details, 'approval details');
-
     const { mutateAsync: rejectApproval } = useRejectApproval();
     const { mutateAsync: approveApproval } = useApproveApproval();
+    const { mutateAsync: deleteApproval } = useDeleteApproval();
 
     const toggleShowTextArea = () => {
         setShowTextArea((prev) => !prev);
@@ -91,7 +92,6 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             if (res.code === 'SUCCESS') {
                                 showToast.success('거절 처리되었습니다.');
                             }
-                            console.log(res);
                         })
                         .catch(() => showToast.error(t('요청에 실패했습니다.')));
                 },
@@ -110,8 +110,17 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),
-                onClick: () => {
-                    console.log('삭제!');
+                onClick: async () => {
+                    await deleteApproval({
+                        approvalId: Number(id),
+                    })
+                        .then((res) => {
+                            if (res.code === 'SUCCESS') {
+                                showToast.success('삭제 되었습니다.');
+                                navigate('/requests');
+                            }
+                        })
+                        .catch(() => showToast.error(t('삭제에 실패했습니다. 다시 시도해주세요.')));
                 },
             },
             secondaryAction: {

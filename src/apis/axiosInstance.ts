@@ -19,7 +19,6 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        console.log('✅ axiosInstance 요청 인터셉터 진입:', config.url);
         // 토큰 가져오기
         const token = getCookies('accessToken');
         // const token =
@@ -47,11 +46,13 @@ axiosInstance.interceptors.response.use(
 
         const status = error.response.status;
         const code = error.response.data?.code;
+        const message = error.response.data?.message;
 
         console.log('HTTP 상태 코드:', status);
         console.log('응답 코드:', code);
+        console.log('message:', message);
 
-        if (status === 401 && code === 'A001') {
+        if (status === 401 && code === 'A002' && message === '토큰이 만료되었습니다.') {
             console.warn('🔐 토큰 만료로 인한 로그아웃 처리');
             removeCookies('accessToken');
             removeCookies('role');
