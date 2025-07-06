@@ -35,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
                         <LoadScript
                             googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
                             libraries={['places']}
+                            language="en"
                         >
                             <App />
                             <ToastContainer

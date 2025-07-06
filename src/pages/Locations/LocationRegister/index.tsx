@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -11,7 +11,6 @@ import { CreateAreaReq, useCreateArea } from '@/apis/Area/useCreateArea';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
-import SearchTextField from '@/components/SearchTextField';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
@@ -38,6 +37,7 @@ const LocationRegister = () => {
             longitude: defaultCenter.lng,
         },
     });
+    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'mm'>('mm');
 
     const { register, setValue, watch, handleSubmit, reset } = methods;
     const latitude = watch('latitude');
@@ -51,7 +51,7 @@ const LocationRegister = () => {
         if (res?.data?.code === 'SUCCESS') {
             queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AREA.getAreaList() });
             openDialog({
-                title: t('지역 등록 요청 성공'),
+                title: t('지역 등록 성공'),
                 description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                 variant: 'confirm',
                 primaryAction: {
@@ -61,7 +61,7 @@ const LocationRegister = () => {
             });
         } else {
             openDialog({
-                title: t('지역 등록 요청 실패'),
+                title: t('지역 등록 실패'),
                 description: t('권한 확인 또는 관리자에게 문의해주세요.'),
                 variant: 'alert',
                 primaryAction: {
@@ -82,12 +82,25 @@ const LocationRegister = () => {
             </Title>
 
             <PageLayout>
-                <LabelComponentsLayout labelValue={t('지역 검색')}>
-                    <SearchTextField
-                        fieldName="areaName"
-                        register={register}
-                        placeholder={t('지역을 검색해주세요.')}
-                    />
+                <LabelComponentsLayout labelValue={t('국가 선택')}>
+                    <Select
+                        value={selectedCountry}
+                        defaultValue="mm"
+                        onChange={(e) => {
+                            const newCountry = e.target.value as 'kr' | 'mm';
+                            setSelectedCountry(newCountry);
+
+                            // Autocomplete 업데이트
+                            if (autocompleteRef.current && inputRef.current) {
+                                autocompleteRef.current.setComponentRestrictions({
+                                    country: newCountry,
+                                });
+                            }
+                        }}
+                    >
+                        <MenuItem value="kr">대한민국</MenuItem>
+                        <MenuItem value="mm">미얀마</MenuItem>
+                    </Select>
                 </LabelComponentsLayout>
 
                 <Box sx={{ p: 2 }}>
@@ -107,7 +120,7 @@ const LocationRegister = () => {
                                         ref,
                                         {
                                             types: ['geocode'],
-                                            componentRestrictions: { country: 'kr' },
+                                            componentRestrictions: { country: selectedCountry },
                                         }
                                     );
 
