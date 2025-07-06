@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Pagination, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 
+import { useGetApproval } from '@/apis/Approval/useGetApproval';
 import Title from '@/components/Title';
 import { TPageable } from '@/typings/Pageable';
 import { TRequestServiceType, TRequestStatus } from '@/typings/Requests';
@@ -37,14 +36,22 @@ const RequestList = () => {
             pageable: {
                 page: 0,
                 size: 10,
-                sort: 'id',
+                sort: 'createdAt,desc',
             },
         },
     });
 
-    const handleChangePage = (_: React.ChangeEvent<unknown>, page: number) => {
-        methods.setValue('pageable.page', page - 1);
-    };
+    const watchedValues = methods.watch();
+
+    const { data, isLoading } = useGetApproval({
+        statuses: Object.entries(watchedValues.statuses)
+            .map(([key, val]) => (val ? (key as TRequestStatus) : null))
+            .filter((v) => v !== null),
+        serviceTypes: Object.entries(watchedValues.serviceTypes)
+            .map(([key, val]) => (val ? (key as TRequestServiceType) : null))
+            .filter((v) => v !== null),
+        pageable: watchedValues.pageable,
+    });
 
     return (
         <FormProvider {...methods}>
@@ -59,18 +66,7 @@ const RequestList = () => {
                     }}
                 >
                     <RequestListFilter />
-                    <RequestListTable />
-                    <Stack
-                        sx={{
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Pagination
-                            count={3}
-                            page={methods.watch('pageable.page') + 1}
-                            onChange={handleChangePage}
-                        />
-                    </Stack>
+                    <RequestListTable data={data} isLoading={isLoading} />
                 </Stack>
             </Stack>
         </FormProvider>

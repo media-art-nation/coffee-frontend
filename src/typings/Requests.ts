@@ -19,3 +19,13 @@ export type TRequestListTableRow = {
     serviceType: TRequestServiceType;
     createdAt: Date;
 };
+
+export type TRequestListRes = {
+    content: TRequestListTableRow[];
+    totalPages: number;
+    pageable: {
+        offset: number;
+        pageNumber: number;
+        pageSize: number;
+    };
+};
