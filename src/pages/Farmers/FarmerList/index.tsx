@@ -28,7 +28,7 @@ const FarmerList = () => {
                         onDelete={() => {
                             openDialog({
                                 title: t('해당 농부를 삭제하시겠습니까?'),
-                                description: t('농부를 삭제하면 복구가 불가능합니다.'),
+                                description: t('해당 농부에 속한 나무 수령 목록도 삭제 됩니다.'),
                                 variant: 'alert',
                                 primaryAction: {
                                     name: t('확인'),
