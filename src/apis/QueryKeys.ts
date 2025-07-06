@@ -36,4 +36,8 @@ export const QUERY_KEYS = {
         all: () => [...QUERY_KEYS.ALL, 'treeTransaction'],
         getTreeTransactionList: () => [...QUERY_KEYS.TREE_TRANSACTION.all(), 'treeTransactionList'],
     },
+    GCS: {
+        all: () => [...QUERY_KEYS.ALL, 'gcs'],
+        getImagePreview: (url: string) => [...QUERY_KEYS.GCS.all(), url],
+    },
 };

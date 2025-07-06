@@ -88,6 +88,9 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         rejectedReason: watch('rejectedReason'),
                     })
                         .then((res) => {
+                            if (res.code === 'SUCCESS') {
+                                showToast.success('거절 처리되었습니다.');
+                            }
                             console.log(res);
                         })
                         .catch(() => showToast.error(t('요청에 실패했습니다.')));

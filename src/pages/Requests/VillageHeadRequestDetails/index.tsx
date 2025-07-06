@@ -101,11 +101,41 @@ const VillageHeadRequestDetails = () => {
                     </Stack>
                     <Stack>
                         <Typography>{t('계약서')}</Typography>
-                        <Typography>{getFileName(details.contractFileUrl)}</Typography>
+                        {details.contractFileUrl ? (
+                            <Typography
+                                sx={{
+                                    'cursor': 'pointer',
+                                    '&:hover': { textDecoration: 'underline' },
+                                }}
+                                onClick={() => {
+                                    if (!details.contractFileUrl) return;
+                                    window.open(details.contractFileUrl, '_blank');
+                                }}
+                            >
+                                {getFileName(details.contractFileUrl)}
+                            </Typography>
+                        ) : (
+                            <Typography>-</Typography>
+                        )}
                     </Stack>
                     <Stack>
                         <Typography>{t('통장 사본')}</Typography>
-                        <Typography>{getFileName(details.bankbookPhotoUrl)}</Typography>
+                        {details.bankbookPhotoUrl ? (
+                            <Typography
+                                sx={{
+                                    'cursor': 'pointer',
+                                    '&:hover': { textDecoration: 'underline' },
+                                }}
+                                onClick={() => {
+                                    if (!details.bankbookPhotoUrl) return;
+                                    window.open(details.bankbookPhotoUrl, '_blank');
+                                }}
+                            >
+                                {getFileName(details.bankbookPhotoUrl)}
+                            </Typography>
+                        ) : (
+                            <Typography>-</Typography>
+                        )}
                     </Stack>
                 </Stack>
             </Stack>

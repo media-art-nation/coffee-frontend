@@ -14,5 +14,8 @@ const signIn = async (formData: SignInReq) => {
 export const useSignIn = () => {
     return useMutation({
         mutationFn: signIn,
+        onError: (error) => {
+            console.log('useMutation onError 발생:', error);
+        },
     });
 };

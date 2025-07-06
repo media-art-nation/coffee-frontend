@@ -58,8 +58,6 @@ const RequestListTable = () => {
         });
     };
 
-    console.log(data?.content);
-
     const renderRow = (row: TRequestListTableRow) => {
         return (
             <TableRow

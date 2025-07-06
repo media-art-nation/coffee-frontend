@@ -8,7 +8,7 @@ type RejectApprovalReq = {
 };
 
 const rejectApproval = async ({ approvalId, rejectedReason }: RejectApprovalReq) => {
-    const response = await axiosInstance.patch(`/approval/reject?approvalId=${approvalId}`, {
+    const response = await axiosInstance.patch(`/approval/reject/${approvalId}`, {
         rejectedReason,
     });
     return response.data;
