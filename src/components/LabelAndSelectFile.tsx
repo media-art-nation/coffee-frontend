@@ -13,12 +13,14 @@ type LabelAndSelectFileProps<T extends FieldValues> = StackProps & {
     fieldName: Path<T>;
     watch: UseFormWatch<T>;
     setValue: UseFormSetValue<T>;
+    inputAccept?: string;
 };
 const LabelAndSelectFile = <T extends FieldValues>({
     labelValue,
     fieldName,
     watch,
     setValue,
+    inputAccept = 'image/*',
     ...props
 }: LabelAndSelectFileProps<T>) => {
     const { t } = useTranslation();
@@ -51,7 +53,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
                 </Typography>
                 <input
                     type="file"
-                    accept="image/*"
+                    accept={inputAccept}
                     ref={fileInputRef}
                     style={{ display: 'none' }}
                     onChange={handleFileChange}

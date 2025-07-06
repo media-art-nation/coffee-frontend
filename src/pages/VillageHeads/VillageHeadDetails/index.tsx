@@ -6,10 +6,10 @@ import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
 import LabelValue from '@/components/LabelValue';
+import NoPhoto from '@/components/NoPhoto';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
-import { palette } from '@/themes';
 
 const VillageHeadDetails = () => {
     const { t } = useTranslation();
@@ -29,14 +29,19 @@ const VillageHeadDetails = () => {
                 >
                     {t('수정')}
                 </Button>
-                <Button variant="containedGrey" sx={{ width: '86px', wordBreak: 'keep-all' }}>
-                    {t('승인')}
-                </Button>
             </Title>
             <PageLayout gap={'50px'}>
                 <Stack direction={'row'} gap={'20px'} sx={{ alignItems: 'center' }}>
-                    {/* //[TODO] 사진 요소 받아오기 api 연동*/}
-                    <Box sx={{ width: '120px', height: '160px', background: palette.grey[100] }} />
+                    {data?.identificationPhotoUrl ? (
+                        <Box
+                            sx={{ width: '120px', height: '160px' }}
+                            component={'img'}
+                            src={data.identificationPhotoUrl}
+                            alt={'identification photo url'}
+                        />
+                    ) : (
+                        <NoPhoto />
+                    )}
                     <Stack
                         sx={{
                             height: '100%',

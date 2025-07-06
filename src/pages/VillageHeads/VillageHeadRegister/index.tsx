@@ -1,17 +1,21 @@
+import React from 'react';
+
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
+import { getCookies } from '@/apis/AppUser/cookie';
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
 import {
     CreateApprovalVillageHeadRegisterReq,
     useCreateApprovalVillageHeadRegister,
 } from '@/apis/Approval/useCreateApprovalVillageHeadRegister';
 import { useUpdateApprovalVillageHead } from '@/apis/Approval/useUpdateApprovalVillageHead';
+import { useGetArea } from '@/apis/Area/useGetArea';
 import { useGetMyArea } from '@/apis/Area/useGetMyArea';
 import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
@@ -19,6 +23,7 @@ import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelAndSelectFile from '@/components/LabelAndSelectFile';
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
@@ -37,7 +42,12 @@ const VillageHeadRegister = () => {
     const { mutateAsync: createVillageHead } = useCreateApprovalVillageHeadRegister();
     const { mutateAsync: updateVillageHead } = useUpdateApprovalVillageHead();
     const { data: myArea } = useGetMyArea();
-    const { data: sectionList } = useGetSectionList(myArea?.id);
+    const { data: getAreaList } = useGetArea();
+    const [selectArea, setSelectArea] = React.useState<string>();
+    const { data: sectionList } = useGetSectionList(
+        myArea?.id ?? (selectArea ? Number(selectArea) : undefined)
+    );
+    const role = getCookies('role');
     const queryClient = useQueryClient();
     const methods = useForm<CreateApprovalVillageHeadRegisterForm>({
         defaultValues: {
@@ -131,8 +141,21 @@ const VillageHeadRegister = () => {
             </Title>
             <PageLayout gap={'10px'}>
                 <Stack gap={'10px'}>
-                    <AddPhoto fieldName="photo" watch={methods.watch} setValue={methods.setValue} />
+                    <AddPhoto
+                        fieldName={'identificationPhoto'}
+                        watch={methods.watch}
+                        setValue={methods.setValue}
+                    />
                 </Stack>
+                {role === 'ADMIN' && (
+                    <LabelComponentsLayout labelValue={'지역'}>
+                        <Select value={selectArea} onChange={(e) => setSelectArea(e.target.value)}>
+                            {getAreaList?.map((area) => (
+                                <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>
+                            ))}
+                        </Select>
+                    </LabelComponentsLayout>
+                )}
                 <LabelAndSelect
                     labelValue={t('관리 섹션')}
                     fieldName="sectionId"
@@ -191,22 +214,18 @@ const VillageHeadRegister = () => {
                     </Stack>
                 </Stack>
                 <LabelAndSelectFile
-                    labelValue={t('사진')}
-                    fieldName={'identificationPhoto'}
-                    watch={methods.watch}
-                    setValue={methods.setValue}
-                />
-                <LabelAndSelectFile
                     labelValue={t('계약서')}
                     fieldName={'contractFile'}
                     watch={methods.watch}
                     setValue={methods.setValue}
+                    inputAccept="image/*,application/pdf"
                 />
                 <LabelAndSelectFile
                     labelValue={t('통장 사본')}
                     fieldName={'bankbookPhoto'}
                     watch={methods.watch}
                     setValue={methods.setValue}
+                    inputAccept="image/*,application/pdf"
                 />
             </PageLayout>
         </Stack>
