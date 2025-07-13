@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
 
     return {
         plugins: [react(), tsconfigPaths(), svgr()],
-        base: './',
+        base: '/',
         resolve: {
             alias: [
                 { find: '@', replacement: path.resolve(__dirname, 'src') },
