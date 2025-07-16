@@ -30,7 +30,9 @@ const Table = <T,>({ headData, bodyData, renderRow, isLoading }: TableProps<T>) 
                     </TableRow>
                 </TableHead>
                 {bodyData && bodyData.length > 0 ? (
-                    <TableBody>{bodyData.map((item) => renderRow(item))}</TableBody>
+                    <TableBody sx={{ '.MuiTableRow-root': { height: '60px' } }}>
+                        {bodyData.map((item) => renderRow(item))}
+                    </TableBody>
                 ) : isLoading ? (
                     <TableBody>
                         <TableRow>

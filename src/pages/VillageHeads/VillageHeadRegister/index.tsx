@@ -139,8 +139,11 @@ const VillageHeadRegister = () => {
                     </Button>
                 )}
             </Title>
-            <PageLayout gap={'10px'}>
-                <Stack gap={'10px'}>
+            <PageLayout gap={'27px'}>
+                <Stack gap={'12px'}>
+                    <Typography fontSize={'16px'} fontWeight={700}>
+                        {t('사진')}
+                    </Typography>
                     <AddPhoto
                         fieldName={'identificationPhoto'}
                         watch={methods.watch}

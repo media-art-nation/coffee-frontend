@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
+import { AccountCircle } from '@mui/icons-material';
 import { MenuItem, Select, Stack, Typography } from '@mui/material';
 
 import Ko from '@assets/ko.png';
@@ -67,8 +68,29 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
                 onClick={() => navigate(isVillageHead ? '/village-heads/farmers' : '/requests')}
             />
             <Stack direction={'row'} gap={2}>
-                <Stack>
-                    <Select size="small" value={lang} onChange={handleChangeLang}>
+                {isLogin && !isLoginPage && (
+                    <Stack sx={{ flexDirection: 'row', gap: '15px', alignItems: 'center' }}>
+                        <Stack sx={{ flexDirection: 'row', gap: '6px', alignItems: 'center' }}>
+                            <AccountCircle sx={{ color: '#FFFFFF' }} />
+                            <Typography flexShrink={0}>{userId}</Typography>
+                        </Stack>
+                        <Typography
+                            flexShrink={0}
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => navigate('/my-profile-edit')}
+                        >
+                            {t('내 정보 수정')}
+                        </Typography>
+                        <Typography
+                            sx={{ cursor: 'pointer', flexShrink: 0 }}
+                            onClick={handleClickLogout}
+                        >
+                            {t('로그아웃')}
+                        </Typography>
+                    </Stack>
+                )}
+                <Stack width={'150px'}>
+                    <Select size="small" value={lang} onChange={handleChangeLang} fullWidth>
                         <MenuItem value={'ko'}>
                             <Stack direction={'row'} gap={1}>
                                 <Stack
@@ -101,24 +123,6 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
                         </MenuItem>
                     </Select>
                 </Stack>
-                {isLogin && !isLoginPage && (
-                    <Stack sx={{ flexDirection: 'row', gap: '15px', alignItems: 'center' }}>
-                        <Typography flexShrink={0}>{userId}</Typography>
-                        <Typography
-                            flexShrink={0}
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() => navigate('/my-profile-edit')}
-                        >
-                            {t('내 정보 수정')}
-                        </Typography>
-                        <Typography
-                            sx={{ cursor: 'pointer', flexShrink: 0 }}
-                            onClick={handleClickLogout}
-                        >
-                            {t('로그아웃')}
-                        </Typography>
-                    </Stack>
-                )}
             </Stack>
         </Stack>
     );

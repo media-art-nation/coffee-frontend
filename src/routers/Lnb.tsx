@@ -141,7 +141,7 @@ const Lnb = () => {
                 padding: '12px',
                 minWidth: '216px',
                 gap: '5px',
-                borderRight: `1px solid ${palette.grey[200]}`,
+                borderRight: `1px solid ${palette.grey[50]}`,
                 flex: 1,
             }}
         >
