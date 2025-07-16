@@ -41,7 +41,7 @@ const AddPhoto = <T extends FieldValues>({
     return (
         <Stack
             sx={{
-                backgroundColor: palette.grey[100],
+                backgroundColor: palette.grey[50],
                 width: '120px',
                 height: '160px',
                 justifyContent: 'center',

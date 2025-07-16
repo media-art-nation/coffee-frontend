@@ -2,12 +2,13 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router';
 
 import { Stack, Typography } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import {
     TSectionApprovalDetails,
     useGetApprovalDetails,
 } from '@/apis/Approval/useGetApprovalDetails';
-import { palette } from '@/themes';
+import { containerStyle } from '@/pages/Locations/LocationRegister';
 
 import RequestDetailsLayout from '../FarmerRequestDetails/RequestDetailsLayout';
 
@@ -15,6 +16,8 @@ const SectionRequestDetails = () => {
     const { t } = useTranslation();
     const { id } = useParams();
     const { data: details } = useGetApprovalDetails<TSectionApprovalDetails>(id);
+
+    console.log(details, 'details');
 
     if (!details) return null;
     return (
@@ -36,17 +39,21 @@ const SectionRequestDetails = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>{t('지역')}</Typography>
-                        <Typography>{details.areaName}</Typography>
-                    </Stack>
-                    <Stack>
                         <Typography>{t('섹션')}</Typography>
                         <Typography>{details.sectionName}</Typography>
                     </Stack>
                 </Stack>
-                <Stack sx={{ width: '900px', height: '400px', backgroundColor: palette.grey[100] }}>
-                    Google Map
-                </Stack>
+
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={{ lat: details.latitude, lng: details.longitude }}
+                    zoom={13}
+                    options={{
+                        gestureHandling: 'none',
+                    }}
+                >
+                    <Marker position={{ lat: details.latitude, lng: details.longitude }} />
+                </GoogleMap>
             </Stack>
         </RequestDetailsLayout>
     );

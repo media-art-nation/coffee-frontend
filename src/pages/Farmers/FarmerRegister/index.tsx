@@ -99,8 +99,10 @@ const FarmerRegister = () => {
                         }) || []
                     }
                 />
-                <Stack gap={'30px'}>
-                    <Typography fontSize={'14px'}>{t('사진')}</Typography>
+                <Stack gap={'12px'}>
+                    <Typography fontSize={'16px'} fontWeight={700}>
+                        {t('사진')}
+                    </Typography>
                     <AddPhoto
                         fieldName="identificationPhoto"
                         watch={methods.watch}

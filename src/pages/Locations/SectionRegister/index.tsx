@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { getCookies } from '@/apis/AppUser/cookie';
@@ -152,12 +152,15 @@ const SectionRegister = () => {
                     placeholder={t('지역 선택')}
                 />
 
-                <LabelComponentsLayout labelValue={t('섹션명')}>
+                <Stack>
+                    <Typography sx={{ fontSize: '16px', fontWeight: '700', mb: '12px' }}>
+                        {t('섹션 등록')}
+                    </Typography>
+
                     <TextField
                         fullWidth
-                        label={t('섹션명')}
+                        label={t('섹션 검색')}
                         variant="outlined"
-                        sx={{ my: 2 }}
                         value={sectionName}
                         onChange={handleChangeSectionName}
                         inputProps={{
@@ -192,10 +195,15 @@ const SectionRegister = () => {
                             },
                         }}
                     />
-                </LabelComponentsLayout>
 
-                <Box sx={{ p: 2 }}>
-                    <Typography variant="h6">{t('지역 위치')}</Typography>
+                    <Stack mt={2}>
+                        <Typography fontSize={14}>
+                            📍 {`${t('선택된 위치')} - ${sectionName}`}
+                        </Typography>
+                        <Typography fontSize={14}>
+                            {`${t('위도')} : ${latitude}, ${t('경도')}: ${longitude}`}
+                        </Typography>
+                    </Stack>
 
                     {/* 숨겨진 필드 등록 */}
                     <input type="hidden" {...register('sectionName')} />
@@ -209,20 +217,7 @@ const SectionRegister = () => {
                     >
                         <Marker position={{ lat: latitude, lng: longitude }} />
                     </GoogleMap>
-
-                    <Box mt={2}>
-                        <Typography variant="body2">📍 {t('선택된 위치')}</Typography>
-                        <Typography>
-                            {t('섹션명')}: {sectionName}
-                        </Typography>
-                        <Typography>
-                            {t('위도')}: {latitude}
-                        </Typography>
-                        <Typography>
-                            {t('경도')}: {longitude}
-                        </Typography>
-                    </Box>
-                </Box>
+                </Stack>
             </PageLayout>
         </Stack>
     );

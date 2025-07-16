@@ -117,7 +117,7 @@ const AccountRegister = () => {
                     </Button>
                 </Stack>
             </Title>
-            <Stack sx={{ gap: '20px', padding: '0 32px', width: '500px' }}>
+            <Stack sx={{ gap: '27px', padding: '0 32px', width: '500px' }}>
                 <LabelAndInput
                     sx={{ width: '100%' }}
                     fieldName="username"

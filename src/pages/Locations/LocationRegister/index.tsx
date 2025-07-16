@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Box, Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -81,7 +81,7 @@ const LocationRegister = () => {
                 </Button>
             </Title>
 
-            <PageLayout>
+            <PageLayout gap={'27px'}>
                 <LabelComponentsLayout labelValue={t('국가 선택')}>
                     <Select
                         value={selectedCountry}
@@ -103,8 +103,19 @@ const LocationRegister = () => {
                     </Select>
                 </LabelComponentsLayout>
 
-                <Box sx={{ p: 2 }}>
-                    <Typography variant="h6">{t('지역 등록')}</Typography>
+                <Stack>
+                    <Typography fontSize={16} fontWeight={700}>
+                        {t('지역 등록')}
+                    </Typography>
+
+                    <Stack mt={2}>
+                        <Typography fontSize={14}>
+                            📍 {`${t('선택된 위치')} - ${watch('areaName')}`}
+                        </Typography>
+                        <Typography fontSize={14}>
+                            {`${t('위도')} : ${latitude}, ${t('경도')}: ${longitude}`}
+                        </Typography>
+                    </Stack>
 
                     <TextField
                         fullWidth
@@ -155,20 +166,7 @@ const LocationRegister = () => {
                     >
                         <Marker position={{ lat: latitude, lng: longitude }} />
                     </GoogleMap>
-
-                    <Box mt={2}>
-                        <Typography variant="body2">📍 {t('선택된 위치')}</Typography>
-                        <Typography>
-                            {t('지역명')}: {watch('areaName')}
-                        </Typography>
-                        <Typography>
-                            {t('위도')}: {latitude}
-                        </Typography>
-                        <Typography>
-                            {t('경도')}: {longitude}
-                        </Typography>
-                    </Box>
-                </Box>
+                </Stack>
             </PageLayout>
         </Stack>
     );
