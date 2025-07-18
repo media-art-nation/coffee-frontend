@@ -15,8 +15,8 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
 export const defaultCenter = {
-    lat: 21.9162,
-    lng: 95.956,
+    lat: 17.967,
+    lng: 102.617,
 };
 
 export const containerStyle = {
@@ -37,7 +37,7 @@ const LocationRegister = () => {
             longitude: defaultCenter.lng,
         },
     });
-    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'mm'>('mm');
+    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'la'>('la');
 
     const { register, setValue, watch, handleSubmit, reset } = methods;
     const latitude = watch('latitude');
@@ -85,9 +85,9 @@ const LocationRegister = () => {
                 <LabelComponentsLayout labelValue={t('국가 선택')}>
                     <Select
                         value={selectedCountry}
-                        defaultValue="mm"
+                        defaultValue="la"
                         onChange={(e) => {
-                            const newCountry = e.target.value as 'kr' | 'mm';
+                            const newCountry = e.target.value as 'kr' | 'la';
                             setSelectedCountry(newCountry);
 
                             // Autocomplete 업데이트
@@ -99,7 +99,7 @@ const LocationRegister = () => {
                         }}
                     >
                         <MenuItem value="kr">대한민국</MenuItem>
-                        <MenuItem value="mm">미얀마</MenuItem>
+                        <MenuItem value="la">라오스</MenuItem>
                     </Select>
                 </LabelComponentsLayout>
 
@@ -119,7 +119,6 @@ const LocationRegister = () => {
 
                     <TextField
                         fullWidth
-                        label={t('지역 검색')}
                         variant="outlined"
                         sx={{ my: 2 }}
                         inputProps={{

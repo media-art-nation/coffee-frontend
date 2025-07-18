@@ -1,15 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
-import LabelValue from '@/components/LabelValue';
-import NoPhoto from '@/components/NoPhoto';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
+import { palette } from '@/themes';
 
 const ViceAdminDetails = () => {
     const { t } = useTranslation();
@@ -25,22 +24,60 @@ const ViceAdminDetails = () => {
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
-                <LabelValue label={t('이름')} value={viceAdminDetail?.username || ''} />
-
-                <LabelValue label={t('아이디')} value={viceAdminDetail?.userId || ''} />
-
-                <LabelValue
-                    label={t('관리 지역')}
-                    value={viceAdminDetail?.areaInfo.areaName || ''}
-                />
-                <Stack gap={'27px'}>
-                    <Typography variant="title/medium">ID Card</Typography>
+                <Stack direction={'row'} gap={'20px'} sx={{ alignItems: 'center' }}>
                     {viceAdminDetail?.idCardUrl ? (
-                        <img width={120} height={160} src={viceAdminDetail.idCardUrl} />
+                        <Box
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundImage: `url(${viceAdminDetail?.idCardUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                            }}
+                        />
                     ) : (
-                        <NoPhoto />
+                        <Stack
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundColor: palette.grey[50],
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color={palette.grey[400]}>No Image</Typography>
+                        </Stack>
                     )}
+                    <Stack
+                        sx={{
+                            'gap': '15px',
+                            '& .MuiStack-root': {
+                                'flexDirection': 'row',
+                                'alignItems': 'center',
+                                'gap': '30px',
+                                '& .MuiTypography-root': {
+                                    minWidth: '120px',
+                                },
+                            },
+                        }}
+                    >
+                        <Stack>
+                            <Typography>{t('이름')}</Typography>
+                            <Typography>{viceAdminDetail?.username}</Typography>
+                        </Stack>
+                        <Stack>
+                            <Typography>{t('아이디')}</Typography>
+                            <Typography>{viceAdminDetail?.userId}</Typography>
+                        </Stack>
+
+                        <Stack>
+                            <Typography>{t('관리 지역')}</Typography>
+                            <Typography>{viceAdminDetail?.areaInfo.areaName}</Typography>
+                        </Stack>
+                    </Stack>
                 </Stack>
+
                 <Stack>
                     <GoogleMap
                         mapContainerStyle={containerStyle}

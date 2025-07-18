@@ -107,6 +107,15 @@ const ViceAdminEdit = () => {
                 </Button>
             </Title>
             <PageLayout gap={'27px'}>
+                <Stack gap={'27px'}>
+                    <Typography fontWeight={700}>ID Card</Typography>
+                    <AddPhoto
+                        fieldName="idCardFile"
+                        currentUrl={viceAdminDetail?.idCardUrl || ''}
+                        watch={methods.watch}
+                        setValue={methods.setValue}
+                    />
+                </Stack>
                 <LabelAndInput
                     register={methods.register}
                     labelValue={t('이름')}
@@ -147,15 +156,6 @@ const ViceAdminEdit = () => {
                             }}
                         />
                     </GoogleMap>
-                </Stack>
-                <Stack gap={'27px'}>
-                    <Typography variant="title/medium">ID Card</Typography>
-                    <AddPhoto
-                        fieldName="idCardFile"
-                        currentUrl={viceAdminDetail?.idCardUrl || ''}
-                        watch={methods.watch}
-                        setValue={methods.setValue}
-                    />
                 </Stack>
             </PageLayout>
         </Stack>
