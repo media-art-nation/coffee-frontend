@@ -5,11 +5,10 @@ import { Box, Stack, TableCell, TableRow, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 import { TTreeTransaction, useGetFarmerDetail } from '@/apis/Farmer/useGetFarmerDetail';
-import LabelValue from '@/components/LabelValue';
-import NoPhoto from '@/components/NoPhoto';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
+import { palette } from '@/themes';
 
 const FarmerDetails = () => {
     const { t } = useTranslation();
@@ -25,6 +24,7 @@ const FarmerDetails = () => {
             </TableRow>
         );
     };
+
     return (
         <Stack>
             <Title title={t('농부 상세 정보')} />
@@ -32,17 +32,49 @@ const FarmerDetails = () => {
                 <Stack direction={'row'} gap={'20px'}>
                     {farmerDetails?.identificationPhotoUrl ? (
                         <Box
-                            sx={{ width: '120px', height: '160px' }}
-                            component={'img'}
-                            src={farmerDetails.identificationPhotoUrl}
-                            alt={'identification photo url'}
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundImage: `url(${farmerDetails.identificationPhotoUrl})`,
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center',
+                            }}
                         />
                     ) : (
-                        <NoPhoto />
+                        <Stack
+                            sx={{
+                                width: '120px',
+                                height: '160px',
+                                backgroundColor: palette.grey[50],
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography color={palette.grey[400]}>No Image</Typography>
+                        </Stack>
                     )}
-                    <Stack>
-                        <LabelValue label="관리 섹션" value={farmerDetails?.sectionName || ''} />
-                        <LabelValue label="이름" value={farmerDetails?.farmerName || ''} />
+                    <Stack
+                        sx={{
+                            'gap': '15px',
+                            '& .MuiStack-root': {
+                                'flexDirection': 'row',
+                                'alignItems': 'center',
+                                'gap': '30px',
+                                '& .MuiTypography-root': {
+                                    minWidth: '120px',
+                                },
+                            },
+                        }}
+                    >
+                        <Stack>
+                            <Typography>{t('관리 섹션')}</Typography>
+                            <Typography>{farmerDetails?.sectionName}</Typography>
+                        </Stack>
+                        <Stack>
+                            <Typography>{t('이름')}</Typography>
+                            <Typography>{farmerDetails?.farmerName}</Typography>
+                        </Stack>
                     </Stack>
                 </Stack>
                 <Stack gap={'27px'}>

@@ -24,7 +24,7 @@ const SectionRegister = () => {
     const role = getCookies('role');
     const { mutateAsync: createSection } = useCreateSection();
     const { mutateAsync: createSectionAdmin } = useCreateSectionAdmin();
-    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'mm'>('mm');
+    const [selectedCountry, setSelectedCountry] = React.useState<'kr' | 'la'>('la');
     const methods = useForm<CreateSectionReq>({
         defaultValues: {
             areaId: 0,
@@ -122,9 +122,9 @@ const SectionRegister = () => {
                 <LabelComponentsLayout labelValue={t('국가 선택')}>
                     <Select
                         value={selectedCountry}
-                        defaultValue="mm"
+                        defaultValue="la"
                         onChange={(e) => {
-                            const newCountry = e.target.value as 'kr' | 'mm';
+                            const newCountry = e.target.value as 'kr' | 'la';
                             setSelectedCountry(newCountry);
 
                             // Autocomplete 업데이트
@@ -136,7 +136,7 @@ const SectionRegister = () => {
                         }}
                     >
                         <MenuItem value="kr">대한민국</MenuItem>
-                        <MenuItem value="mm">미얀마</MenuItem>
+                        <MenuItem value="la">라오스</MenuItem>
                     </Select>
                 </LabelComponentsLayout>
                 <LabelAndSelect
@@ -159,9 +159,9 @@ const SectionRegister = () => {
 
                     <TextField
                         fullWidth
-                        label={t('섹션 검색')}
                         variant="outlined"
                         value={sectionName}
+                        placeholder="enter a section"
                         onChange={handleChangeSectionName}
                         inputProps={{
                             ref: (ref: HTMLInputElement | null) => {
