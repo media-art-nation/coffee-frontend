@@ -59,6 +59,10 @@ const TreesPurchaseRequestDetails = () => {
                         <Typography>{t('지급액')}</Typography>
                         <Typography>{details.paymentAmount.toLocaleString('ko-KR')}</Typography>
                     </Stack>
+                    <Stack>
+                        <Typography>{t('비고')}</Typography>
+                        <Typography>{details.remarks}</Typography>
+                    </Stack>
                 </Stack>
             </Stack>
         </RequestDetailsLayout>

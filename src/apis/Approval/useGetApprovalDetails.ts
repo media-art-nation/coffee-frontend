@@ -62,6 +62,7 @@ export type TPurchaseApprovalDetails = TApprovalBase & {
     quantity: number;
     totalPrice: number;
     unitPrice: number;
+    remarks: string;
 };
 
 export type TTreeTransactionApprovalDetails = TApprovalBase & {

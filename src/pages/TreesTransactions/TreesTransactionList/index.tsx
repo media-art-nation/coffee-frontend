@@ -61,7 +61,7 @@ const TreesTransactionList = () => {
             </Title>
             <PageLayout>
                 <Table
-                    headData={[t('농부'), t('나무 종'), t('나무 수량'), t('수령 일자'), t('삭제')]}
+                    headData={[t('농부'), t('나무 종'), t('나무 수량'), t('수령 일자'), '']}
                     bodyData={treeTransactionList || []}
                     isLoading={isLoading}
                     renderRow={renderRow}

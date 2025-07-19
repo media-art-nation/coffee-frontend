@@ -50,7 +50,7 @@ const VillageHeadList = () => {
             <Title title={t('면장 목록')} />
             <PageLayout>
                 <Table
-                    headData={[t('아이디'), t('이름'), t('섹션'), t('관리 농부 수'), t('삭제')]}
+                    headData={[t('아이디'), t('이름'), t('섹션'), t('관리 농부 수'), '']}
                     bodyData={data || undefined}
                     renderRow={renderRow}
                 />

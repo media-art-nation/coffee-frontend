@@ -123,7 +123,10 @@ const lnbData: Record<TRole, TLnbItem[]> = {
     VILLAGE_HEAD: [
         {
             label: '면장 관리',
-            children: [{ label: '농부 목록', path: '/village-heads/farmers' }],
+            children: [
+                { label: '농부 목록', path: '/village-heads/farmers' },
+                { label: '수매 내역', path: '/trees-purchases' },
+            ],
         },
     ],
 };

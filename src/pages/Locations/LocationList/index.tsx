@@ -32,7 +32,7 @@ const LocationList = () => {
     const { mutate: deleteSection } = useDeleteSection();
     const { mutate: deleteSectionAdmin } = useDeleteSectionAdmin();
     const { mutate: deleteAreaAdmin } = useDeleteAreaAdmin();
-    const headData = [t('지역'), t('섹션'), t('삭제')];
+    const headData = [t('지역'), t('섹션'), ''];
     const role = getCookies('role');
     const renderRow = (row: TAreaWithSections) => {
         if (row.sections.length > 0) {
