@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 
 import { AccountCircle } from '@mui/icons-material';
 import { MenuItem, Select, Stack, Typography } from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
 
 import Ko from '@assets/ko.png';
 import Lo from '@assets/lo.png';
@@ -23,12 +24,15 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
     const isLogin = true;
     const navigate = useNavigate();
     const userId = getCookies('userId');
+    const queryClient = useQueryClient();
 
     const handleClickLogout = () => {
         removeCookies('accessToken');
         removeCookies('role');
         removeCookies('appUserId');
         removeCookies('userId');
+
+        queryClient.resetQueries();
         navigate('/login');
     };
 
