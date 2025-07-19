@@ -13,6 +13,7 @@ import CustomDatePicker from '@/components/CustomDatePicker';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
+import TextArea from '@/components/TextArea';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 
@@ -134,6 +135,13 @@ const TreesPurchaseRegister = () => {
                     register={methods.register}
                     placeholder={t('지급액을 입력해주세요.')}
                 />
+                <LabelComponentsLayout labelValue="비고">
+                    <TextArea
+                        fieldName="remarks"
+                        register={methods.register}
+                        placeholder={'텍스트를 작성하시오.'}
+                    />
+                </LabelComponentsLayout>
             </PageLayout>
         </Stack>
     );

@@ -12,6 +12,7 @@ export type CreateApprovalPurchaseReq = {
     quantity: number;
     totalPrice: number;
     unitPrice: number;
+    remarks?: string;
 };
 
 const createApprovalPurchase = async (param: CreateApprovalPurchaseReq): Promise<AxiosResponse> => {

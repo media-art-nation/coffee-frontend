@@ -13,6 +13,7 @@ export type GetPurchaseList = {
     totalPrice: number;
     deduction: number;
     paymentAmount: number;
+    remarks?: string;
 };
 const getPurchaseList = async (): Promise<GetPurchaseList[]> => {
     return await axiosInstance.get('/purchase').then((res) => {

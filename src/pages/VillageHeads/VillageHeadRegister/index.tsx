@@ -151,7 +151,7 @@ const VillageHeadRegister = () => {
                     />
                 </Stack>
                 {role === 'ADMIN' && (
-                    <LabelComponentsLayout labelValue={'지역'}>
+                    <LabelComponentsLayout labelValue={t('지역')}>
                         <Select value={selectArea} onChange={(e) => setSelectArea(e.target.value)}>
                             {getAreaList?.map((area) => (
                                 <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>

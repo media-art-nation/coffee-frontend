@@ -49,7 +49,7 @@ const FarmerList = () => {
             <Title title={t('농부 목록')} />
             <PageLayout>
                 <Table
-                    headData={[t('이름'), t('면장'), t('섹션'), t('삭제')]}
+                    headData={[t('이름'), t('면장'), t('섹션'), '']}
                     bodyData={farmerList || undefined}
                     renderRow={renderRow}
                 />

@@ -28,6 +28,7 @@ const TreesPurchaseList = () => {
                 <TableCell>{row.totalPrice}</TableCell>
                 <TableCell>{row.deduction}</TableCell>
                 <TableCell>{row.paymentAmount}</TableCell>
+                <TableCell>{row?.remarks}</TableCell>
                 <TableCell>
                     <DeleteButton
                         onDelete={() => {
@@ -69,7 +70,8 @@ const TreesPurchaseList = () => {
                         t('총액'),
                         t('차감액'),
                         t('지급액'),
-                        t('삭제'),
+                        t('비고'),
+                        '',
                     ]}
                     bodyData={purchaseList || []}
                     renderRow={renderRow}
