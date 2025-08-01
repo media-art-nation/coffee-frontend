@@ -166,7 +166,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                             flexDirection: 'row',
                             flex: 1,
                             justifyContent: 'space-between',
-                            alignItems: 'center',
+                            alignItems: 'cente r',
                         },
                     }}
                 >
@@ -174,7 +174,9 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
                         <Typography sx={{ fontWeight: 'bold', color: palette.grey[900] }}>
                             {t('요청 일시')}
                         </Typography>
-                        <Typography>{dayjs().format('YYYY-MM-DD hh:mm')}</Typography>
+                        <Typography>
+                            {dayjs(details.createdAt).format('YYYY-MM-DD hh:mm')}
+                        </Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack>
