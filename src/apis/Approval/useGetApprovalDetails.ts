@@ -18,6 +18,7 @@ type TApprovalBase = {
     status: TRequestStatus;
     requesterName: string;
     method: TRequestMethod;
+    createdAt: Date;
 };
 
 export type TFarmerApprovalDetails = TApprovalBase & {
