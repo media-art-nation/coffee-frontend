@@ -31,8 +31,6 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         {
@@ -72,8 +70,6 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         // {
@@ -101,8 +97,6 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
                 { label: '농부 등록', path: '/village-heads/farmers/register' },
-                { label: '나무수령 목록', path: '/village-heads/trees-transactions' },
-                { label: '나무수령 등록', path: '/village-heads/trees-transactions/register' },
             ],
         },
         {

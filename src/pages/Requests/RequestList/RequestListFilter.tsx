@@ -37,16 +37,6 @@ const RequestListFilter = () => {
                             />
                         )}
                     />
-                    <Controller
-                        name="serviceTypes.TREES_TRANSACTION"
-                        control={control}
-                        render={({ field }) => (
-                            <FormControlLabel
-                                control={<Checkbox {...field} checked={field.value} />}
-                                label={<Typography fontSize={14}>{t('나무수령 관리')}</Typography>}
-                            />
-                        )}
-                    />
                     {
                         // 부관리자 - 농림부의 경우 수매 관리에 대한 요청 확인 불가능
                         role !== 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER' && (

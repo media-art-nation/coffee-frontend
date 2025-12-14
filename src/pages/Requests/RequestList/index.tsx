@@ -31,7 +31,6 @@ const RequestList = () => {
                 FARMER: true,
                 PURCHASE: true,
                 SECTION: true,
-                TREES_TRANSACTION: true,
             },
             pageable: {
                 page: 0,
