@@ -1,4 +1,4 @@
-import tanstackQuery from '@tanstack/eslint-plugin-query';
+import * as tanstackQuery from '@tanstack/eslint-plugin-query';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettierPlugin from 'eslint-plugin-prettier';
@@ -54,6 +54,7 @@ export default {
 
         // Unused imports 관련 규칙
         'unused-imports/no-unused-imports': 'error',
+        'no-multiple-empty-lines': 'error',
     },
     settings: {
         react: {

@@ -5,11 +5,11 @@ import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
-    loadEnv(mode, process.cwd(), '');
+    const env = loadEnv(mode, process.cwd());
 
     return {
         plugins: [react(), tsconfigPaths(), svgr()],
-        base: './',
+        base: '/',
         resolve: {
             alias: [
                 { find: '@', replacement: path.resolve(__dirname, 'src') },
@@ -23,6 +23,21 @@ export default defineConfig(({ mode }) => {
                 { find: '@typings', replacement: path.resolve(__dirname, 'src/typings') },
                 { find: '@utils', replacement: path.resolve(__dirname, 'src/utils') },
             ],
+        },
+        server: {
+            proxy: {
+                '/api': {
+                    target: env.VITE_API_URL,
+                    changeOrigin: true,
+                    secure: false,
+                    rewrite: (path) => {
+                        console.log(
+                            `[Proxy] Rewriting path: ${path} -> ${path.replace(/^\/api/, '')}`
+                        );
+                        return path.replace(/^\/api/, '');
+                    },
+                },
+            },
         },
     };
 });
