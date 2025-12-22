@@ -22,7 +22,6 @@ import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
 import ViceAdminList from '@/pages/ViceAdmins/ViceAdminList';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
-import VillageHeadRegister from '@/pages/VillageHeads/VillageHeadRegister';
 
 import Gnb from './Gnb';
 import Layouts from './Layouts';
@@ -60,8 +59,6 @@ const router = createBrowserRouter([
                 children: [
                     { index: true, element: <VillageHeadList /> },
                     { path: ':id', element: <VillageHeadDetails /> },
-                    { path: 'register', element: <VillageHeadRegister /> },
-                    { path: 'edit/:id', element: <VillageHeadRegister /> },
                     { path: 'farmers', element: <FarmerList /> },
                     { path: 'farmers/:id', element: <FarmerDetails /> },
                     { path: 'farmers/register', element: <FarmerRegister /> },

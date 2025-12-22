@@ -8,10 +8,11 @@ type GetVillageHeadDetailsRes = {
     userId: string;
     username: string;
     accountInfo: string;
+    bankName: string;
     identificationPhotoUrl: string;
     contractFileUrl: string;
     bankbookPhotoUrl: string;
-    areaInfo: { longitude: number; latitude: number; areaName: string };
+    areaInfo: { areaId : number;longitude: number; latitude: number; areaName: string };
     sectionInfo: {
         longitude: number;
         latitude: number;

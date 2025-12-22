@@ -39,7 +39,7 @@ const LabelAndSelectFile = <T extends FieldValues>({
     };
     return (
         <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
-            <Stack direction={'row'} gap="10px" sx={{ alignItems: 'center' }}>
+            <Stack direction={'row'} gap="10px" sx={{ alignItems: 'center', width: '100%' }}>
                 <Typography
                     sx={{
                         padding: '10px 12px',
@@ -47,6 +47,8 @@ const LabelAndSelectFile = <T extends FieldValues>({
                         color: palette.grey[400],
                         background: palette.grey[50],
                         borderRadius: '4px',
+                        fontSize: '13px',
+                        flex: 1
                     }}
                 >
                     {file ? file.name : t('선택된 파일 없음')}
