@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
 
 import { Button, DialogContent, DialogTitle, Dialog, MenuItem, Select, Stack, TextField, Typography, DialogActions } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
@@ -23,8 +22,6 @@ import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
-import PageLayout from '@/components/PageLayout';
-import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
 
