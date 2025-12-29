@@ -1,29 +1,22 @@
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
-
-import { Button, Divider, IconButton, Menu, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
-import { GetVillageHeadListRes, useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
-import { useDeleteVillageHead } from '@/apis/Approval/useDeleteVillageHead';
+import { IconButton, Menu, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { GetViceAdminListRes, useGetViceAdminList } from '@/apis/AppUser/useGetViceAdminList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
-import { useDialog } from '@/hooks/useDialog';
 import { MouseEvent, useState } from 'react';
-import CreateVillageHeadDialog from './create-dialog';
+import { EditViceAdminDialog } from './edit-dialog';
+import { useDialog } from '@/hooks/useDialog';
 import { MoreHoriz } from '@mui/icons-material';
-import EditVillageHeadDialog from './edit-dialog';
-import { Plus } from '@phosphor-icons/react';
 
-
-const VillageHeadList = () => {
-    const { openDialog } = useDialog();
+const ViceAdminList = () => {
     const { t } = useTranslation();
+    const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
-    const { data } = useGetVillageHeadList();
-    const { mutate: deleteVillageHead } = useDeleteVillageHead();
-    const [openCreateDialog, setOpenCreateDialog] = useState(false);
-    const [openEditDialog, setOpenEditDialog] = useState(false)
-    const [selectedId, setSelectedId] = useState<number | null>(null);
+    const { openDialog } = useDialog();
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [viceAdminId, setViceAdminId] = useState<number | null>(null);
 
     const [menuState, setMenuState] = useState<{
         anchorEl: HTMLElement | null;
@@ -39,32 +32,27 @@ const VillageHeadList = () => {
 
     const handleCloseMenu = () => setMenuState({ anchorEl: null, rowId: null });
 
-
     const handleClickDelete = (id: number) => {
         openDialog({
-            title: t('해당 면장을 삭제하시겠습니까?'),
+            title: t('해당 구매 내역을 삭제하시겠습니까?'),
             description: t('삭제하면 복구가 불가능합니다.'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),
                 onClick: () => {
-                    deleteVillageHead({ villageHeadId: id });
-
-                    handleCloseMenu()
                 },
             },
             secondaryAction: { name: t('취소'), onClick: () => { } },
         });
-    }
+    };
 
-    const renderRow = (row: GetVillageHeadListRes) => {
+    const renderRow = (row: GetViceAdminListRes) => {
         return (
-            <TableRow key={row.id} onClick={() => navigate(`/village-heads/${row.id}`)}>
+            <TableRow key={row.id} onClick={() => navigate(`/vice-admins/${row.id}`)}>
                 <TableCell>{row.id.toString()}</TableCell>
-                <TableCell>{row.appUserId}</TableCell>
-                <TableCell>{row.appUserName}</TableCell>
-                <TableCell>{row.sectionName}</TableCell>
-                <TableCell>{row.farmerCount}</TableCell>
+                <TableCell>{row.userName}</TableCell>
+                <TableCell>{row.userId}</TableCell>
+                <TableCell>{row.areaInfo.areaName}</TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()} align="right">
                     <IconButton
                         id={`basic-button-${row.id}`}
@@ -87,14 +75,9 @@ const VillageHeadList = () => {
                     >
                         <MenuItem onClick={() => {
                             setOpenEditDialog(true)
-                            setSelectedId(row.id)
+                            setViceAdminId(row.id)
                             handleCloseMenu()
                         }}>수정하기</MenuItem>
-                        <Divider />
-                        <MenuItem onClick={() => {
-                            handleClickDelete(row.id)
-                            handleCloseMenu()
-                        }}>삭제하기</MenuItem>
                     </Menu>
                 </TableCell>
             </TableRow>
@@ -102,32 +85,18 @@ const VillageHeadList = () => {
     };
 
     return (
-        <Stack sx={{ width: '100%' }}>
-            <Title title={t('면장 목록')} >
-                <Button
-                    variant="outlinedBlue"
-                    onClick={() => { setOpenCreateDialog(true); }}
-                    startIcon={<Plus />}
-                >
-                    {t('등록')}
-                </Button>
-            </Title>
+        <Stack>
+            <Title title={t('부관리자 목록')} />
             <PageLayout>
                 <Table
-                    headData={[t('ID'),t('아이디'), t('이름'), t('섹션'), t('관리 농부 수'), '']}
-                    bodyData={data || undefined}
+                    headData={[t('ID'), t('이름'), t('아이디'), t('관리 지역'), t('')]}
+                    bodyData={viceAdminList}
                     renderRow={renderRow}
+                    isLoading={isLoading}
                 />
             </PageLayout>
-
-            <CreateVillageHeadDialog open={openCreateDialog} onClose={() => setOpenCreateDialog(false)} />
-
-            {selectedId && <EditVillageHeadDialog open={openEditDialog} onClose={() => {
-                setOpenEditDialog(false)
-                setSelectedId(null)
-            }} id={String(selectedId)} />}
+            {viceAdminId && <EditViceAdminDialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} viceAdminId={viceAdminId} />}
         </Stack>
     );
 };
-
-export default VillageHeadList;
+export default ViceAdminList;

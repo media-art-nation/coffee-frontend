@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, DialogContent, DialogTitle, Dialog, MenuItem, Select, Stack, TextField, Typography, DialogActions } from '@mui/material';
+import { Button, DialogContent, DialogTitle, Dialog, MenuItem, Select, Stack, TextField, Typography, DialogActions, IconButton } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -24,6 +24,7 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
+import { Close } from '@mui/icons-material';
 
 type EditApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
@@ -43,7 +44,6 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
     const { data: villageHead, isLoading } = useGetVillageHeadDetails(id);
     const { mutateAsync: updateVillageHead } = useUpdateApprovalVillageHead();
     const { data: myArea } = useGetMyArea();
-    console.log(myArea, 'myArea')
     const { data: getAreaList } = useGetArea();
     const [selectArea, setSelectArea] = React.useState<string>();
     const { data: sectionList } = useGetSectionList(
@@ -115,30 +115,38 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
         onClose()
     }
 
-    console.log(villageHead)
-
-
-    console.log(selectArea, 'g')
 
     useEffect(() => {
         if (!villageHead) return;
-      
+
         methods.reset({
-          userId: villageHead.userId,
-          username: villageHead.username,
-          bankName: villageHead.bankName,
-          accountInfo: villageHead.accountInfo,
-          sectionId: String(villageHead.sectionInfo.sectionId),
+            userId: villageHead.userId,
+            username: villageHead.username,
+            bankName: villageHead.bankName,
+            accountInfo: villageHead.accountInfo,
+            sectionId: String(villageHead.sectionInfo.sectionId),
         });
 
         setSelectArea(String(villageHead.areaInfo.areaId))
-      }, [villageHead, methods]);
+    }, [villageHead, methods]);
 
 
-    if(isLoading) return <>...loading</>
+    if (isLoading) return <>...loading</>
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{t('면장 수정')}</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                sx={(theme) => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <Close />
+            </IconButton>
             <DialogContent>
                 <form onSubmit={methods.handleSubmit(onSubmit)} id="edit-village-head-form">
                     <Stack gap={'12px'}>

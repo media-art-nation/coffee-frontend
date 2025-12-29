@@ -2,19 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { axiosInstance } from '@/apis/axiosInstance';
+import { TPurchase } from '@/typings/Purchase';
 
-export type GetPurchaseList = {
-    id: number;
-    managerId: number;
-    managerName: string;
-    purchaseDate: string; //YYYY-MM-DD
-    quantity: number;
-    unitPrice: number;
-    totalPrice: number;
-    deduction: number;
-    paymentAmount: number;
-    remarks?: string;
-};
+export type GetPurchaseList = TPurchase;
+
 const getPurchaseList = async (): Promise<GetPurchaseList[]> => {
     return await axiosInstance.get('/purchase').then((res) => {
         if (res.data.code === 'SUCCESS') {
