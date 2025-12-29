@@ -25,6 +25,7 @@ type TViceAdminDetailsInput = {
     areaId: string;
     idCardFile: File | null;
 };
+
 const ViceAdminEdit = () => {
     const { t } = useTranslation();
     const queryClient = useQueryClient();

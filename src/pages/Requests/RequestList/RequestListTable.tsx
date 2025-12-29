@@ -45,7 +45,7 @@ const RequestListTable = ({ data, isLoading }: RequestListTableProps) => {
             },
             secondaryAction: {
                 name: t('취소'),
-                onClick: () => {},
+                onClick: () => { },
             },
         });
     };
@@ -60,6 +60,9 @@ const RequestListTable = ({ data, isLoading }: RequestListTableProps) => {
                 key={row.id}
                 onClick={() => navigate(`${row.serviceType.toLocaleLowerCase()}/${row.id}`)}
             >
+                <TableCell>
+                    {row.id.toString()}
+                </TableCell>
                 <TableCell>
                     {REQUEST_SERVICE_TYPE[row.serviceType]} / {REQUEST_METHOD[row.method]}
                 </TableCell>
@@ -92,7 +95,7 @@ const RequestListTable = ({ data, isLoading }: RequestListTableProps) => {
     return (
         <>
             <Table
-                headData={[t('요청 분류'), t('요청 일시'), t('담당자'), t('요청 상태'), '']}
+                headData={[t('ID'), t('요청 분류'), t('요청 일시'), t('담당자'), t('요청 상태'), '']}
                 bodyData={data?.content}
                 renderRow={renderRow}
                 isLoading={isLoading}

@@ -3,17 +3,14 @@ import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { axiosInstance } from '@/apis/axiosInstance';
 
-export type TTreeTransaction = {
-    species: string;
-    receivedDate: string;
-    quantity: number;
-};
+
 type GetFarmerDetailReq = string | undefined;
+
 type GetFarmerDetailRes = {
-    sectionName: string;
     farmerName: string;
     identificationPhotoUrl: string;
-    treesTransactions: TTreeTransaction[];
+    villageHeadId: number;
+    villageHeadName : string;
 };
 const getFarmerDetail = async (param: GetFarmerDetailReq): Promise<GetFarmerDetailRes> => {
     return await axiosInstance.get(`/farmer/${param}`).then((res) => {

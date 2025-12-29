@@ -2,6 +2,9 @@ import { useTranslation } from 'react-i18next';
 
 import {
     CircularProgress,
+    IconButton,
+    Menu,
+    MenuItem,
     Stack,
     Table,
     TableBody,
@@ -23,6 +26,8 @@ import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TAreaWithSections } from '@/typings/Area';
+import { MoreHoriz } from '@mui/icons-material';
+import { MouseEvent, useState } from 'react';
 
 const LocationList = () => {
     const { t } = useTranslation();
@@ -32,69 +37,123 @@ const LocationList = () => {
     const { mutate: deleteSection } = useDeleteSection();
     const { mutate: deleteSectionAdmin } = useDeleteSectionAdmin();
     const { mutate: deleteAreaAdmin } = useDeleteAreaAdmin();
-    const headData = [t('지역'), t('섹션'), ''];
+    const headData = [t('ID'), t('지역'), t('섹션'), ''];
     const role = getCookies('role');
-    const renderRow = (row: TAreaWithSections) => {
-        if (row.sections.length > 0) {
-            return row.sections.map((item) => (
-                <TableRow key={item.id}>
-                    <TableCell>{row.areaName}</TableCell>
-                    <TableCell>{item.sectionName}</TableCell>
-                    <TableCell>
-                        <DeleteButton
-                            onDelete={() => {
-                                openDialog({
-                                    title: t('해당 섹션을 삭제하시겠습니까?'),
-                                    description: t('섹션을 삭제하면 복구가 불가능합니다.'),
-                                    variant: 'alert',
-                                    primaryAction: {
-                                        name: t('확인'),
-                                        onClick: () => {
-                                            const submit =
-                                                role === 'ADMIN'
-                                                    ? deleteSectionAdmin
-                                                    : deleteSection;
-                                            submit({ sectionId: item.id });
-                                        },
-                                    },
-                                    secondaryAction: { name: t('취소'), onClick: () => {} },
-                                });
-                            }}
-                        />
-                    </TableCell>
-                </TableRow>
-            ));
-        } else {
-            return (
-                <TableRow key={row.id}>
-                    <TableCell>{row.areaName}</TableCell>
-                    <TableCell>-</TableCell>
-                    <TableCell>
-                        {role === 'ADMIN' ? (
-                            <DeleteButton
-                                onDelete={() => {
-                                    openDialog({
-                                        title: t('해당 지역을 삭제하시겠습니까?'),
-                                        description: t('섹션을 삭제하면 복구가 불가능합니다.'),
-                                        variant: 'alert',
-                                        primaryAction: {
-                                            name: t('확인'),
-                                            onClick: () => {
-                                                deleteAreaAdmin({ areaId: row.id });
-                                            },
-                                        },
-                                        secondaryAction: { name: t('취소'), onClick: () => {} },
-                                    });
-                                }}
-                            />
-                        ) : (
-                            '-'
-                        )}
-                    </TableCell>
-                </TableRow>
-            );
-        }
+
+
+    const [menuState, setMenuState] = useState<{
+        anchorEl: HTMLElement | null;
+        rowId: number | null;
+    }>({ anchorEl: null, rowId: null });
+
+    const open = Boolean(menuState.anchorEl);
+
+    const handleClickMenu = (rowId: number) => (e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setMenuState({ anchorEl: e.currentTarget, rowId });
     };
+
+    const handleCloseMenu = () => setMenuState({ anchorEl: null, rowId: null });
+
+    const handleClickDelete = (id: number) => {
+        openDialog({
+            title: t('해당 섹션을 삭제하시겠습니까?'),
+            description: t('섹션을 삭제하면 복구가 불가능합니다.'),
+            variant: 'alert',
+            primaryAction: {
+                name: t('확인'),
+                onClick: () => {
+                    const submit =
+                        role === 'ADMIN'
+                            ? deleteSectionAdmin
+                            : deleteSection;
+                    submit({ sectionId: id });
+                },
+            },
+            secondaryAction: { name: t('취소'), onClick: () => { } },
+        });
+
+    };
+
+    const renderRow = (row: TAreaWithSections) => {
+        console.log(row);
+
+        const parentRow = <TableRow key={row.id}>
+            <TableCell>{row.id.toString()}</TableCell>
+            <TableCell>{row.areaName}</TableCell>
+            <TableCell>-</TableCell>
+            {role === 'ADMIN' && <TableCell onClick={(e) => e.stopPropagation()} align="right">
+                <IconButton
+                    id={`basic-button-${row.id}`}
+                    size='small'
+                    aria-controls={open ? 'basic-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={handleClickMenu(row.id)}>
+                    <MoreHoriz />
+                </IconButton>
+                <Menu
+                    anchorEl={menuState.anchorEl}
+                    open={open && menuState.rowId === row.id}
+                    onClose={handleCloseMenu}
+                    slotProps={{
+                        list: {
+                            'aria-labelledby': 'basic-button',
+                        },
+                    }}
+                >
+                    <MenuItem onClick={() => {
+                        handleClickDelete(row.id)
+                        handleCloseMenu()
+                    }}>삭제하기</MenuItem>
+                </Menu>
+            </TableCell>}
+        </TableRow>
+
+        const childRows = row.sections.map((item) => (
+            <TableRow key={item.id}>
+                <TableCell>{item.id.toString()}</TableCell>
+                <TableCell>{row.areaName}</TableCell>
+                <TableCell>{item.sectionName}</TableCell>
+                {role === 'ADMIN' && <TableCell onClick={(e) => e.stopPropagation()} align="right">
+                    <IconButton
+                        id={`basic-button-${row.id}`}
+                        size='small'
+                        aria-controls={open ? 'basic-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClickMenu(row.id)}>
+                        <MoreHoriz />
+                    </IconButton>
+                    <Menu
+                        anchorEl={menuState.anchorEl}
+                        open={open && menuState.rowId === row.id}
+                        onClose={handleCloseMenu}
+                        slotProps={{
+                            list: {
+                                'aria-labelledby': 'basic-button',
+                            },
+                        }}
+                    >
+                        <MenuItem onClick={() => {
+                            const submit =
+                                role === 'ADMIN'
+                                    ? deleteSectionAdmin
+                                    : deleteSection;
+                            submit({ sectionId: item.id });
+                            handleCloseMenu()
+                        }}>삭제하기</MenuItem>
+                    </Menu>
+                </TableCell>}
+            </TableRow>
+        ));
+
+        return [parentRow, ...childRows];
+
+
+
+    };
+
     return (
         <Stack>
             <Title title={t('지역 및 섹션 목록')} />

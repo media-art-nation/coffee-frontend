@@ -13,6 +13,7 @@ import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import NarrowLayout from '@/routers/NarrowLayout';
 
 export const defaultCenter = {
     lat: 17.967,
@@ -66,108 +67,110 @@ const LocationRegister = () => {
                 variant: 'alert',
                 primaryAction: {
                     name: t('확인'),
-                    onClick: () => {},
+                    onClick: () => { },
                 },
             });
         }
     };
 
     return (
-        <Stack>
-            <Title title={t('지역 생성')}>
-                <Button variant="containedGrey">{t('취소')}</Button>
-                <Button variant="containedBlue" onClick={handleSubmit(onSubmit)}>
-                    {t('등록')}
-                </Button>
-            </Title>
+        <NarrowLayout>
+            <Stack>
+                <Title title={t('지역 생성')}>
+                    <Button variant="containedBlue" onClick={handleSubmit(onSubmit)}>
+                        {t('등록')}
+                    </Button>
+                </Title>
 
-            <PageLayout gap={'27px'}>
-                <LabelComponentsLayout labelValue={t('국가 선택')}>
-                    <Select
-                        value={selectedCountry}
-                        defaultValue="la"
-                        onChange={(e) => {
-                            const newCountry = e.target.value as 'kr' | 'la';
-                            setSelectedCountry(newCountry);
+                <PageLayout gap={'27px'}>
+                    <LabelComponentsLayout labelValue={t('국가 선택')}>
+                        <Select
+                            value={selectedCountry}
+                            defaultValue="la"
+                            onChange={(e) => {
+                                const newCountry = e.target.value as 'kr' | 'la';
+                                setSelectedCountry(newCountry);
 
-                            // Autocomplete 업데이트
-                            if (autocompleteRef.current && inputRef.current) {
-                                autocompleteRef.current.setComponentRestrictions({
-                                    country: newCountry,
-                                });
-                            }
-                        }}
-                    >
-                        <MenuItem value="kr">대한민국</MenuItem>
-                        <MenuItem value="la">라오스</MenuItem>
-                    </Select>
-                </LabelComponentsLayout>
-
-                <Stack>
-                    <Typography fontSize={16} fontWeight={700}>
-                        {t('지역 등록')}
-                    </Typography>
-
-                    <Stack mt={2}>
-                        <Typography fontSize={14}>
-                            📍 {`${t('선택된 위치')} - ${watch('areaName')}`}
-                        </Typography>
-                        <Typography fontSize={14}>
-                            {`${t('위도')} : ${latitude}, ${t('경도')}: ${longitude}`}
-                        </Typography>
-                    </Stack>
-
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        sx={{ my: 2 }}
-                        inputProps={{
-                            ref: (ref: HTMLInputElement | null) => {
-                                if (ref && !autocompleteRef.current) {
-                                    inputRef.current = ref;
-
-                                    const autocomplete = new window.google.maps.places.Autocomplete(
-                                        ref,
-                                        {
-                                            types: ['geocode'],
-                                            componentRestrictions: { country: selectedCountry },
-                                        }
-                                    );
-
-                                    autocomplete.addListener('place_changed', () => {
-                                        const place = autocomplete.getPlace();
-                                        if (!place.geometry || !place.geometry.location) return;
-
-                                        const lat = place.geometry.location.lat();
-                                        const lng = place.geometry.location.lng();
-                                        const name = place.formatted_address || place.name || '';
-
-                                        setValue('areaName', name);
-                                        setValue('latitude', lat);
-                                        setValue('longitude', lng);
+                                // Autocomplete 업데이트
+                                if (autocompleteRef.current && inputRef.current) {
+                                    autocompleteRef.current.setComponentRestrictions({
+                                        country: newCountry,
                                     });
-
-                                    autocompleteRef.current = autocomplete;
                                 }
-                            },
-                        }}
-                    />
+                            }}
+                        >
+                            <MenuItem value="kr">대한민국</MenuItem>
+                            <MenuItem value="la">라오스</MenuItem>
+                        </Select>
+                    </LabelComponentsLayout>
 
-                    {/* 숨겨진 필드 등록 */}
-                    <input type="hidden" {...register('areaName')} />
-                    <input type="hidden" {...register('latitude', { valueAsNumber: true })} />
-                    <input type="hidden" {...register('longitude', { valueAsNumber: true })} />
+                    <Stack>
+                        <Typography fontSize={16} fontWeight={700}>
+                            {t('지역 등록')}
+                        </Typography>
 
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={{ lat: latitude, lng: longitude }}
-                        zoom={13}
-                    >
-                        <Marker position={{ lat: latitude, lng: longitude }} />
-                    </GoogleMap>
-                </Stack>
-            </PageLayout>
-        </Stack>
+                        <Stack mt={2}>
+                            <Typography fontSize={14}>
+                                📍 {`${t('선택된 위치')} - ${watch('areaName')}`}
+                            </Typography>
+                            <Typography fontSize={14}>
+                                {`${t('위도')} : ${latitude}, ${t('경도')}: ${longitude}`}
+                            </Typography>
+                        </Stack>
+
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            sx={{ my: 2 }}
+                            inputProps={{
+                                ref: (ref: HTMLInputElement | null) => {
+                                    if (ref && !autocompleteRef.current) {
+                                        inputRef.current = ref;
+
+                                        const autocomplete = new window.google.maps.places.Autocomplete(
+                                            ref,
+                                            {
+                                                types: ['geocode'],
+                                                componentRestrictions: { country: selectedCountry },
+                                            }
+                                        );
+
+                                        autocomplete.addListener('place_changed', () => {
+                                            const place = autocomplete.getPlace();
+                                            if (!place.geometry || !place.geometry.location) return;
+
+                                            const lat = place.geometry.location.lat();
+                                            const lng = place.geometry.location.lng();
+                                            const name = place.formatted_address || place.name || '';
+
+                                            setValue('areaName', name);
+                                            setValue('latitude', lat);
+                                            setValue('longitude', lng);
+                                        });
+
+                                        autocompleteRef.current = autocomplete;
+                                    }
+                                },
+                            }}
+                        />
+
+                        {/* 숨겨진 필드 등록 */}
+                        <input type="hidden" {...register('areaName')} />
+                        <input type="hidden" {...register('latitude', { valueAsNumber: true })} />
+                        <input type="hidden" {...register('longitude', { valueAsNumber: true })} />
+
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={{ lat: latitude, lng: longitude }}
+                            zoom={13}
+                        >
+                            <Marker position={{ lat: latitude, lng: longitude }} />
+                        </GoogleMap>
+                    </Stack>
+                </PageLayout>
+            </Stack>
+        </NarrowLayout>
+
     );
 };
 
