@@ -4,8 +4,7 @@ import AccountRegister from '@/pages/Accounts/AccountRegister';
 import Login from '@/pages/Accounts/Login';
 import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
 import FarmerDetails from '@/pages/Farmers/FarmerDetails';
-import FarmerList from '@/pages/Farmers/FarmerList';
-import FarmerRegister from '@/pages/Farmers/FarmerRegister';
+import FarmerList from '@/pages/Farmers';
 import LocationList from '@/pages/Locations/LocationList';
 import LocationRegister from '@/pages/Locations/LocationRegister';
 import SectionRegister from '@/pages/Locations/SectionRegister';
@@ -15,11 +14,10 @@ import SectionRequestDetails from '@/pages/Requests/SectionRequestDetails';
 import TreesPurchaseRequestDetails from '@/pages/Requests/TreesPurchaseRequestDetails';
 import VillageHeadRequestDetails from '@/pages/Requests/VillageHeadRequestDetails';
 import TestComponents from '@/pages/TestComponents';
-import TreesPurchaseList from '@/pages/TreesPurchases/TreesPurchaseList';
-import TreesPurchaseRegister from '@/pages/TreesPurchases/TreesPurchaseRegister';
+import TreesPurchaseList from '@/pages/TreesPurchases';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
 import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
-import ViceAdminList from '@/pages/ViceAdmins/ViceAdminList';
+import ViceAdminList from '@/pages/ViceAdmins';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
 
@@ -61,14 +59,12 @@ const router = createBrowserRouter([
                     { path: ':id', element: <VillageHeadDetails /> },
                     { path: 'farmers', element: <FarmerList /> },
                     { path: 'farmers/:id', element: <FarmerDetails /> },
-                    { path: 'farmers/register', element: <FarmerRegister /> },
                 ],
             },
             {
                 path: 'trees-purchases', // 수매
                 children: [
                     { index: true, element: <TreesPurchaseList /> },
-                    { path: 'register', element: <TreesPurchaseRegister /> },
                 ],
             },
             {

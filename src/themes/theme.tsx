@@ -1,4 +1,4 @@
-import { PaginationItem, Shadows, createTheme } from '@mui/material';
+import { PaginationItem, Shadows, alpha, createTheme } from '@mui/material';
 import {
     CaretDoubleLeft,
     CaretDoubleRight,
@@ -51,6 +51,7 @@ declare module '@mui/material/Button' {
         containedRed: true;
         containedGrey: true;
         outlinedRed: true;
+        outlinedBlue: true;
         //------------------------아래부터 진짜
         Primary: true;
         Secondary: true;
@@ -80,12 +81,29 @@ export const theme = createTheme({
         ...createTheme({}).shadows.slice(8),
     ] as Shadows,
     palette: palette,
-    // typography: {
-    //     fontFamily: ['IBM Plex Sans KR', 'IBM Plex Sans', 'Roboto', 'sans-serif'].join(','),
-    // },
+    typography: {
+        fontFamily: [
+            "Pretendard",
+            "-apple-system",
+            "BlinkMacSystemFont",
+            "system-ui",
+            "Segoe UI",
+            "Roboto",
+            "Helvetica",
+            "Arial",
+            "Apple SD Gothic Neo",
+            "Noto Sans KR",
+            "sans-serif",
+        ].join(","),
+    },
     components: {
         MuiTypography: {
             defaultProps: { variant: 'body1/regular' },
+            styleOverrides: {
+                root: {
+                    color: palette.grey[800],
+                },
+            },
             variants: [
                 {
                     props: { variant: 'h1/bold' },
@@ -176,14 +194,15 @@ export const theme = createTheme({
         MuiTextField: {
             styleOverrides: {
                 root: {
-                    'background': palette.grey[50],
-                    'borderRadius': '4px',
+                    'borderRadius': '10px',
                     'minHeight': '44px',
+                    'backgroundColor': palette.common.white,
+                    'border': `1px solid ${palette.grey[300]}`,
                     '& .MuiOutlinedInput-root': {
-                        'height': '44px',
-                        'fontSize': '14px',
+                        'height': '48px',
+                        'borderRadius': '10px',
                         '& input': {
-                            padding: '12px 10px',
+                            padding: '16px 12px',
                         },
                         '& fieldset': {
                             borderColor: 'transparent',
@@ -326,9 +345,10 @@ export const theme = createTheme({
                 root: {
                     'width': '100%',
                     'minWidth': '100%',
-                    'height': '44px',
-                    'backgroundColor': palette.grey[50],
-                    'border': 'none',
+                    'height': '48px',
+                    'borderRadius': '10px',
+                    'backgroundColor': palette.common.white,
+                    'border': `1px solid ${palette.grey[300]}`,
                     'outline': 'none',
                     '& fieldset': {
                         border: 'none',
@@ -338,7 +358,6 @@ export const theme = createTheme({
                     },
                     'span': {
                         color: palette.grey[400],
-                        fontSize: '14px',
                     },
                 },
                 icon: {
@@ -350,16 +369,16 @@ export const theme = createTheme({
         MuiButton: {
             styleOverrides: {
                 root: {
-                    padding: '10px 30px',
-                    borderRadius: '5px',
-                    fontSize: '14px',
+                    padding: '14px 16px',
+                    borderRadius: '10px',
+                    fontWeight: '600',
                 },
             },
             variants: [
                 {
                     props: { variant: 'containedBlue' },
                     style: {
-                        backgroundColor: palette.blue[600],
+                        backgroundColor: palette.blue[500],
                         color: palette.common.white,
                     },
                 },
@@ -379,10 +398,18 @@ export const theme = createTheme({
                     },
                 },
                 {
+                    props: { variant: 'outlinedBlue' },
+                    style: {
+                        border: `1px solid ${palette.blue[500]}`,
+                        color: palette.blue[500],
+                        backgroundColor: palette.common.white,
+                    },
+                },
+                {
                     props: { variant: 'containedWhite' },
                     style: {
                         backgroundColor: palette.common.white,
-                        border: `1px solid ${palette.grey[100]}`,
+                        border: `1px solid ${palette.grey[300]}`,
                         color: palette.grey[800],
                     },
                 },
@@ -423,7 +450,7 @@ export const theme = createTheme({
                 align: 'center',
             },
             styleOverrides: {
-                root: { color: palette.grey[900], fontSize: '14px' },
+                root: { color: palette.grey[900] },
                 head: {
                     backgroundColor: palette.grey[50],
                     fontWeight: '600',
@@ -435,5 +462,73 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiDialog: {
+            defaultProps: {
+                fullWidth: true,
+                maxWidth: 'sm',
+            },
+            styleOverrides: {
+                paper: {
+                    // minHeight: '400px',
+                },
+            },
+        },
+        MuiDialogContent: {
+            styleOverrides: {
+                root: {
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                },
+            },
+        },
+        MuiDialogTitle: {
+            styleOverrides: {
+                root: {
+                    fontSize: '24px',
+                    fontWeight: '600',
+                },
+            },
+        },
+        MuiDialogActions: {
+
+            styleOverrides: {
+                root: {
+                    '& .MuiButton-root': {
+                        height: '48px',
+                        width: 'fit-content',
+                        borderRadius: '10px',
+                        fontWeight: '600',
+                    },
+                },
+            }
+        },
+        MuiMenu: {
+            styleOverrides: {
+                root: {
+                    '& .MuiPaper-root': {
+                        borderRadius: 6,
+                        minWidth: 150,
+                        boxShadow:
+                            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+                        '& .MuiMenu-list': {
+                            padding: '8px 0',
+                        },
+                        '& .MuiMenuItem-root': {
+                            fontWeight: '600',
+                            color: palette.grey[700],
+                            padding: '8px 16px',
+                            '&:active': {
+                                backgroundColor: alpha(
+                                    palette.blue[500],
+                                    0.08,
+                                ),
+                            },
+                        },
+                    },
+                }
+            },
+        },
+
     },
 });

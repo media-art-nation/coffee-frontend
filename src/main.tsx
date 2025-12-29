@@ -27,7 +27,7 @@ createRoot(document.getElementById('root')!).render(
                     <GlobalStyles
                         styles={{
                             '*': {
-                                fontFamily: `'IBM Plex Sans KR', 'IBM Plex Sans', sans-serif`,
+                                // fontFamily: `'IBM Plex Sans KR', 'IBM Plex Sans', sans-serif`,
                             },
                         }}
                     />

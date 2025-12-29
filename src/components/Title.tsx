@@ -1,3 +1,4 @@
+import { palette } from '@/themes';
 import { Stack, Typography } from '@mui/material';
 
 type TitleProps = {
@@ -16,7 +17,7 @@ const Title = ({ title, children }: TitleProps) => {
                 width: '100%',
             }}
         >
-            <Typography variant="h2/bold">{title}</Typography>
+            <Typography sx={{ color: palette.grey[800], fontSize: '28px', fontWeight: '600' }}>{title}</Typography>
             <Stack gap={'10px'} direction={'row'} sx={{ height: '40px' }}>
                 {children}
             </Stack>

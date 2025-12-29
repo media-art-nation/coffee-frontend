@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
 import { getCookies } from '@/apis/AppUser/cookie';
@@ -22,6 +22,7 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes/palette';
+import { Close } from '@mui/icons-material';
 
 type CreateApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
@@ -58,6 +59,7 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                     });
 
                     handleClose();
+
                     setSelectArea(null);
 
                     openDialog({
@@ -108,19 +110,28 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{t('면장 등록')}</DialogTitle>
+            <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                sx={(theme) => ({
+                    position: 'absolute',
+                    right: 8,
+                    top: 8,
+                    color: theme.palette.grey[500],
+                })}
+            >
+                <Close />
+            </IconButton>
             <DialogContent>
                 <form onSubmit={methods.handleSubmit(onSubmit)} id="create-village-head-form">
                     <Stack gap={'12px'}>
-                        <Stack gap={'12px'}>
-                            <Typography fontSize={'16px'} fontWeight={700}>
-                                {t('사진')}
-                            </Typography>
+                        <LabelComponentsLayout labelValue={t('사진')}>
                             <AddPhoto
                                 fieldName={'identificationPhoto'}
                                 watch={methods.watch}
                                 setValue={methods.setValue}
                             />
-                        </Stack>
+                        </LabelComponentsLayout>
                         {role === 'ADMIN' && (
                             <LabelComponentsLayout labelValue={t('지역')}>
                                 <Select value={selectArea} onChange={(e) => setSelectArea(e.target.value)}

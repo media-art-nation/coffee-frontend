@@ -28,16 +28,14 @@ const lnbData: Record<TRole, TLnbItem[]> = {
             label: '면장 관리',
             children: [
                 { label: '면장 목록', path: '/village-heads' },
-                { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
-                { label: '농부 등록', path: '/village-heads/farmers/register' },
+                // { label: '농부 등록', path: '/village-heads/farmers/register' },
             ],
         },
         {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매 내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
@@ -67,9 +65,8 @@ const lnbData: Record<TRole, TLnbItem[]> = {
             label: '면장 관리',
             children: [
                 { label: '면장 목록', path: '/village-heads' },
-                { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
-                { label: '농부 등록', path: '/village-heads/farmers/register' },
+                // { label: '농부 등록', path: '/village-heads/farmers/register' },
             ],
         },
         // {
@@ -94,16 +91,14 @@ const lnbData: Record<TRole, TLnbItem[]> = {
             label: '면장 관리',
             children: [
                 { label: '면장 목록', path: '/village-heads' },
-                { label: '면장 등록', path: '/village-heads/register' },
                 { label: '농부 목록', path: '/village-heads/farmers' },
-                { label: '농부 등록', path: '/village-heads/farmers/register' },
+                // { label: '농부 등록', path: '/village-heads/farmers/register' },
             ],
         },
         {
             label: '수매 관리',
             children: [
                 { label: '수매 목록', path: '/trees-purchases' },
-                { label: '수매 내역 등록', path: '/trees-purchases/register' },
             ],
         },
         {
@@ -125,6 +120,8 @@ const lnbData: Record<TRole, TLnbItem[]> = {
     ],
 };
 
+export const LNB_WIDTH = 250;
+
 const Lnb = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -136,7 +133,7 @@ const Lnb = () => {
         <Stack
             sx={{
                 padding: '12px',
-                minWidth: '216px',
+                minWidth: LNB_WIDTH,
                 gap: '5px',
                 borderRight: `1px solid ${palette.grey[50]}`,
                 flex: 1,
@@ -156,17 +153,18 @@ const Lnb = () => {
                         defaultExpanded
                     >
                         <AccordionSummary
-                            expandIcon={<ExpandMore sx={{ color: palette.grey[700] }} />}
+                            expandIcon={<ExpandMore sx={{ color: palette.grey[500] }} />}
                             sx={{
                                 'backgroundColor': '#F9FAFB',
-                                'padding': '8px',
-                                'borderRadius': '4px',
-                                'height': '40px',
+                                'padding': '12px',
+                                'borderRadius': '10px',
+                                'height': '48px',
+                                'fontSize': '15px',
                                 'color': palette.grey[800],
-                                '&.Mui-expanded': { minHeight: '40px', marginBottom: '5px' },
+                                '&.Mui-expanded': { minHeight: '48px', marginBottom: '5px' },
                             }}
                         >
-                            <Typography sx={{ fontSize: '14px', color: palette.grey[800] }}>
+                            <Typography sx={{ color: palette.grey[800], fontSize: '15px' }}>
                                 {t(v.label)}
                             </Typography>
                         </AccordionSummary>
@@ -184,26 +182,27 @@ const Lnb = () => {
                                             key={c.path}
                                             onClick={() => navigate(c.path)}
                                             sx={{
-                                                'borderRadius': '4px',
-                                                'height': '40px',
+                                                'borderRadius': '10px',
+                                                'height': '48px',
                                                 'backgroundColor': selected
-                                                    ? '#F1F9FF'
+                                                    ? palette.blue[50]
                                                     : palette.common.white,
                                                 'padding': '0 0 0 20px',
                                                 'flexDirection': 'row',
                                                 'alignItems': 'center',
                                                 'cursor': 'pointer',
                                                 '&:hover': {
-                                                    backgroundColor: palette.action.hover,
+                                                    backgroundColor: palette.grey[50],
                                                 },
                                             }}
                                         >
                                             <Typography
                                                 sx={{
-                                                    fontSize: '14px',
+                                                    fontSize: '15px',
                                                     color: selected
-                                                        ? palette.blue[700]
+                                                        ? palette.blue[600]
                                                         : palette.grey[700],
+                                                    fontWeight: selected ? 600 : 400,
                                                 }}
                                             >
                                                 {t(c.label)}
