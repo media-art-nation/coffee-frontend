@@ -1,10 +1,14 @@
 import { createBrowserRouter } from 'react-router';
+
 import { Stack } from '@mui/material';
+
 import AccountRegister from '@/pages/Accounts/AccountRegister';
 import Login from '@/pages/Accounts/Login';
 import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
-import FarmerDetails from '@/pages/Farmers/FarmerDetails';
 import FarmerList from '@/pages/Farmers';
+import FarmerDetails from '@/pages/Farmers/FarmerDetails';
+import { AreaDetails } from '@/pages/Locations/LocationDetails/area';
+import { SectionDetails } from '@/pages/Locations/LocationDetails/section';
 import LocationList from '@/pages/Locations/LocationList';
 import LocationRegister from '@/pages/Locations/LocationRegister';
 import SectionRegister from '@/pages/Locations/SectionRegister';
@@ -15,9 +19,9 @@ import TreesPurchaseRequestDetails from '@/pages/Requests/TreesPurchaseRequestDe
 import VillageHeadRequestDetails from '@/pages/Requests/VillageHeadRequestDetails';
 import TestComponents from '@/pages/TestComponents';
 import TreesPurchaseList from '@/pages/TreesPurchases';
+import ViceAdminList from '@/pages/ViceAdmins';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
 import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
-import ViceAdminList from '@/pages/ViceAdmins';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
 
@@ -63,9 +67,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'trees-purchases', // 수매
-                children: [
-                    { index: true, element: <TreesPurchaseList /> },
-                ],
+                children: [{ index: true, element: <TreesPurchaseList /> }],
             },
             {
                 path: 'vice-admins', // 부 관리자
@@ -79,6 +81,8 @@ const router = createBrowserRouter([
                 path: 'locations', // 지역
                 children: [
                     { index: true, element: <LocationList /> },
+                    { path: 'area/:id', element: <AreaDetails /> },
+                    { path: 'section/:id', element: <SectionDetails /> },
                     { path: 'register', element: <LocationRegister /> },
                     { path: 'register/section', element: <SectionRegister /> },
                 ],

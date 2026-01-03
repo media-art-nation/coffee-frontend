@@ -1,5 +1,9 @@
-import { useTranslation } from 'react-i18next';
+import { MouseEvent, useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+
+import { MoreHoriz } from '@mui/icons-material';
 import {
     CircularProgress,
     IconButton,
@@ -18,28 +22,23 @@ import noData from '@assets/noData.svg';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 import { useDeleteSection } from '@/apis/Approval/useDeleteSection';
-import { useDeleteAreaAdmin } from '@/apis/Area/useDeleteAreaAdmin';
 import { useGetAreaWithSectionList } from '@/apis/Area/useGetAreaWithSection';
 import { useDeleteSectionAdmin } from '@/apis/Section/useDeleteSectionAdmin';
-import DeleteButton from '@/components/DeleteButton';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TAreaWithSections } from '@/typings/Area';
-import { MoreHoriz } from '@mui/icons-material';
-import { MouseEvent, useState } from 'react';
 
 const LocationList = () => {
     const { t } = useTranslation();
     const { openDialog } = useDialog();
+    const navigate = useNavigate();
     const { data: areaWithSectionList, isLoading: areaWithSectionListLoading } =
         useGetAreaWithSectionList();
     const { mutate: deleteSection } = useDeleteSection();
     const { mutate: deleteSectionAdmin } = useDeleteSectionAdmin();
-    const { mutate: deleteAreaAdmin } = useDeleteAreaAdmin();
     const headData = [t('ID'), t('지역'), t('섹션'), ''];
     const role = getCookies('role');
-
 
     const [menuState, setMenuState] = useState<{
         anchorEl: HTMLElement | null;
@@ -63,95 +62,100 @@ const LocationList = () => {
             primaryAction: {
                 name: t('확인'),
                 onClick: () => {
-                    const submit =
-                        role === 'ADMIN'
-                            ? deleteSectionAdmin
-                            : deleteSection;
+                    const submit = role === 'ADMIN' ? deleteSectionAdmin : deleteSection;
                     submit({ sectionId: id });
                 },
             },
-            secondaryAction: { name: t('취소'), onClick: () => { } },
+            secondaryAction: { name: t('취소'), onClick: () => {} },
         });
-
     };
 
     const renderRow = (row: TAreaWithSections) => {
-        console.log(row);
-
-        const parentRow = <TableRow key={row.id}>
-            <TableCell>{row.id.toString()}</TableCell>
-            <TableCell>{row.areaName}</TableCell>
-            <TableCell>-</TableCell>
-            {role === 'ADMIN' && <TableCell onClick={(e) => e.stopPropagation()} align="right">
-                <IconButton
-                    id={`basic-button-${row.id}`}
-                    size='small'
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClickMenu(row.id)}>
-                    <MoreHoriz />
-                </IconButton>
-                <Menu
-                    anchorEl={menuState.anchorEl}
-                    open={open && menuState.rowId === row.id}
-                    onClose={handleCloseMenu}
-                    slotProps={{
-                        list: {
-                            'aria-labelledby': 'basic-button',
-                        },
-                    }}
-                >
-                    <MenuItem onClick={() => {
-                        handleClickDelete(row.id)
-                        handleCloseMenu()
-                    }}>삭제하기</MenuItem>
-                </Menu>
-            </TableCell>}
-        </TableRow>
+        const parentRow = (
+            <TableRow key={row.id} onClick={() => navigate(`/locations/area/${row.id}`)}>
+                <TableCell>{row.id.toString()}</TableCell>
+                <TableCell>{row.areaName}</TableCell>
+                <TableCell>-</TableCell>
+                {role === 'ADMIN' && (
+                    <TableCell onClick={(e) => e.stopPropagation()} align="right">
+                        <IconButton
+                            id={`basic-button-${row.id}`}
+                            size="small"
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClickMenu(row.id)}
+                        >
+                            <MoreHoriz />
+                        </IconButton>
+                        <Menu
+                            anchorEl={menuState.anchorEl}
+                            open={open && menuState.rowId === row.id}
+                            onClose={handleCloseMenu}
+                            slotProps={{
+                                list: {
+                                    'aria-labelledby': 'basic-button',
+                                },
+                            }}
+                        >
+                            <MenuItem
+                                onClick={() => {
+                                    handleClickDelete(row.id);
+                                    handleCloseMenu();
+                                }}
+                            >
+                                삭제하기
+                            </MenuItem>
+                        </Menu>
+                    </TableCell>
+                )}
+            </TableRow>
+        );
 
         const childRows = row.sections.map((item) => (
-            <TableRow key={item.id}>
+            <TableRow key={item.id} onClick={() => navigate(`/locations/section/${item.id}`)}>
                 <TableCell>{item.id.toString()}</TableCell>
                 <TableCell>{row.areaName}</TableCell>
                 <TableCell>{item.sectionName}</TableCell>
-                {role === 'ADMIN' && <TableCell onClick={(e) => e.stopPropagation()} align="right">
-                    <IconButton
-                        id={`basic-button-${row.id}`}
-                        size='small'
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClickMenu(row.id)}>
-                        <MoreHoriz />
-                    </IconButton>
-                    <Menu
-                        anchorEl={menuState.anchorEl}
-                        open={open && menuState.rowId === row.id}
-                        onClose={handleCloseMenu}
-                        slotProps={{
-                            list: {
-                                'aria-labelledby': 'basic-button',
-                            },
-                        }}
-                    >
-                        <MenuItem onClick={() => {
-                            const submit =
-                                role === 'ADMIN'
-                                    ? deleteSectionAdmin
-                                    : deleteSection;
-                            submit({ sectionId: item.id });
-                            handleCloseMenu()
-                        }}>삭제하기</MenuItem>
-                    </Menu>
-                </TableCell>}
+                {role === 'ADMIN' && (
+                    <TableCell onClick={(e) => e.stopPropagation()} align="right">
+                        <IconButton
+                            id={`basic-button-${row.id}`}
+                            size="small"
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClickMenu(row.id)}
+                        >
+                            <MoreHoriz />
+                        </IconButton>
+                        <Menu
+                            anchorEl={menuState.anchorEl}
+                            open={open && menuState.rowId === row.id}
+                            onClose={handleCloseMenu}
+                            slotProps={{
+                                list: {
+                                    'aria-labelledby': 'basic-button',
+                                },
+                            }}
+                        >
+                            <MenuItem
+                                onClick={() => {
+                                    const submit =
+                                        role === 'ADMIN' ? deleteSectionAdmin : deleteSection;
+                                    submit({ sectionId: item.id });
+                                    handleCloseMenu();
+                                }}
+                            >
+                                삭제하기
+                            </MenuItem>
+                        </Menu>
+                    </TableCell>
+                )}
             </TableRow>
         ));
 
         return [parentRow, ...childRows];
-
-
-
     };
 
     return (
