@@ -1,25 +1,38 @@
-import { UpdateApprovalFarmerReq, useUpdateApprovalFarmer } from "@/apis/Approval/useUpdateApprovalFarmer";
-import { useGetVillageHeadList } from "@/apis/AppUser/useGetVillageHeadList";
-import { useGetFarmerDetail } from "@/apis/Farmer/useGetFarmerDetail";
-import { QUERY_KEYS } from "@/apis/QueryKeys";
-import AddPhoto from "@/components/AddPhoto";
-import LabelAndInput from "@/components/LabelAndInput";
-import LabelAndSelect from "@/components/LabelAndSelect";
-import LabelComponentsLayout from "@/components/LabelComponentsLayout";
-import { Loading } from "@/components/Loading";
-import { useDialog } from "@/hooks/useDialog";
-import { Close } from "@mui/icons-material";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { useEffect } from 'react';
+
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Stack,
+} from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
+import {
+    UpdateApprovalFarmerReq,
+    useUpdateApprovalFarmer,
+} from '@/apis/Approval/useUpdateApprovalFarmer';
+import { useGetFarmerDetail } from '@/apis/Farmer/useGetFarmerDetail';
+import { QUERY_KEYS } from '@/apis/QueryKeys';
+import AddPhoto from '@/components/AddPhoto';
+import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
+import { useDialog } from '@/hooks/useDialog';
 
 type FarmerEditDialogProps = {
     open: boolean;
     onClose: () => void;
     farmerId: number;
-}
+};
 
 export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogProps) => {
     const { t } = useTranslation();
@@ -28,15 +41,15 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
     const { data: villageHeadList } = useGetVillageHeadList();
     const { data: farmer, isLoading: farmerDetailLoading } = useGetFarmerDetail(String(farmerId));
 
-
-    const { reset, control, register, watch, setValue, handleSubmit } = useForm<UpdateApprovalFarmerReq>({
-        defaultValues: {
-            villageHeadId: farmer?.villageHeadId || null,
-            name: farmer?.farmerName || '',
-            identificationPhoto: undefined,
-            farmerId,
-        },
-    });
+    const { reset, control, register, watch, setValue, handleSubmit } =
+        useForm<UpdateApprovalFarmerReq>({
+            defaultValues: {
+                villageHeadId: farmer?.villageHeadId || null,
+                name: farmer?.farmerName || '',
+                identificationPhoto: undefined,
+                farmerId,
+            },
+        });
 
     const { mutateAsync: updateApprovalFarmerMutateAsync } = useUpdateApprovalFarmer();
     const onSubmit = (data: UpdateApprovalFarmerReq) => {
@@ -68,7 +81,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => { },
+                        onClick: () => {},
                     },
                 });
             })
@@ -102,9 +115,9 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
         }
     }, [farmer, reset]);
 
-    if (farmerDetailLoading || !farmer) return null
+    if (farmerDetailLoading || !farmer) return null;
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth >
+        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle>{t('농부 수정')}</DialogTitle>
             <IconButton
                 aria-label="close"
@@ -150,8 +163,15 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button onClick={handleSubmit(onSubmit)} form="create-farmer-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    onClick={handleSubmit(onSubmit)}
+                    form="create-farmer-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>
