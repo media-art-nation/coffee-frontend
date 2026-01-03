@@ -10,9 +10,9 @@ import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
+import NarrowLayout from '@/routers/NarrowLayout';
 import { TRole } from '@/typings/User';
 import { showToast } from '@/utils/showToast';
-import NarrowLayout from '@/routers/NarrowLayout';
 
 type TSignUpForm = {
     userId: string;
@@ -47,23 +47,23 @@ const AccountRegister = () => {
         watchedAreaId ? Number(watchedAreaId) : undefined
     );
 
-    const handleClickCancel = () => {
-        openDialog({
-            title: t('계정 생성 취소'),
-            description: t('계정 생성을 취소하시겠습니까?'),
-            variant: 'alert',
-            primaryAction: {
-                name: t('확인'),
-                onClick: () => {
-                    reset();
-                },
-            },
-            secondaryAction: {
-                name: t('닫기'),
-                onClick: () => { },
-            },
-        });
-    };
+    // const handleClickCancel = () => {
+    //     openDialog({
+    //         title: t('계정 생성 취소'),
+    //         description: t('계정 생성을 취소하시겠습니까?'),
+    //         variant: 'alert',
+    //         primaryAction: {
+    //             name: t('확인'),
+    //             onClick: () => {
+    //                 reset();
+    //             },
+    //         },
+    //         secondaryAction: {
+    //             name: t('닫기'),
+    //             onClick: () => {},
+    //         },
+    //     });
+    // };
 
     const onSubmit = (formData: TSignUpForm) => {
         const { passwordCheck: _, sectionId, areaId, ...rest } = formData;
@@ -95,7 +95,7 @@ const AccountRegister = () => {
             },
             secondaryAction: {
                 name: t('닫기'),
-                onClick: () => { },
+                onClick: () => {},
             },
         });
     };
@@ -200,7 +200,6 @@ const AccountRegister = () => {
                 </Stack>
             </Stack>
         </NarrowLayout>
-
     );
 };
 export default AccountRegister;

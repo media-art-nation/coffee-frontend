@@ -6,7 +6,6 @@ import AccountRegister from '@/pages/Accounts/AccountRegister';
 import Login from '@/pages/Accounts/Login';
 import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
 import FarmerList from '@/pages/Farmers';
-import FarmerDetails from '@/pages/Farmers/FarmerDetails';
 import { AreaDetails } from '@/pages/Locations/LocationDetails/area';
 import { SectionDetails } from '@/pages/Locations/LocationDetails/section';
 import LocationList from '@/pages/Locations/LocationList';
@@ -62,7 +61,6 @@ const router = createBrowserRouter([
                     { index: true, element: <VillageHeadList /> },
                     { path: ':id', element: <VillageHeadDetails /> },
                     { path: 'farmers', element: <FarmerList /> },
-                    { path: 'farmers/:id', element: <FarmerDetails /> },
                 ],
             },
             {
