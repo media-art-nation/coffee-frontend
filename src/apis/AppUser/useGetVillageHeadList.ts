@@ -4,6 +4,14 @@ import { QUERY_KEYS } from '../QueryKeys';
 import { axiosInstance } from '../axiosInstance';
 
 export type GetVillageHeadListRes = {
+    areaInfo: {
+        areaId: number;
+        areaName: string;
+    };
+    sectionInfo: {
+        sectionId: number;
+        sectionName: string;
+    };
     appUserId: string;
     appUserName: string;
     sectionName: string;
