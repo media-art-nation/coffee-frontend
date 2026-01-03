@@ -1,18 +1,28 @@
-import { useGetViceAdminDetails } from "@/apis/AppUser/useGetViceAdminDetails";
-import { useUpdateViceAdminDetails } from "@/apis/AppUser/useUpdateViceAdminDetails";
-import { useGetArea } from "@/apis/Area/useGetArea";
-import { QUERY_KEYS } from "@/apis/QueryKeys";
-import AddPhoto from "@/components/AddPhoto";
-import LabelAndInput from "@/components/LabelAndInput";
-import LabelAndSelect from "@/components/LabelAndSelect";
-import LabelComponentsLayout from "@/components/LabelComponentsLayout";
-import { useDialog } from "@/hooks/useDialog";
-import { Close } from "@mui/icons-material";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router";
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
+
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Stack,
+} from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
+import { useUpdateViceAdminDetails } from '@/apis/AppUser/useUpdateViceAdminDetails';
+import { useGetArea } from '@/apis/Area/useGetArea';
+import { QUERY_KEYS } from '@/apis/QueryKeys';
+import AddPhoto from '@/components/AddPhoto';
+import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
+import { useDialog } from '@/hooks/useDialog';
 
 type TViceAdminDetailsInput = {
     viceAdminId: number;
@@ -26,7 +36,7 @@ type EditViceAdminDialogProps = {
     open: boolean;
     onClose: () => void;
     viceAdminId: number;
-}
+};
 
 export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdminDialogProps) => {
     const { t } = useTranslation();
@@ -51,13 +61,14 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
         },
     });
 
-    const areaInfo = getAreaList?.find((area) => String(area.id) === methods.watch('areaId'));
     const onSubmitEdit = (data: TViceAdminDetailsInput) => {
         updateViceAdmin({ ...data, areaId: Number(data.areaId) })
             .then((res) => {
                 if (res.data.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
-                        queryKey: QUERY_KEYS.APP_USER.getViceAdminDetail(JSON.stringify(viceAdminId)),
+                        queryKey: QUERY_KEYS.APP_USER.getViceAdminDetail(
+                            JSON.stringify(viceAdminId)
+                        ),
                     });
                     openDialog({
                         title: t('부관리자 수정 완료'),
@@ -77,7 +88,7 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => { },
+                        onClick: () => {},
                     },
                 });
             })
@@ -95,7 +106,7 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                 });
             });
     };
-    
+
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle>{t('부관리자 정보 수정')}</DialogTitle>
@@ -165,8 +176,15 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button onClick={methods.handleSubmit(onSubmitEdit)} form="edit-vice-admin-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    onClick={methods.handleSubmit(onSubmitEdit)}
+                    form="edit-vice-admin-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>

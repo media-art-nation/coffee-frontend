@@ -1,20 +1,22 @@
+import { MouseEvent, useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
+
+import { MoreHoriz } from '@mui/icons-material';
 import { IconButton, Menu, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+
 import { GetViceAdminListRes, useGetViceAdminList } from '@/apis/AppUser/useGetViceAdminList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
-import { MouseEvent, useState } from 'react';
+
 import { EditViceAdminDialog } from './edit-dialog';
-import { useDialog } from '@/hooks/useDialog';
-import { MoreHoriz } from '@mui/icons-material';
 
 const ViceAdminList = () => {
     const { t } = useTranslation();
     const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
-    const { openDialog } = useDialog();
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [viceAdminId, setViceAdminId] = useState<number | null>(null);
 
@@ -32,19 +34,18 @@ const ViceAdminList = () => {
 
     const handleCloseMenu = () => setMenuState({ anchorEl: null, rowId: null });
 
-    const handleClickDelete = (id: number) => {
-        openDialog({
-            title: t('해당 구매 내역을 삭제하시겠습니까?'),
-            description: t('삭제하면 복구가 불가능합니다.'),
-            variant: 'alert',
-            primaryAction: {
-                name: t('확인'),
-                onClick: () => {
-                },
-            },
-            secondaryAction: { name: t('취소'), onClick: () => { } },
-        });
-    };
+    // const handleClickDelete = (id: number) => {
+    //     openDialog({
+    //         title: t('해당 구매 내역을 삭제하시겠습니까?'),
+    //         description: t('삭제하면 복구가 불가능합니다.'),
+    //         variant: 'alert',
+    //         primaryAction: {
+    //             name: t('확인'),
+    //             onClick: () => {},
+    //         },
+    //         secondaryAction: { name: t('취소'), onClick: () => {} },
+    //     });
+    // };
 
     const renderRow = (row: GetViceAdminListRes) => {
         return (
@@ -56,11 +57,12 @@ const ViceAdminList = () => {
                 <TableCell onClick={(e) => e.stopPropagation()} align="right">
                     <IconButton
                         id={`basic-button-${row.id}`}
-                        size='small'
+                        size="small"
                         aria-controls={open ? 'basic-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClickMenu(row.id)}>
+                        onClick={handleClickMenu(row.id)}
+                    >
                         <MoreHoriz />
                     </IconButton>
                     <Menu
@@ -73,11 +75,15 @@ const ViceAdminList = () => {
                             },
                         }}
                     >
-                        <MenuItem onClick={() => {
-                            setOpenEditDialog(true)
-                            setViceAdminId(row.id)
-                            handleCloseMenu()
-                        }}>수정하기</MenuItem>
+                        <MenuItem
+                            onClick={() => {
+                                setOpenEditDialog(true);
+                                setViceAdminId(row.id);
+                                handleCloseMenu();
+                            }}
+                        >
+                            수정하기
+                        </MenuItem>
                     </Menu>
                 </TableCell>
             </TableRow>
@@ -95,7 +101,13 @@ const ViceAdminList = () => {
                     isLoading={isLoading}
                 />
             </PageLayout>
-            {viceAdminId && <EditViceAdminDialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} viceAdminId={viceAdminId} />}
+            {viceAdminId && (
+                <EditViceAdminDialog
+                    open={openEditDialog}
+                    onClose={() => setOpenEditDialog(false)}
+                    viceAdminId={viceAdminId}
+                />
+            )}
         </Stack>
     );
 };

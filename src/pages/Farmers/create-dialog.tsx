@@ -1,38 +1,51 @@
-import { CreateApprovalFarmerRegisterReq, useCreateApprovalFarmerRegister } from "@/apis/Approval/useCreateApprovalFarmerRegister";
-import { useGetVillageHeadList } from "@/apis/AppUser/useGetVillageHeadList";
-import { QUERY_KEYS } from "@/apis/QueryKeys";
-import AddPhoto from "@/components/AddPhoto";
-import LabelAndInput from "@/components/LabelAndInput";
-import LabelAndSelect from "@/components/LabelAndSelect";
-import LabelComponentsLayout from "@/components/LabelComponentsLayout";
-import { useDialog } from "@/hooks/useDialog";
-import { Close } from "@mui/icons-material";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack, Typography } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Stack,
+} from '@mui/material';
+import { useQueryClient } from '@tanstack/react-query';
+
+import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
+import {
+    CreateApprovalFarmerRegisterReq,
+    useCreateApprovalFarmerRegister,
+} from '@/apis/Approval/useCreateApprovalFarmerRegister';
+import { QUERY_KEYS } from '@/apis/QueryKeys';
+import AddPhoto from '@/components/AddPhoto';
+import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
+import { useDialog } from '@/hooks/useDialog';
 
 type FarmerCreateDialogProps = {
     open: boolean;
     onClose: () => void;
-}
+};
 
 export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) => {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const { } = useForm
+    const {} = useForm;
     const { openDialog } = useDialog();
     const { data: villageHeadList } = useGetVillageHeadList();
-    const { mutateAsync: farmerRegisterMutateAsync } = useCreateApprovalFarmerRegister
-        ();
-    const { reset, control, register, watch, setValue, handleSubmit } = useForm<CreateApprovalFarmerRegisterReq>({
-        defaultValues: {
-            villageHeadId: null,
-            name: '',
-            approverId: null,
-            identificationPhoto: null,
-        },
-    });
+    const { mutateAsync: farmerRegisterMutateAsync } = useCreateApprovalFarmerRegister();
+    const { reset, control, register, watch, setValue, handleSubmit } =
+        useForm<CreateApprovalFarmerRegisterReq>({
+            defaultValues: {
+                villageHeadId: null,
+                name: '',
+                approverId: null,
+                identificationPhoto: null,
+            },
+        });
 
     const onSubmit = (data: CreateApprovalFarmerRegisterReq) => {
         farmerRegisterMutateAsync(data)
@@ -60,7 +73,7 @@ export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) =
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => { },
+                        onClick: () => {},
                     },
                 });
             })
@@ -128,8 +141,15 @@ export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) =
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button onClick={handleSubmit(onSubmit)} form="create-farmer-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    onClick={handleSubmit(onSubmit)}
+                    form="create-farmer-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>
