@@ -23,7 +23,7 @@ export const useDeletePurchase = () => {
         onSuccess: (res) => {
             if (res.code === 'SUCCESS') {
                 queryClient.invalidateQueries({
-                    queryKey: QUERY_KEYS.PURCHASE.getPurchaseList(),
+                    queryKey: QUERY_KEYS.PURCHASE.all(),
                 });
                 showToast.success('삭제 요청을 성공했습니다.');
                 return;

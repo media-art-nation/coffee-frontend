@@ -72,7 +72,7 @@ const LocationList = () => {
 
     const renderRow = (row: TAreaWithSections) => {
         const parentRow = (
-            <TableRow key={row.id} onClick={() => navigate(`/locations/area/${row.id}`)}>
+            <TableRow key={`area-${row.id}`} onClick={() => navigate(`/locations/area/${row.id}`)}>
                 <TableCell>{row.id.toString()}</TableCell>
                 <TableCell>{row.areaName}</TableCell>
                 <TableCell>-</TableCell>
@@ -113,7 +113,10 @@ const LocationList = () => {
         );
 
         const childRows = row.sections.map((item) => (
-            <TableRow key={item.id} onClick={() => navigate(`/locations/section/${item.id}`)}>
+            <TableRow
+                key={`section-${item.id}`}
+                onClick={() => navigate(`/locations/section/${item.id}`)}
+            >
                 <TableCell>{item.id.toString()}</TableCell>
                 <TableCell>{row.areaName}</TableCell>
                 <TableCell>{item.sectionName}</TableCell>

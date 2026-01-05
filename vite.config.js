@@ -3,6 +3,7 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
+
 export default defineConfig(function (_a) {
     var mode = _a.mode;
     var env = loadEnv(mode, process.cwd());
@@ -30,7 +31,11 @@ export default defineConfig(function (_a) {
                     changeOrigin: true,
                     secure: false,
                     rewrite: function (path) {
-                        console.log("[Proxy] Rewriting path: ".concat(path, " -> ").concat(path.replace(/^\/api/, '')));
+                        console.log(
+                            '[Proxy] Rewriting path: '
+                                .concat(path, ' -> ')
+                                .concat(path.replace(/^\/api/, ''))
+                        );
                         return path.replace(/^\/api/, '');
                     },
                 },

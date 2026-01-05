@@ -24,13 +24,22 @@ export const QUERY_KEYS = {
     AREA: {
         all: () => [...QUERY_KEYS.ALL, 'area'],
         getAreaList: () => [...QUERY_KEYS.AREA.all(), 'areaList'],
+        getAreaDetails: (areaId: string) => [...QUERY_KEYS.AREA.all(), 'areaDetails', areaId],
         getSectionList: (areaId: string) => [...QUERY_KEYS.AREA.all(), 'sectionList', areaId],
         getMyArea: () => [...QUERY_KEYS.AREA.all(), 'myArea'],
         getAreaWithSectionList: () => [...QUERY_KEYS.AREA.all(), 'areaWithSectionList'],
     },
+    SECTION: {
+        all: () => [...QUERY_KEYS.ALL, 'section'],
+        getSectionDetails: (sectionId: string) => [
+            ...QUERY_KEYS.SECTION.all(),
+            'sectionDetails',
+            sectionId,
+        ],
+    },
     PURCHASE: {
         all: () => [...QUERY_KEYS.ALL, 'purchase'],
-        getPurchaseList: () => [...QUERY_KEYS.PURCHASE.all(), 'purchaseList'],
+        getPurchaseList: (param: string) => [...QUERY_KEYS.PURCHASE.all(), 'purchaseList', param],
     },
     TREE_TRANSACTION: {
         all: () => [...QUERY_KEYS.ALL, 'treeTransaction'],

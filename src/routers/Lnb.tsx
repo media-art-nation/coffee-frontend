@@ -34,9 +34,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
         },
         {
             label: '수매 관리',
-            children: [
-                { label: '수매 목록', path: '/trees-purchases' },
-            ],
+            children: [{ label: '수매 목록', path: '/trees-purchases' }],
         },
         {
             label: '부관리자 관리',
@@ -50,10 +48,10 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 { label: '섹션 생성', path: '/locations/register/section' },
             ],
         },
-        {
-            label: '계정 관리',
-            children: [{ label: '계정 생성', path: '/accounts/register' }],
-        },
+        // {
+        //     label: '계정 관리',
+        //     children: [{ label: '계정 생성', path: '/accounts/register' }],
+        // },
     ],
     // 부관리자(농림부)
     VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER: [
@@ -97,9 +95,7 @@ const lnbData: Record<TRole, TLnbItem[]> = {
         },
         {
             label: '수매 관리',
-            children: [
-                { label: '수매 목록', path: '/trees-purchases' },
-            ],
+            children: [{ label: '수매 목록', path: '/trees-purchases' }],
         },
         {
             label: '지역 관리',

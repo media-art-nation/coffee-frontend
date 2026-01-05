@@ -53,7 +53,6 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
 
     const { mutateAsync: updateApprovalFarmerMutateAsync } = useUpdateApprovalFarmer();
     const onSubmit = (data: UpdateApprovalFarmerReq) => {
-        console.log(data, 'data');
         updateApprovalFarmerMutateAsync({
             ...data,
         })
