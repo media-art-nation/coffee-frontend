@@ -3,10 +3,22 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getCookies } from '@/apis/AppUser/cookie';
 import {
     CreateApprovalVillageHeadRegisterReq,
     useCreateApprovalVillageHeadRegister,
@@ -22,18 +34,16 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes/palette';
-import { Close } from '@mui/icons-material';
 
 type CreateApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
     'sectionId'
 > & { sectionId: string };
 
-
 type CreateVillageHeadDialogProps = {
     open: boolean;
     onClose: () => void;
-}
+};
 
 const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps) => {
     const { t } = useTranslation();
@@ -45,7 +55,6 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
     const { data: sectionList } = useGetSectionList(
         myArea?.id ?? (selectArea ? Number(selectArea) : undefined)
     );
-    const role = getCookies('role');
     const queryClient = useQueryClient();
     const methods = useForm<CreateApprovalVillageHeadRegisterForm>();
 
@@ -63,8 +72,7 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                     setSelectArea(null);
 
                     openDialog({
-                        title:
-                            t('면장 등록 요청 성공'),
+                        title: t('면장 등록 요청 성공'),
                         description: t('관리자가 요청 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
@@ -82,7 +90,7 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => { },
+                        onClick: () => {},
                     },
                 });
             })
@@ -101,11 +109,10 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
             });
     };
 
-
     const handleClose = () => {
         onClose();
         methods.reset();
-    }
+    };
 
     return (
         <Dialog open={open} onClose={handleClose}>
@@ -132,47 +139,54 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                                 setValue={methods.setValue}
                             />
                         </LabelComponentsLayout>
-                        {role === 'ADMIN' && (
-                            <LabelComponentsLayout labelValue={t('지역')}>
-                                <Select value={selectArea} onChange={(e) => setSelectArea(e.target.value)}
+                        <Stack direction="row" gap="12px" width="100%">
+                            <LabelComponentsLayout labelValue={t('지역')} sx={{ width: '100%' }}>
+                                <Select
+                                    value={selectArea}
+                                    onChange={(e) => setSelectArea(e.target.value)}
                                     renderValue={(selected) => {
-                                        const selectedOption = getAreaList?.map(area => {
-                                            return { value: String(area.id), label: area.areaName }
-                                        }).find(
-                                            (item) => item.value === selected
-                                        );
+                                        const selectedOption = getAreaList
+                                            ?.map((area) => {
+                                                return {
+                                                    value: String(area.id),
+                                                    label: area.areaName,
+                                                };
+                                            })
+                                            .find((item) => item.value === selected);
 
                                         return selectedOption ? (
-                                            <Typography sx={{ color: `${palette.common.black} !important` }}>
+                                            <Typography
+                                                sx={{ color: `${palette.common.black} !important` }}
+                                            >
                                                 {selectedOption.label}
                                             </Typography>
                                         ) : (
                                             <Typography>지역</Typography>
                                         );
-                                    }}>
+                                    }}
+                                >
                                     {getAreaList?.map((area) => (
                                         <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>
                                     ))}
                                 </Select>
                             </LabelComponentsLayout>
-                        )}
-                        <LabelAndSelect
-                            labelValue={t('관리 섹션')}
-                            fieldName="sectionId"
-                            control={methods.control}
-                            placeholder={t('관리 섹션')}
-                            selectArr={
-                                sectionList?.[0].sections?.map((section) => {
-                                    return { value: String(section.id), label: section.sectionName };
-                                }) || []
-                            }
-                        />
-                        <LabelAndInput
-                            labelValue={t('이름')}
-                            fieldName="username"
-                            register={methods.register}
-                            placeholder={t('이름을 입력해주세요.')}
-                        />
+                            <LabelAndSelect
+                                sx={{ width: '100%' }}
+                                labelValue={t('관리 섹션')}
+                                fieldName="sectionId"
+                                control={methods.control}
+                                placeholder={t('관리 섹션')}
+                                selectArr={
+                                    sectionList?.[0].sections?.map((section) => {
+                                        return {
+                                            value: String(section.id),
+                                            label: section.sectionName,
+                                        };
+                                    }) || []
+                                }
+                            />
+                        </Stack>
+
                         <LabelAndInput
                             labelValue={t('아이디')}
                             fieldName="userId"
@@ -182,13 +196,25 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                         <LabelAndInput
                             labelValue={t('비밀번호')}
                             fieldName="password"
+                            type="password"
                             register={methods.register}
                             placeholder={t('비밀번호를 입력해주세요.')}
                         />
+                        <LabelAndInput
+                            labelValue={t('이름')}
+                            fieldName="username"
+                            register={methods.register}
+                            placeholder={t('이름을 입력해주세요.')}
+                        />
                         <Stack sx={{ gap: '12px' }}>
-                            <Typography sx={{ fontSize: '16px', fontWeight: 700 }}>{t('계좌 정보')}</Typography>
+                            <Typography sx={{ fontSize: '16px', fontWeight: 700 }}>
+                                {t('계좌 정보')}
+                            </Typography>
                             <Stack direction={'row'} gap="15px">
-                                <TextField {...methods.register('bankName')} placeholder={t('은행명')} />
+                                <TextField
+                                    {...methods.register('bankName')}
+                                    placeholder={t('은행명')}
+                                />
                                 <TextField
                                     sx={{ width: '500px' }}
                                     {...methods.register('accountInfo')}
@@ -212,12 +238,17 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                         />
                     </Stack>
                 </form>
-
-
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button type="submit" form="create-village-head-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    type="submit"
+                    form="create-village-head-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>

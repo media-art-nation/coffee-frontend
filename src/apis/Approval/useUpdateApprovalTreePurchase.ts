@@ -5,7 +5,7 @@ import { axiosInstance } from '@/apis/axiosInstance';
 
 export type UpdateApprovalTreePurchaseReq = {
     id: number;
-    villageHeadId: number;
+    villageHeadId: string;
     deduction: number;
     paymentAmount: number;
     purchaseDate: string;
@@ -18,25 +18,24 @@ export type UpdateApprovalTreePurchaseReq = {
 const updateApprovalTreePurchase = async (
     param: UpdateApprovalTreePurchaseReq
 ): Promise<AxiosResponse> => {
-
     const requestBody = {
-        id: String(param.id),
-        villageHeadId: String(param.villageHeadId),
-        deduction: String(param.deduction),
-        paymentAmount: String(param.paymentAmount),
+        id: Number(param.id),
+        villageHeadId: Number(param.villageHeadId),
+        deduction: Number(param.deduction),
+        paymentAmount: Number(param.paymentAmount),
         purchaseDate: param.purchaseDate,
-        quantity: String(param.quantity),
-        totalPrice: String(param.totalPrice),
-        unitPrice: String(param.unitPrice),
+        quantity: Number(param.quantity),
+        totalPrice: Number(param.totalPrice),
+        unitPrice: Number(param.unitPrice),
         remarks: param.remarks,
     };
 
-    return await axiosInstance.patch(`/approval/purchase?approverId=1&purchaseId=${param.id}`, requestBody);
+    return await axiosInstance.patch(`/approval/purchase/${param.id}?approverId=1`, requestBody);
 };
 
 export const useUpdateApprovalTreePurchase = () => {
     return useMutation({
         mutationFn: (param: UpdateApprovalTreePurchaseReq) => updateApprovalTreePurchase(param),
-        onSuccess: () => {}
+        onSuccess: () => {},
     });
 };

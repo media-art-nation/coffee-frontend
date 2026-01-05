@@ -3,15 +3,25 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, DialogContent, DialogTitle, Dialog, MenuItem, Select, Stack, TextField, Typography, DialogActions, IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { getCookies } from '@/apis/AppUser/cookie';
 import { useGetVillageHeadDetails } from '@/apis/AppUser/useGetVillageHeadDetails';
-import {
-    CreateApprovalVillageHeadRegisterReq,
-} from '@/apis/Approval/useCreateApprovalVillageHeadRegister';
+import { CreateApprovalVillageHeadRegisterReq } from '@/apis/Approval/useCreateApprovalVillageHeadRegister';
 import { useUpdateApprovalVillageHead } from '@/apis/Approval/useUpdateApprovalVillageHead';
 import { useGetArea } from '@/apis/Area/useGetArea';
 import { useGetMyArea } from '@/apis/Area/useGetMyArea';
@@ -24,19 +34,17 @@ import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
-import { Close } from '@mui/icons-material';
 
 type EditApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
     'sectionId'
 > & { sectionId: string };
 
-
 type EditVillageHeadDialogProps = {
     open: boolean;
     onClose: () => void;
     id: string;
-}
+};
 
 const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps) => {
     const { t } = useTranslation();
@@ -49,7 +57,6 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
     const { data: sectionList } = useGetSectionList(
         myArea?.id ?? (selectArea ? Number(selectArea) : undefined)
     );
-    const role = getCookies('role');
     const queryClient = useQueryClient();
     const methods = useForm<EditApprovalVillageHeadRegisterForm>({
         defaultValues: {
@@ -68,10 +75,8 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                         queryKey: QUERY_KEYS.APP_USER.getVillageHeadList(),
                     });
                     openDialog({
-                        title:
-                            t('면장 수정 요청 성공'),
-                        description:
-                            t('관리자가 수정 승인 후 목록에서 확인 가능합니다.'),
+                        title: t('면장 수정 요청 성공'),
+                        description: t('관리자가 수정 승인 후 목록에서 확인 가능합니다.'),
                         variant: 'confirm',
                         primaryAction: {
                             name: t('확인'),
@@ -88,7 +93,7 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => { },
+                        onClick: () => {},
                     },
                 });
             })
@@ -112,9 +117,8 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
     );
 
     const handleClose = () => {
-        onClose()
-    }
-
+        onClose();
+    };
 
     useEffect(() => {
         if (!villageHead) return;
@@ -127,11 +131,10 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
             sectionId: String(villageHead.sectionInfo.sectionId),
         });
 
-        setSelectArea(String(villageHead.areaInfo.areaId))
+        setSelectArea(String(villageHead.areaInfo.areaId));
     }, [villageHead, methods]);
 
-
-    if (isLoading) return <>...loading</>
+    if (isLoading) return <>...loading</>;
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{t('면장 수정')}</DialogTitle>
@@ -149,7 +152,7 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
             </IconButton>
             <DialogContent>
                 <form onSubmit={methods.handleSubmit(onSubmit)} id="edit-village-head-form">
-                    <Stack gap={'12px'}>
+                    <Stack gap={'12px'} width="100%">
                         <Stack gap={'12px'}>
                             <Typography fontSize={'16px'} fontWeight={700}>
                                 {t('사진')}
@@ -160,26 +163,34 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                                 setValue={methods.setValue}
                             />
                         </Stack>
-                        {role === 'ADMIN' && (
-                            <LabelComponentsLayout labelValue={t('지역')}>
-                                <Select value={selectArea} onChange={(e) => setSelectArea(e.target.value)}>
+                        <Stack direction="row" gap="12px" width="100%">
+                            <LabelComponentsLayout labelValue={t('지역')} sx={{ width: '100%' }}>
+                                <Select
+                                    value={selectArea}
+                                    onChange={(e) => setSelectArea(e.target.value)}
+                                >
                                     {getAreaList?.map((area) => (
                                         <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>
                                     ))}
                                 </Select>
                             </LabelComponentsLayout>
-                        )}
-                        <LabelAndSelect
-                            labelValue={t('관리 섹션')}
-                            fieldName="sectionId"
-                            control={methods.control}
-                            placeholder={t('관리 섹션')}
-                            selectArr={
-                                sectionList?.[0].sections?.map((section) => {
-                                    return { value: String(section.id), label: section.sectionName };
-                                }) || []
-                            }
-                        />
+                            <LabelAndSelect
+                                sx={{ width: '100%' }}
+                                labelValue={t('관리 섹션')}
+                                fieldName="sectionId"
+                                control={methods.control}
+                                placeholder={t('관리 섹션')}
+                                selectArr={
+                                    sectionList?.[0].sections?.map((section) => {
+                                        return {
+                                            value: String(section.id),
+                                            label: section.sectionName,
+                                        };
+                                    }) || []
+                                }
+                            />
+                        </Stack>
+
                         <Stack>
                             <GoogleMap
                                 mapContainerStyle={containerStyle}
@@ -198,34 +209,32 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                             </GoogleMap>
                         </Stack>
                         <LabelAndInput
+                            labelValue={t('아이디')}
+                            fieldName="userId"
+                            register={methods.register}
+                            placeholder={t('아이디를 입력해주세요.')}
+                            disabled={true}
+                        />
+                        <LabelAndInput
                             labelValue={t('이름')}
                             fieldName="username"
                             register={methods.register}
                             placeholder={t('이름을 입력해주세요.')}
                         />
-                        <LabelAndInput
-                            labelValue={t('아이디')}
-                            fieldName="userId"
-                            register={methods.register}
-                            placeholder={t('아이디를 입력해주세요.')}
-                        />
-                        <LabelAndInput
-                            labelValue={t('비밀번호')}
-                            fieldName="password"
-                            register={methods.register}
-                            placeholder={t('비밀번호를 입력해주세요.')}
-                        />
-                        <Stack sx={{ gap: '12px' }}>
-                            <Typography sx={{ fontSize: '16px', fontWeight: 700 }}>{t('계좌 정보')}</Typography>
-                            <Stack direction={'row'} gap="15px">
-                                <TextField {...methods.register('bankName')} placeholder={t('은행명')} />
+                        <LabelComponentsLayout labelValue={t('계좌 정보')} sx={{ width: '100%' }}>
+                            <Stack direction={'row'} gap="12px">
+                                <TextField
+                                    {...methods.register('bankName')}
+                                    placeholder={t('은행명')}
+                                />
                                 <TextField
                                     sx={{ width: '500px' }}
                                     {...methods.register('accountInfo')}
                                     placeholder={t('계좌 번호')}
                                 />
                             </Stack>
-                        </Stack>
+                        </LabelComponentsLayout>
+
                         <LabelAndSelectFile
                             labelValue={t('계약서')}
                             fieldName={'contractFile'}
@@ -244,8 +253,15 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                 </form>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button type="submit" form="create-village-head-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    type="submit"
+                    form="create-village-head-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>

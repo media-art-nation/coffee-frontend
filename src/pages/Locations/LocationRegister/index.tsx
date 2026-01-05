@@ -67,7 +67,7 @@ const LocationRegister = () => {
                 variant: 'alert',
                 primaryAction: {
                     name: t('확인'),
-                    onClick: () => { },
+                    onClick: () => {},
                 },
             });
         }
@@ -127,13 +127,11 @@ const LocationRegister = () => {
                                     if (ref && !autocompleteRef.current) {
                                         inputRef.current = ref;
 
-                                        const autocomplete = new window.google.maps.places.Autocomplete(
-                                            ref,
-                                            {
+                                        const autocomplete =
+                                            new window.google.maps.places.Autocomplete(ref, {
                                                 types: ['geocode'],
                                                 componentRestrictions: { country: selectedCountry },
-                                            }
-                                        );
+                                            });
 
                                         autocomplete.addListener('place_changed', () => {
                                             const place = autocomplete.getPlace();
@@ -141,7 +139,8 @@ const LocationRegister = () => {
 
                                             const lat = place.geometry.location.lat();
                                             const lng = place.geometry.location.lng();
-                                            const name = place.formatted_address || place.name || '';
+                                            const name =
+                                                place.formatted_address || place.name || '';
 
                                             setValue('areaName', name);
                                             setValue('latitude', lat);
@@ -170,7 +169,6 @@ const LocationRegister = () => {
                 </PageLayout>
             </Stack>
         </NarrowLayout>
-
     );
 };
 

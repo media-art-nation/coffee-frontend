@@ -10,6 +10,7 @@ export type TSection = {
     sectionName: string;
     latitude: number;
     longitude: number;
+    areaName: string;
 };
 
 export type TAreaWithSections = TArea & {

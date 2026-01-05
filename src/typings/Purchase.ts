@@ -9,4 +9,6 @@ export type TPurchase = {
     deduction: number;
     paymentAmount: number;
     remarks?: string;
-}
+    villageHeadId: number;
+    villageHeadName: string;
+};

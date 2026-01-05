@@ -1,27 +1,46 @@
-import { CreateApprovalPurchaseReq, useCreateApprovalPurchase } from "@/apis/Approval/useCreateApprovalPurchase";
-import CustomDatePicker from "@/components/CustomDatePicker";
-import LabelAndInput from "@/components/LabelAndInput";
-import LabelComponentsLayout from "@/components/LabelComponentsLayout";
-import TextArea from "@/components/TextArea";
-import { useDialog } from "@/hooks/useDialog";
-import { Close } from "@mui/icons-material";
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+
+import { Close } from '@mui/icons-material';
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    Stack,
+} from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
+
+import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
+import {
+    CreateApprovalPurchaseReq,
+    useCreateApprovalPurchase,
+} from '@/apis/Approval/useCreateApprovalPurchase';
+import CustomDatePicker from '@/components/CustomDatePicker';
+import LabelAndInput from '@/components/LabelAndInput';
+import LabelAndSelect from '@/components/LabelAndSelect';
+import LabelComponentsLayout from '@/components/LabelComponentsLayout';
+import TextArea from '@/components/TextArea';
+import { useDialog } from '@/hooks/useDialog';
 
 type TreesPurchaseCreateDialogProps = {
     open: boolean;
     onClose: () => void;
-}
+};
 
 export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreateDialogProps) => {
     const { t } = useTranslation();
     const { openDialog } = useDialog();
     const { mutateAsync: createPurchase } = useCreateApprovalPurchase();
+
+    const { data: villageHeadList } = useGetVillageHeadList(); // 면장 목록
+
     const methods = useForm<CreateApprovalPurchaseReq>({
         defaultValues: { purchaseDate: dayjs(new Date()).format('YYYY-MM-DD') },
     });
+
     const onSubmit = (data: CreateApprovalPurchaseReq) => {
         createPurchase(data)
             .then((res) => {
@@ -37,16 +56,19 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
                             },
                         },
                     });
+
+                    handleClose();
                     return;
-                } else openDialog({
-                    title: t('수매 내역 등록 요청 실패'),
-                    description: t('권한 확인 또는 관리자에게 문의해주세요.'),
-                    variant: 'alert',
-                    primaryAction: {
-                        name: t('확인'),
-                        onClick: () => { },
-                    },
-                });
+                } else
+                    openDialog({
+                        title: t('수매 내역 등록 요청 실패'),
+                        description: t('권한 확인 또는 관리자에게 문의해주세요.'),
+                        variant: 'alert',
+                        primaryAction: {
+                            name: t('확인'),
+                            onClick: () => {},
+                        },
+                    });
             })
             .catch((err) => {
                 openDialog({
@@ -62,6 +84,7 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
                 });
             });
     };
+
     const handleClose = () => {
         onClose();
     };
@@ -83,7 +106,17 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
             </IconButton>
             <DialogContent>
                 <Stack gap={'12px'}>
-
+                    <LabelAndSelect
+                        labelValue={t('면장')}
+                        control={methods.control}
+                        fieldName="villageHeadId"
+                        placeholder={t('면장 선택')}
+                        selectArr={
+                            villageHeadList?.map((head) => {
+                                return { value: String(head.id), label: head.appUserName };
+                            }) || []
+                        }
+                    />
                     <LabelComponentsLayout labelValue={t('거래일자')}>
                         <CustomDatePicker
                             value={dayjs(methods.watch('purchaseDate'))}
@@ -135,8 +168,15 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">취소</Button>
-                <Button onClick={methods.handleSubmit(onSubmit)} form="create-purchase-form" variant="containedBlue" sx={{ flex: 1 }}>
+                <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
+                    취소
+                </Button>
+                <Button
+                    onClick={methods.handleSubmit(onSubmit)}
+                    form="create-purchase-form"
+                    variant="containedBlue"
+                    sx={{ flex: 1 }}
+                >
                     {t('확인')}
                 </Button>
             </DialogActions>

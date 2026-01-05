@@ -5,7 +5,7 @@ import { QUERY_KEYS } from '@/apis/QueryKeys';
 import { axiosInstance } from '@/apis/axiosInstance';
 
 export type CreateApprovalPurchaseReq = {
-    id: number;
+    villageHeadId: number;
     deduction: number;
     paymentAmount: number;
     purchaseDate: string;

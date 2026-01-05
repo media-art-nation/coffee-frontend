@@ -10,14 +10,11 @@ export type UpdateApprovalFarmerReq = {
     farmerId: number | null;
 };
 
-const updateApprovalFarmer = async (
-    param: UpdateApprovalFarmerReq
-): Promise<AxiosResponse> => {
+const updateApprovalFarmer = async (param: UpdateApprovalFarmerReq): Promise<AxiosResponse> => {
     const queryParams: Record<string, string> = {
         name: param.name,
         villageHeadId: String(param.villageHeadId),
         approverId: '1',
-        farmerId: String(param.farmerId),
     };
     const query = new URLSearchParams(queryParams).toString();
 
@@ -26,11 +23,7 @@ const updateApprovalFarmer = async (
         formData.append('identificationPhoto', param.identificationPhoto);
     }
 
-    return await axiosInstance.patch(`/approval/farmer?${query}`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+    return await axiosInstance.patch(`/approval/farmer/${param.farmerId}?${query}`, formData);
 };
 
 export const useUpdateApprovalFarmer = () => {
