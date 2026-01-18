@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Button, IconButton, Stack } from '@mui/material';
-import { Plus, Trash } from '@phosphor-icons/react';
+import { Plus } from '@phosphor-icons/react';
 
 import { palette } from '@/themes';
 import { GcsDirectoryEnum } from '@/typings/Gcs';
@@ -31,20 +31,20 @@ const AddPhotoWithGcs = ({
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (!file) return;
-    
+
         const response = await postGcsFile({ file, directory });
         if (response.data.code === 'SUCCESS') {
-          onChange(response.data.response);
-          setInputValue(response.data.response);
-          if (fileInputRef.current) fileInputRef.current.value = '';
+            onChange(response.data.response);
+            setInputValue(response.data.response);
+            if (fileInputRef.current) fileInputRef.current.value = '';
         }
-      };
-    
-      const handleDelete = () => {
+    };
+
+    const handleDelete = () => {
         setInputValue(null);
         onChange(null);
         if (fileInputRef.current) fileInputRef.current.value = '';
-      };
+    };
 
     return (
         <Stack direction="row" gap="10px" alignItems="end">

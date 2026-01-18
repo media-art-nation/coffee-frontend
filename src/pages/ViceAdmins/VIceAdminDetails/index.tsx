@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { Pencil } from '@phosphor-icons/react';

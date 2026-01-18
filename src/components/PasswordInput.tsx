@@ -1,6 +1,6 @@
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-import { IconButton, Input, InputAdornment, OutlinedInput, StackProps } from '@mui/material';
+import { IconButton, InputAdornment, OutlinedInput, StackProps } from '@mui/material';
 
 import { useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
