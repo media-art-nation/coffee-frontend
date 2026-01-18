@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { getCookies } from '@/apis/AppUser/cookie';
@@ -17,6 +17,7 @@ import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { containerStyle, defaultCenter } from '@/pages/Locations/LocationRegister';
 import NarrowLayout from '@/routers/NarrowLayout';
+import { Check } from '@mui/icons-material';
 
 const SectionRegister = () => {
     const { t } = useTranslation();
@@ -114,53 +115,57 @@ const SectionRegister = () => {
         <NarrowLayout>
             <Stack>
                 <Title title={t('섹션 생성')}>
-                    <Button variant="containedBlue" onClick={handleSubmit(onSubmit)}>
+                    <Button variant="outlinedBlue" onClick={handleSubmit(onSubmit)} startIcon={<Check />}>
                         {t('등록')}
                     </Button>
                 </Title>
 
-                <PageLayout gap="27px">
-                    <LabelComponentsLayout labelValue={t('국가 선택')}>
-                        <Select
-                            value={selectedCountry}
-                            defaultValue="la"
-                            onChange={(e) => {
-                                const newCountry = e.target.value as 'kr' | 'la';
-                                setSelectedCountry(newCountry);
+                <PageLayout gap="16px">
+                    <Stack
+                        sx={{ flexDirection: 'row', gap: '12px' }}
+                    >
+                        <LabelComponentsLayout labelValue={t('국가 선택')}>
+                            <Select
+                                value={selectedCountry}
+                                defaultValue="la"
+                                onChange={(e) => {
+                                    const newCountry = e.target.value as 'kr' | 'la';
+                                    setSelectedCountry(newCountry);
 
-                                // Autocomplete 업데이트
-                                if (autocompleteRef.current && inputRef.current) {
-                                    autocompleteRef.current.setComponentRestrictions({
-                                        country: newCountry,
-                                    });
-                                }
-                            }}
-                        >
-                            <MenuItem value="kr">대한민국</MenuItem>
-                            <MenuItem value="la">라오스</MenuItem>
-                        </Select>
-                    </LabelComponentsLayout>
-                    <LabelAndSelect
-                        labelValue={t('지역')}
-                        control={control}
-                        selectArr={
-                            areaList?.map((area) => ({
-                                value: String(area.id),
-                                label: area.areaName ?? '',
-                            })) ?? []
-                        }
-                        fieldName="areaId"
-                        placeholder={t('지역 선택')}
-                    />
+                                    // Autocomplete 업데이트
+                                    if (autocompleteRef.current && inputRef.current) {
+                                        autocompleteRef.current.setComponentRestrictions({
+                                            country: newCountry,
+                                        });
+                                    }
+                                }}
+                            >
+                                <MenuItem value="kr">대한민국</MenuItem>
+                                <MenuItem value="la">라오스</MenuItem>
+                            </Select>
+                        </LabelComponentsLayout>
+                        <LabelAndSelect
+                            sx={{ width: '100%' }}
+                            labelValue={t('지역')}
+                            control={control}
+                            selectArr={
+                                areaList?.map((area) => ({
+                                    value: String(area.id),
+                                    label: area.areaName ?? '',
+                                })) ?? []
+                            }
+                            fieldName="areaId"
+                            placeholder={t('지역 선택')}
+                        />
+                    </Stack>
 
                     <Stack>
                         <Typography sx={{ fontSize: '16px', fontWeight: '700', mb: '12px' }}>
                             {t('섹션 등록')}
                         </Typography>
 
-                        <TextField
+                        <OutlinedInput
                             fullWidth
-                            variant="outlined"
                             value={sectionName}
                             placeholder="enter a section"
                             onChange={handleChangeSectionName}
@@ -197,7 +202,7 @@ const SectionRegister = () => {
                             }}
                         />
 
-                        <Stack mt={2}>
+                        <Stack mt={2} sx={{ flexDirection: 'row', gap: '10px' }}>
                             <Typography fontSize={14}>
                                 📍 {`${t('선택된 위치')} - ${sectionName}`}
                             </Typography>

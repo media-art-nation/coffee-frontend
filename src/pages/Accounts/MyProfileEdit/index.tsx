@@ -1,25 +1,28 @@
 import { useEffect } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 import { Button, Stack, Typography } from '@mui/material';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 import { useGetMy } from '@/apis/AppUser/useGetMy';
 import { usePatchMy } from '@/apis/AppUser/usePatchAppUser';
-import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
-import { showToast } from '@/utils/showToast';
 import NarrowLayout from '@/routers/NarrowLayout';
+import { showToast } from '@/utils/showToast';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
+import LabelAndPasswordInput from '@/components/LabelAndPasswordInput';
 
 type TProfileEditForm = {
     username: string;
     password: string;
     passwordCheck: string;
-    idCardFile: File | null;
+    idCardUrl: string | null;
 };
 
 const MyProfileEdit = () => {
@@ -27,13 +30,14 @@ const MyProfileEdit = () => {
     const { openDialog } = useDialog();
     const role = getCookies('role');
     const { data: my } = useGetMy();
+    const navigate = useNavigate();
 
-    const { watch, setValue, handleSubmit, register, reset } = useForm<TProfileEditForm>({
+    const { handleSubmit, register, reset, control } = useForm<TProfileEditForm>({
         defaultValues: {
             username: '',
             password: '',
             passwordCheck: '',
-            idCardFile: null,
+            idCardUrl: null,
         },
     });
 
@@ -46,6 +50,7 @@ const MyProfileEdit = () => {
                 name: t('확인'),
                 onClick: () => {
                     reset();
+                    navigate(-1);
                 },
             },
             secondaryAction: {
@@ -90,7 +95,7 @@ const MyProfileEdit = () => {
                 username: my.appUser.username,
                 password: '',
                 passwordCheck: '',
-                idCardFile: null,
+                idCardUrl: my.idCardUrl || null,
             });
         }
     }, [my, reset]);
@@ -124,38 +129,40 @@ const MyProfileEdit = () => {
                         labelValue={t('이름')}
                         placeholder={t('이름')}
                     />
-                    <LabelAndInput
+                    <LabelAndPasswordInput
                         sx={{ width: '100%' }}
                         fieldName="password"
                         register={register}
                         labelValue={t('새 비밀번호')}
                         placeholder={t('새 비밀번호')}
-                        type="password"
                     />
-                    <LabelAndInput
+                    <LabelAndPasswordInput
                         sx={{ width: '100%' }}
                         fieldName="passwordCheck"
                         register={register}
                         labelValue={t('새 비밀번호 확인')}
                         placeholder={t('새 비밀번호 확인')}
-                        type="password"
                     />
                     {/* 부관리자의 경우에만 IDCard 노출 */}
                     {role.startsWith('VICE_ADMIN') && (
                         <Stack gap={'10px'}>
                             <Typography sx={{ fontSize: '14px' }}>ID Card</Typography>
-                            <AddPhoto
-                                fieldName="idCardFile"
-                                watch={watch}
-                                setValue={setValue}
-                                currentUrl={my?.idCardUrl || undefined}
+                            <Controller
+                                control={control}
+                                name="idCardUrl"
+                                render={({ field }) => (
+                                    <AddPhotoWithGcs
+                                        value={field.value || null}
+                                        onChange={field.onChange}
+                                        directory={GcsDirectoryEnum.VICE_ADMIN}
+                                    />
+                                )}
                             />
                         </Stack>
                     )}
                 </Stack>
             </Stack>
         </NarrowLayout>
-
     );
 };
 

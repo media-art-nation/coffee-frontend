@@ -83,18 +83,18 @@ export const theme = createTheme({
     palette: palette,
     typography: {
         fontFamily: [
-            "Pretendard",
-            "-apple-system",
-            "BlinkMacSystemFont",
-            "system-ui",
-            "Segoe UI",
-            "Roboto",
-            "Helvetica",
-            "Arial",
-            "Apple SD Gothic Neo",
-            "Noto Sans KR",
-            "sans-serif",
-        ].join(","),
+            'Pretendard',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            'system-ui',
+            'Segoe UI',
+            'Roboto',
+            'Helvetica',
+            'Arial',
+            'Apple SD Gothic Neo',
+            'Noto Sans KR',
+            'sans-serif',
+        ].join(','),
     },
     components: {
         MuiTypography: {
@@ -225,6 +225,29 @@ export const theme = createTheme({
                 },
             },
         },
+        MuiOutlinedInput: {
+            styleOverrides: {
+                root: {
+                    'borderRadius': '10px',
+                    'minHeight': '48px',
+                    'backgroundColor': palette.common.white,
+                    'border': `1px solid ${palette.grey[300]}`,
+                    '& fieldset': {
+                        borderColor: 'transparent',
+                    },
+                    '&:hover fieldset': {
+                        border: `1px solid ${palette.grey[200]}`,
+                    },
+                    '&.Mui-focused fieldset': {
+                        border: `1px solid ${palette.grey[500]}`,
+                    },
+                    '&.Mui-disabled': { opacity: 0.5 },
+                    '&.Mui-disabled fieldset': {
+                        border: 0,
+                    },
+                },
+            },
+        },
         MuiPagination: {
             defaultProps: {
                 variant: 'outlined',
@@ -345,13 +368,15 @@ export const theme = createTheme({
                 root: {
                     'width': '100%',
                     'minWidth': '100%',
-                    'height': '48px',
                     'borderRadius': '10px',
                     'backgroundColor': palette.common.white,
                     'border': `1px solid ${palette.grey[300]}`,
                     'outline': 'none',
+                    padding: '0',
                     '& fieldset': {
                         border: 'none',
+                        padding: '16px 12px',
+
                     },
                     '&:focus': {
                         outline: 'none',
@@ -460,7 +485,13 @@ export const theme = createTheme({
                     borderBottom: `1px solid ${palette.grey[100]}`,
                     padding: '12px',
                 },
+                footer: {
+                    fontSize: '14px',
+                },
             },
+        },
+        MuiTableFooter: {
+            styleOverrides: {},
         },
         MuiDialog: {
             defaultProps: {
@@ -491,7 +522,6 @@ export const theme = createTheme({
             },
         },
         MuiDialogActions: {
-
             styleOverrides: {
                 root: {
                     '& .MuiButton-root': {
@@ -501,34 +531,30 @@ export const theme = createTheme({
                         fontWeight: '600',
                     },
                 },
-            }
+            },
         },
         MuiMenu: {
             styleOverrides: {
                 root: {
                     '& .MuiPaper-root': {
-                        borderRadius: 6,
-                        minWidth: 150,
-                        boxShadow:
+                        'borderRadius': 6,
+                        'minWidth': 150,
+                        'boxShadow':
                             'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
                         '& .MuiMenu-list': {
                             padding: '8px 0',
                         },
                         '& .MuiMenuItem-root': {
-                            fontWeight: '600',
-                            color: palette.grey[700],
-                            padding: '8px 16px',
+                            'fontWeight': '600',
+                            'color': palette.grey[700],
+                            'padding': '8px 16px',
                             '&:active': {
-                                backgroundColor: alpha(
-                                    palette.blue[500],
-                                    0.08,
-                                ),
+                                backgroundColor: alpha(palette.blue[500], 0.08),
                             },
                         },
                     },
-                }
+                },
             },
         },
-
     },
 });

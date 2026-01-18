@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Close } from '@mui/icons-material';
@@ -22,11 +22,13 @@ import {
 } from '@/apis/Approval/useUpdateApprovalFarmer';
 import { useGetFarmerDetail } from '@/apis/Farmer/useGetFarmerDetail';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
-import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
+import { showToast } from '@/utils/showToast';
 
 type FarmerEditDialogProps = {
     open: boolean;
@@ -41,12 +43,12 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
     const { data: villageHeadList } = useGetVillageHeadList();
     const { data: farmer, isLoading: farmerDetailLoading } = useGetFarmerDetail(String(farmerId));
 
-    const { reset, control, register, watch, setValue, handleSubmit } =
+    const { reset, control, register, handleSubmit, watch } =
         useForm<UpdateApprovalFarmerReq>({
             defaultValues: {
-                villageHeadId: farmer?.villageHeadId || null,
+                villageHeadId: String(farmer?.villageHeadId) || null,
                 name: farmer?.farmerName || '',
-                identificationPhoto: undefined,
+                identificationPhotoUrl: null,
                 farmerId,
             },
         });
@@ -61,6 +63,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                     queryClient.invalidateQueries({
                         queryKey: QUERY_KEYS.FARMER.getFarmerList(),
                     });
+                    reset();
                     openDialog({
                         title: t('농부 수정 요청 성공'),
                         description: t('관리자가 요청 승인 후 목록에서 확인가능합니다.'),
@@ -68,7 +71,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                         primaryAction: {
                             name: t('확인'),
                             onClick: () => {
-                                reset();
+                                handleClose();
                             },
                         },
                     });
@@ -80,7 +83,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => {},
+                        onClick: () => { },
                     },
                 });
             })
@@ -107,9 +110,10 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
     useEffect(() => {
         if (farmer) {
             reset({
-                villageHeadId: farmer.villageHeadId,
+                villageHeadId: String(farmer.villageHeadId),
                 name: farmer.farmerName,
                 farmerId: farmerId,
+                identificationPhotoUrl: farmer.identificationPhotoUrl,
             });
         }
     }, [farmer, reset]);
@@ -138,6 +142,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                         control={control}
                         fieldName="villageHeadId"
                         placeholder={t('면장 선택')}
+                        defaultValue={String(farmer.villageHeadId)}
                         selectArr={
                             villageHeadList?.map((head) => {
                                 return { value: String(head.id), label: head.appUserName };
@@ -151,11 +156,16 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                         fieldName="name"
                     />
                     <LabelComponentsLayout labelValue={t('사진')}>
-                        <AddPhoto
-                            fieldName="identificationPhoto"
-                            watch={watch}
-                            setValue={setValue}
-                            currentUrl={farmer?.identificationPhotoUrl}
+                        <Controller
+                            control={control}
+                            name="identificationPhotoUrl"
+                            render={({ field }) => (
+                                <AddPhotoWithGcs
+                                    value={field.value || null}
+                                    onChange={field.onChange}
+                                    directory={GcsDirectoryEnum.FARMER}
+                                />
+                            )}
                         />
                     </LabelComponentsLayout>
                 </Stack>

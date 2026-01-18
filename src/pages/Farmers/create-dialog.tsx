@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Close } from '@mui/icons-material';
@@ -19,11 +19,12 @@ import {
     useCreateApprovalFarmerRegister,
 } from '@/apis/Approval/useCreateApprovalFarmerRegister';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
-import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
 
 type FarmerCreateDialogProps = {
     open: boolean;
@@ -33,17 +34,17 @@ type FarmerCreateDialogProps = {
 export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) => {
     const { t } = useTranslation();
     const queryClient = useQueryClient();
-    const {} = useForm;
+    const { } = useForm;
     const { openDialog } = useDialog();
     const { data: villageHeadList } = useGetVillageHeadList();
     const { mutateAsync: farmerRegisterMutateAsync } = useCreateApprovalFarmerRegister();
-    const { reset, control, register, watch, setValue, handleSubmit } =
+    const { reset, control, register, handleSubmit } =
         useForm<CreateApprovalFarmerRegisterReq>({
             defaultValues: {
                 villageHeadId: null,
                 name: '',
                 approverId: null,
-                identificationPhoto: null,
+                identificationPhotoUrl: null,
             },
         });
 
@@ -73,7 +74,7 @@ export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) =
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => {},
+                        onClick: () => { },
                     },
                 });
             })
@@ -132,10 +133,16 @@ export const FarmerCreateDialog = ({ open, onClose }: FarmerCreateDialogProps) =
                         fieldName="name"
                     />
                     <LabelComponentsLayout labelValue={t('사진')}>
-                        <AddPhoto
-                            fieldName="identificationPhoto"
-                            watch={watch}
-                            setValue={setValue}
+                        <Controller
+                            control={control}
+                            name="identificationPhotoUrl"
+                            render={({ field }) => (
+                                <AddPhotoWithGcs
+                                    value={field.value || null}
+                                    onChange={field.onChange}
+                                    directory={GcsDirectoryEnum.FARMER}
+                                />
+                            )}
                         />
                     </LabelComponentsLayout>
                 </Stack>

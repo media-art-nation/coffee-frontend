@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { AccountCircle } from '@mui/icons-material';
-import { MenuItem, Select, Stack, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Select, Stack, Typography } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
 
 import Ko from '@assets/ko.png';
@@ -26,6 +26,16 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
     const userId = getCookies('userId');
     const queryClient = useQueryClient();
 
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handleClickMenu = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleCloseMenu = () => {
+        setAnchorEl(null);
+    };
+
     const handleClickLogout = () => {
         removeCookies('accessToken');
         removeCookies('role');
@@ -34,6 +44,7 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
 
         queryClient.resetQueries();
         navigate('/login');
+        handleCloseMenu();
     };
 
     const [lang, setLang] = useState(i18n.language);
@@ -74,23 +85,36 @@ const Gnb = ({ isLoginPage }: GnbProps) => {
             <Stack direction={'row'} gap={2}>
                 {isLogin && !isLoginPage && (
                     <Stack sx={{ flexDirection: 'row', gap: '15px', alignItems: 'center' }}>
-                        <Stack sx={{ flexDirection: 'row', gap: '6px', alignItems: 'center' }}>
+                        <Button
+                            id="basic-button"
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClickMenu}
+                            sx={{ flexDirection: 'row', gap: '6px', alignItems: 'center' }}
+                        >
                             <AccountCircle sx={{ color: '#FFFFFF' }} />
                             <Typography flexShrink={0}>{userId}</Typography>
-                        </Stack>
-                        <Typography
-                            flexShrink={0}
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() => navigate('/my-profile-edit')}
+                        </Button>
+                        <Menu
+                            id="basic-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleCloseMenu}
+                            slotProps={{
+                                list: {
+                                    'aria-labelledby': 'basic-button',
+                                },
+                            }}
                         >
-                            {t('내 정보 수정')}
-                        </Typography>
-                        <Typography
-                            sx={{ cursor: 'pointer', flexShrink: 0 }}
-                            onClick={handleClickLogout}
-                        >
-                            {t('로그아웃')}
-                        </Typography>
+                            <MenuItem onClick={() => {
+                                navigate('/my-profile-edit');
+                                handleCloseMenu();
+                            }}>
+                                {t('내 정보 수정')}
+                            </MenuItem>
+                            <MenuItem onClick={handleClickLogout}>{t('로그아웃')}</MenuItem>
+                        </Menu>
                     </Stack>
                 )}
                 <Stack width={'150px'}>

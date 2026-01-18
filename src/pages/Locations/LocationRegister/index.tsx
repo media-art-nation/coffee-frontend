@@ -3,7 +3,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import { Button, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, OutlinedInput, Select, Stack, TextField, Typography } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -14,6 +14,7 @@ import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import NarrowLayout from '@/routers/NarrowLayout';
+import { Check } from '@mui/icons-material';
 
 export const defaultCenter = {
     lat: 17.967,
@@ -77,12 +78,12 @@ const LocationRegister = () => {
         <NarrowLayout>
             <Stack>
                 <Title title={t('지역 생성')}>
-                    <Button variant="containedBlue" onClick={handleSubmit(onSubmit)}>
+                    <Button variant="outlinedBlue" onClick={handleSubmit(onSubmit)} startIcon={<Check />}>
                         {t('등록')}
                     </Button>
                 </Title>
 
-                <PageLayout gap={'27px'}>
+                <PageLayout gap={'16px'}>
                     <LabelComponentsLayout labelValue={t('국가 선택')}>
                         <Select
                             value={selectedCountry}
@@ -109,7 +110,7 @@ const LocationRegister = () => {
                             {t('지역 등록')}
                         </Typography>
 
-                        <Stack mt={2}>
+                        <Stack mt={2} sx={{flexDirection: 'row', gap: '10px'}}>
                             <Typography fontSize={14}>
                                 📍 {`${t('선택된 위치')} - ${watch('areaName')}`}
                             </Typography>
@@ -118,9 +119,8 @@ const LocationRegister = () => {
                             </Typography>
                         </Stack>
 
-                        <TextField
+                        <OutlinedInput
                             fullWidth
-                            variant="outlined"
                             sx={{ my: 2 }}
                             inputProps={{
                                 ref: (ref: HTMLInputElement | null) => {

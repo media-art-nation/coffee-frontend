@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router';
 
 import { Stack } from '@mui/material';
 
-import AccountRegister from '@/pages/Accounts/AccountRegister';
 import Login from '@/pages/Accounts/Login';
 import MyProfileEdit from '@/pages/Accounts/MyProfileEdit';
 import FarmerList from '@/pages/Farmers';
@@ -20,7 +19,6 @@ import TestComponents from '@/pages/TestComponents';
 import TreesPurchaseList from '@/pages/TreesPurchases';
 import ViceAdminList from '@/pages/ViceAdmins';
 import ViceAdminDetails from '@/pages/ViceAdmins/VIceAdminDetails';
-import ViceAdminEdit from '@/pages/ViceAdmins/ViceAdminEdit';
 import VillageHeadDetails from '@/pages/VillageHeads/VillageHeadDetails';
 import VillageHeadList from '@/pages/VillageHeads/VillageHeadList';
 
@@ -71,7 +69,6 @@ const router = createBrowserRouter([
                 path: 'vice-admins', // 부 관리자
                 children: [
                     { index: true, element: <ViceAdminList /> },
-                    { path: 'edit/:id', element: <ViceAdminEdit /> },
                     { path: ':id', element: <ViceAdminDetails /> },
                 ],
             },
@@ -85,10 +82,10 @@ const router = createBrowserRouter([
                     { path: 'register/section', element: <SectionRegister /> },
                 ],
             },
-            {
-                path: 'accounts', // 계정
-                children: [{ path: 'register', element: <AccountRegister /> }],
-            },
+            // {
+            //     path: 'accounts', // 계정
+            //     children: [{ path: 'register', element: <AccountRegister /> }],
+            // },
             {
                 path: 'components', // 공통 컴포넌트
                 element: <TestComponents />,

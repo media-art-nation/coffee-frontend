@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Close } from '@mui/icons-material';
@@ -14,7 +14,6 @@ import {
     MenuItem,
     Select,
     Stack,
-    TextField,
     Typography,
 } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
@@ -27,13 +26,16 @@ import { useGetArea } from '@/apis/Area/useGetArea';
 import { useGetMyArea } from '@/apis/Area/useGetMyArea';
 import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
-import AddPhoto from '@/components/AddPhoto';
-import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
-import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
+import { Loading } from '@/components/Loading';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
+import LabelAndSelectFileWithGcs from '@/components/LabelAndSelectFileWithGcs';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
+import Input from '@/components/Input';
+import LabelAndInput from '@/components/LabelAndInput';
 
 type EditApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
@@ -64,11 +66,15 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
             username: villageHead?.username,
             accountInfo: villageHead?.accountInfo,
             sectionId: JSON.stringify(villageHead?.sectionInfo.sectionId),
+            identificationPhotoUrl: villageHead?.identificationPhotoUrl,
+            contractFileUrl: villageHead?.contractFileUrl,
+            bankbookPhotoUrl: villageHead?.bankbookPhotoUrl,
         },
     });
+
     const onSubmit = (data: EditApprovalVillageHeadRegisterForm) => {
         const submit = updateVillageHead;
-        submit({ ...data, sectionId: Number(data.sectionId), appUserId: id || '' })
+        submit({ ...data, sectionId: Number(data.sectionId) })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
@@ -93,7 +99,7 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                     variant: 'alert',
                     primaryAction: {
                         name: t('확인'),
-                        onClick: () => {},
+                        onClick: () => { },
                     },
                 });
             })
@@ -129,12 +135,15 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
             bankName: villageHead.bankName,
             accountInfo: villageHead.accountInfo,
             sectionId: String(villageHead.sectionInfo.sectionId),
+            identificationPhotoUrl: villageHead.identificationPhotoUrl,
+            contractFileUrl: villageHead.contractFileUrl,
+            bankbookPhotoUrl: villageHead.bankbookPhotoUrl,
         });
 
         setSelectArea(String(villageHead.areaInfo.areaId));
     }, [villageHead, methods]);
 
-    if (isLoading) return <>...loading</>;
+    if (isLoading) return <Loading />;
     return (
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{t('면장 수정')}</DialogTitle>
@@ -157,10 +166,16 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                             <Typography fontSize={'16px'} fontWeight={700}>
                                 {t('사진')}
                             </Typography>
-                            <AddPhoto
-                                fieldName={'identificationPhoto'}
-                                watch={methods.watch}
-                                setValue={methods.setValue}
+                            <Controller
+                                control={methods.control}
+                                name="identificationPhotoUrl"
+                                render={({ field }) => (
+                                    <AddPhotoWithGcs
+                                        value={field.value || null}
+                                        onChange={field.onChange}
+                                        directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    />
+                                )}
                             />
                         </Stack>
                         <Stack direction="row" gap="12px" width="100%">
@@ -223,31 +238,43 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                         />
                         <LabelComponentsLayout labelValue={t('계좌 정보')} sx={{ width: '100%' }}>
                             <Stack direction={'row'} gap="12px">
-                                <TextField
-                                    {...methods.register('bankName')}
+                                <Input
+                                    fieldName="bankName"
+                                    register={methods.register}
                                     placeholder={t('은행명')}
                                 />
-                                <TextField
+                                <Input
                                     sx={{ width: '500px' }}
-                                    {...methods.register('accountInfo')}
+                                    fieldName="accountInfo"
+                                    register={methods.register}
                                     placeholder={t('계좌 번호')}
                                 />
                             </Stack>
                         </LabelComponentsLayout>
 
-                        <LabelAndSelectFile
-                            labelValue={t('계약서')}
-                            fieldName={'contractFile'}
-                            watch={methods.watch}
-                            setValue={methods.setValue}
-                            inputAccept="image/*,application/pdf"
+                        <Controller
+                            control={methods.control}
+                            name="bankbookPhotoUrl"
+                            render={({ field }) => (
+                                <LabelAndSelectFileWithGcs
+                                    labelValue={t('통장 사본')}
+                                    directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    value={field.value}
+                                    inputAccept="image/*,application/pdf"
+                                    onChange={field.onChange}
+                                />)}
                         />
-                        <LabelAndSelectFile
-                            labelValue={t('통장 사본')}
-                            fieldName={'bankbookPhoto'}
-                            watch={methods.watch}
-                            setValue={methods.setValue}
-                            inputAccept="image/*,application/pdf"
+                        <Controller
+                            control={methods.control}
+                            name="contractFileUrl"
+                            render={({ field }) => (
+                                <LabelAndSelectFileWithGcs
+                                    labelValue={t('계약서')}
+                                    directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    value={field.value}
+                                    inputAccept="image/*,application/pdf"
+                                    onChange={field.onChange}
+                                />)}
                         />
                     </Stack>
                 </form>

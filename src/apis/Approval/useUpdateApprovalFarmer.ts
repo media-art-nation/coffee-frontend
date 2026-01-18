@@ -5,25 +5,19 @@ import { axiosInstance } from '@/apis/axiosInstance';
 
 export type UpdateApprovalFarmerReq = {
     name: string;
-    villageHeadId: number | null;
-    identificationPhoto?: File;
+    villageHeadId: string | null;
+    identificationPhotoUrl: string | null;
     farmerId: number | null;
 };
 
 const updateApprovalFarmer = async (param: UpdateApprovalFarmerReq): Promise<AxiosResponse> => {
-    const queryParams: Record<string, string> = {
+    const formData = {
         name: param.name,
         villageHeadId: String(param.villageHeadId),
-        approverId: '1',
+        identificationPhotoUrl: param.identificationPhotoUrl,
     };
-    const query = new URLSearchParams(queryParams).toString();
 
-    const formData = new FormData();
-    if (param.identificationPhoto) {
-        formData.append('identificationPhoto', param.identificationPhoto);
-    }
-
-    return await axiosInstance.patch(`/approval/farmer/${param.farmerId}?${query}`, formData);
+    return await axiosInstance.patch(`/approval/farmer/${param.farmerId}/url?approverId=1`, formData);
 };
 
 export const useUpdateApprovalFarmer = () => {
