@@ -7,26 +7,22 @@ export type CreateApprovalFarmerRegisterReq = {
     name: string;
     villageHeadId: number | null;
     approverId: number | null;
-    identificationPhoto?: File | null;
+    identificationPhotoUrl: string | null;
 };
 const createApprovalFarmerRegister = async (
     param: CreateApprovalFarmerRegisterReq
 ): Promise<AxiosResponse> => {
     const query = new URLSearchParams({
-        name: param.name,
-        villageHeadId: String(param.villageHeadId),
         approverId: '1',
     }).toString();
-    const formData = new FormData();
 
-    if (param.identificationPhoto) {
-        formData.append('identificationPhoto', param.identificationPhoto);
+    const formData = {
+        name: param.name,
+        villageHeadId: param.villageHeadId,
+        identificationPhotoUrl: param.identificationPhotoUrl,
     }
-    return await axiosInstance.post(`/approval/farmer?${query}`, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
+ 
+    return await axiosInstance.post(`/approval/farmer/url?${query}`, formData, );
 };
 
 export const useCreateApprovalFarmerRegister = () => {

@@ -1,4 +1,6 @@
-import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -15,21 +17,25 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 
 import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
-import { useUpdateViceAdminDetails } from '@/apis/AppUser/useUpdateViceAdminDetails';
+import { useUpdateViceAdminUrl } from '@/apis/AppUser/useUpdateViceAdminUrl';
 import { useGetArea } from '@/apis/Area/useGetArea';
+import { usePostGcsFile } from '@/apis/Gcs/usePostGcsFile';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
+import { Loading } from '@/components/Loading';
 import { useDialog } from '@/hooks/useDialog';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
 
 type TViceAdminDetailsInput = {
     viceAdminId: number;
     username: string;
     userId: string;
     areaId: string;
-    idCardFile: File | null;
+    idCardUrl: string | null;
 };
 
 type EditViceAdminDialogProps = {
@@ -47,66 +53,81 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
 
     const queryClient = useQueryClient();
     const { openDialog } = useDialog();
-    const { data: viceAdminDetail } = useGetViceAdminDetails(String(viceAdminId));
-    const { mutateAsync: updateViceAdmin } = useUpdateViceAdminDetails();
+    const { data: viceAdminDetail, isLoading } = useGetViceAdminDetails(String(viceAdminId));
+    const { mutateAsync: updateViceAdminUrl } = useUpdateViceAdminUrl();
     const { data: getAreaList } = useGetArea();
     const navigate = useNavigate();
-    const methods = useForm<TViceAdminDetailsInput>({
-        defaultValues: {
-            viceAdminId: Number(viceAdminId),
-            username: viceAdminDetail?.username || '',
-            userId: viceAdminDetail?.userId || '',
-            idCardFile: null,
-            areaId: String(viceAdminDetail?.areaInfo.areaId || ''),
-        },
-    });
 
-    const onSubmitEdit = (data: TViceAdminDetailsInput) => {
-        updateViceAdmin({ ...data, areaId: Number(data.areaId) })
-            .then((res) => {
-                if (res.data.code === 'SUCCESS') {
-                    queryClient.invalidateQueries({
-                        queryKey: QUERY_KEYS.APP_USER.getViceAdminDetail(
-                            JSON.stringify(viceAdminId)
-                        ),
-                    });
+    const {register, handleSubmit, reset, control} = useForm<TViceAdminDetailsInput>();
+
+    const onSubmitEdit = async (data: TViceAdminDetailsInput) => {
+        try {
+            updateViceAdminUrl({
+                ...data,
+                areaId: Number(data.areaId),
+            })
+                .then((res) => {
+                    if (res.data.code === 'SUCCESS') {
+                        queryClient.invalidateQueries({
+                            queryKey: QUERY_KEYS.APP_USER.getViceAdminDetail(
+                                JSON.stringify(viceAdminId)
+                            ),
+                        });
+                        openDialog({
+                            title: t('부관리자 수정 완료'),
+                            variant: 'confirm',
+                            primaryAction: {
+                                name: t('확인'),
+                                onClick: () => {
+                                    navigate(`/vice-admins/${viceAdminId}`);
+                                    handleClose();
+                                },
+                            },
+                        });
+                        return;
+                    }
                     openDialog({
-                        title: t('부관리자 수정 완료'),
-                        variant: 'confirm',
+                        title: t('부관리자 수정 실패'),
+                        description: t('권한 확인 또는 관리자에게 문의해주세요.'),
+                        variant: 'alert',
                         primaryAction: {
                             name: t('확인'),
+                            onClick: () => {},
+                        },
+                    });
+                })
+                .catch((err) => {
+                    openDialog({
+                        title: t('부관리자 수정 실패'),
+                        description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
+                        variant: 'alert',
+                        primaryAction: {
+                            name: '확인',
                             onClick: () => {
-                                navigate(`/vice-admins/${viceAdminId}`);
+                                reset();
                             },
                         },
                     });
-                    return;
-                }
-                openDialog({
-                    title: t('부관리자 수정 실패'),
-                    description: t('권한 확인 또는 관리자에게 문의해주세요.'),
-                    variant: 'alert',
-                    primaryAction: {
-                        name: t('확인'),
-                        onClick: () => {},
-                    },
                 });
-            })
-            .catch((err) => {
-                openDialog({
-                    title: t('부관리자 수정 실패'),
-                    description: `${t('에러')} : ${err}.\n 관리자에게 문의 바랍니다.`,
-                    variant: 'alert',
-                    primaryAction: {
-                        name: '확인',
-                        onClick: () => {
-                            methods.reset();
-                        },
-                    },
-                });
-            });
+        } catch (error) {
+            console.error(error);
+        }
+        console.log(data, 'data');
     };
 
+    useEffect(() => {
+        if (viceAdminDetail) {
+            reset({
+                viceAdminId: Number(viceAdminId),
+                username: viceAdminDetail?.username || '',
+                userId: viceAdminDetail?.userId || '',
+                idCardUrl: viceAdminDetail?.idCardUrl || undefined,
+                areaId: String(viceAdminDetail?.areaInfo.areaId || ''),
+            });
+        }
+    }, [viceAdminDetail]);
+
+    if (isLoading) return <Loading />;
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
             <DialogTitle>{t('부관리자 정보 수정')}</DialogTitle>
@@ -125,28 +146,33 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
             <DialogContent>
                 <Stack gap={'12px'}>
                     <LabelComponentsLayout labelValue={t('ID Card')}>
-                        <AddPhoto
-                            fieldName="idCardFile"
-                            currentUrl={viceAdminDetail?.idCardUrl || ''}
-                            watch={methods.watch}
-                            setValue={methods.setValue}
+                        <Controller
+                            control={control}
+                            name="idCardUrl"
+                            render={({ field }) => (
+                                <AddPhotoWithGcs
+                                    value={field.value || null}
+                                    onChange={field.onChange}
+                                    directory={GcsDirectoryEnum.VICE_ADMIN}
+                                />
+                            )}
                         />
                     </LabelComponentsLayout>
                     <LabelAndInput
-                        register={methods.register}
+                        register={register}
                         labelValue={t('이름')}
                         fieldName="username"
                         placeholder={t('이름을 입력해주세요.')}
                     />
                     <LabelAndInput
-                        register={methods.register}
+                        register={register}
                         labelValue={t('아이디')}
                         fieldName="userId"
                         disabled={true}
                         placeholder={t('아이디를 입력해주세요.')}
                     />
                     <LabelAndSelect
-                        control={methods.control}
+                        control={control}
                         labelValue={t('관리 지역')}
                         fieldName="areaId"
                         selectArr={
@@ -156,23 +182,6 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                         }
                         placeholder={t('관리 지역을 선택해주세요.')}
                     />
-                    {/* <Stack>
-                        <GoogleMap
-                            mapContainerStyle={containerStyle}
-                            center={{
-                                lat: areaInfo?.latitude || 0,
-                                lng: areaInfo?.longitude || 0,
-                            }}
-                            zoom={13}
-                        >
-                            <Marker
-                                position={{
-                                    lat: areaInfo?.latitude || 0,
-                                    lng: areaInfo?.longitude || 0,
-                                }}
-                            />
-                        </GoogleMap>
-                    </Stack> */}
                 </Stack>
             </DialogContent>
             <DialogActions>
@@ -180,7 +189,7 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                     취소
                 </Button>
                 <Button
-                    onClick={methods.handleSubmit(onSubmitEdit)}
+                    onClick={handleSubmit(onSubmitEdit)}
                     form="edit-vice-admin-form"
                     variant="containedBlue"
                     sx={{ flex: 1 }}

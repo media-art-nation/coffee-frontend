@@ -22,7 +22,7 @@ const updateViceAdminDetails = async (param: UpdateViceAdminDetailsReq): Promise
         formData.append('idCardFile', idCardFile);
     }
 
-    return axiosInstance.patch(`/app-user/vice-admin?viceAdminId=${viceAdminId}`, formData, {
+    return axiosInstance.patch(`/app-user/vice-admin/${viceAdminId}`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },

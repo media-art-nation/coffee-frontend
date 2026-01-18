@@ -8,6 +8,8 @@ import { setCookies } from '@/apis/AppUser/cookie';
 import { useSignIn } from '@/apis/AppUser/useSignIn';
 import { TRole } from '@/typings/User';
 import { showToast } from '@/utils/showToast';
+import PasswordInput from '@/components/PasswordInput';
+import Input from '@/components/Input';
 
 export type TLoginForm = {
     userId: string;
@@ -63,8 +65,7 @@ const Login = () => {
                 sx={{
                     'gap': '30px',
                     'alignItems': 'center',
-                    'width': '500px',
-                    '& .MuiFormControl-root, .MuiButton-root': { width: '60%' },
+                    'width': '300px',
                 }}
             >
                 <Typography variant="h1/bold">{t('로그인')}</Typography>
@@ -74,13 +75,21 @@ const Login = () => {
                     </Stack>
                 ) : (
                     <Stack width={'100%'} alignItems={'center'} gap="30px">
-                        <TextField placeholder={t('아이디')} {...register('userId')} />
-                        <TextField
-                            placeholder={t('비밀번호')}
-                            {...register('password')}
-                            type="password"
-                        />
-                        <Button variant="containedBlue" type="submit">
+                        <Stack width={'100%'} gap="20px">
+                            <Input
+                                sx={{ width: '100%' }}
+                                placeholder={t('아이디')}
+                                register={register}
+                                fieldName="userId"
+                            />
+                            <PasswordInput
+                                register={register}
+                                fieldName="password"
+                                placeholder={t('비밀번호')}
+                                sx={{ width: '100%' }}
+                            />
+                        </Stack>
+                        <Button variant="containedBlue" type="submit" sx={{ width: '100%' }}>
                             {t('로그인')}
                         </Button>
                     </Stack>

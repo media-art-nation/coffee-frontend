@@ -4,19 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 import { MoreHoriz } from '@mui/icons-material';
-import { IconButton, Menu, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { Button, IconButton, Menu, MenuItem, Stack, TableCell, TableRow } from '@mui/material';
+import { Plus } from '@phosphor-icons/react';
 
+import { getCookies } from '@/apis/AppUser/cookie';
 import { GetViceAdminListRes, useGetViceAdminList } from '@/apis/AppUser/useGetViceAdminList';
 import PageLayout from '@/components/PageLayout';
 import Table from '@/components/Table';
 import Title from '@/components/Title';
 
 import { EditViceAdminDialog } from './edit-dialog';
+import { CreateViceAdminDialog } from './create-dialog';
 
 const ViceAdminList = () => {
     const { t } = useTranslation();
+    const role = getCookies('role');
     const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
+    const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [viceAdminId, setViceAdminId] = useState<number | null>(null);
 
@@ -33,19 +38,6 @@ const ViceAdminList = () => {
     };
 
     const handleCloseMenu = () => setMenuState({ anchorEl: null, rowId: null });
-
-    // const handleClickDelete = (id: number) => {
-    //     openDialog({
-    //         title: t('해당 구매 내역을 삭제하시겠습니까?'),
-    //         description: t('삭제하면 복구가 불가능합니다.'),
-    //         variant: 'alert',
-    //         primaryAction: {
-    //             name: t('확인'),
-    //             onClick: () => {},
-    //         },
-    //         secondaryAction: { name: t('취소'), onClick: () => {} },
-    //     });
-    // };
 
     const renderRow = (row: GetViceAdminListRes) => {
         return (
@@ -92,7 +84,15 @@ const ViceAdminList = () => {
 
     return (
         <Stack>
-            <Title title={t('부관리자 목록')} />
+            <Title title={t('부관리자 목록')}>
+                {role === 'ADMIN' && (
+                    <Button variant="outlinedBlue" onClick={() => {
+                        setOpenCreateDialog(true);
+                    }} startIcon={<Plus />}>
+                        {t('등록')}
+                    </Button>
+                )}
+            </Title>
             <PageLayout>
                 <Table
                     headData={[t('ID'), t('이름'), t('아이디'), t('관리 지역'), t('')]}
@@ -106,6 +106,12 @@ const ViceAdminList = () => {
                     open={openEditDialog}
                     onClose={() => setOpenEditDialog(false)}
                     viceAdminId={viceAdminId}
+                />
+            )}
+            {openCreateDialog && (
+                <CreateViceAdminDialog
+                    open={openCreateDialog}
+                    onClose={() => setOpenCreateDialog(false)}
                 />
             )}
         </Stack>

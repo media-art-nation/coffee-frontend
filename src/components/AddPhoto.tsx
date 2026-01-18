@@ -8,7 +8,6 @@ import { Plus } from '@phosphor-icons/react';
 import { palette } from '@/themes';
 
 type AddPhotoProps<T extends FieldValues> = {
-    currentUrl?: string;
     fieldName: Path<T>;
     watch: UseFormWatch<T>;
     setValue: UseFormSetValue<T>;
@@ -17,10 +16,9 @@ const AddPhoto = <T extends FieldValues>({
     fieldName,
     watch,
     setValue,
-    currentUrl,
 }: AddPhotoProps<T>) => {
     const fileInputRef = React.useRef<HTMLInputElement | null>(null);
-    const value = watch(fieldName) as File | null;
+    const value = watch(fieldName) as File | string | null;
     const previewUrl = React.useMemo(() => {
         if (value instanceof File) {
             return URL.createObjectURL(value); // 새로 업로드된 파일
@@ -55,9 +53,9 @@ const AddPhoto = <T extends FieldValues>({
                 style={{ display: 'none' }}
                 onChange={handleFileChange}
             />
-            {currentUrl ? (
+            {typeof value === 'string' ? (
                 <img
-                    src={currentUrl}
+                    src={value}
                     alt="current image"
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                     onClick={handleClick}

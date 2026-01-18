@@ -1,6 +1,6 @@
 import { FieldValues, Path, RegisterOptions, UseFormRegister } from 'react-hook-form';
 
-import { StackProps, TextField } from '@mui/material';
+import { OutlinedInput, StackProps } from '@mui/material';
 
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 
@@ -26,11 +26,10 @@ const LabelAndInput = <T extends FieldValues>({
 }: LabelAndInputProps<T>) => {
     return (
         <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
-            <TextField
+            <OutlinedInput
                 {...register(fieldName, rules)}
                 disabled={disabled}
                 placeholder={placeholder}
-                slotProps={{ htmlInput: { type } }}
             />
         </LabelComponentsLayout>
     );

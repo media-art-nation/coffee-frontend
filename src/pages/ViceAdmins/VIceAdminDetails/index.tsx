@@ -1,28 +1,38 @@
+import { useState } from 'react';
+
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { Pencil } from '@phosphor-icons/react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 
 import { useGetViceAdminDetails } from '@/apis/AppUser/useGetViceAdminDetails';
 import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { containerStyle } from '@/pages/Locations/LocationRegister';
-import { palette } from '@/themes';
 import NarrowLayout from '@/routers/NarrowLayout';
+import { palette } from '@/themes';
+
+import { EditViceAdminDialog } from '../edit-dialog';
 
 const ViceAdminDetails = () => {
     const { t } = useTranslation();
     const { id } = useParams();
     const { data: viceAdminDetail } = useGetViceAdminDetails(id);
-    const navigate = useNavigate();
+    const [openEditDialog, setOpenEditDialog] = useState(false);
 
     return (
         <NarrowLayout>
-
             <Stack>
                 <Title title={t('부관리자 상세')}>
-                    <Button variant="outlinedBlue" onClick={() => navigate(`/vice-admins/edit/${id}`)}>
+                    <Button
+                        variant="outlinedBlue"
+                        onClick={() => {
+                            setOpenEditDialog(true);
+                        }}
+                        startIcon={<Pencil />}
+                    >
                         {t('수정')}
                     </Button>
                 </Title>
@@ -100,9 +110,12 @@ const ViceAdminDetails = () => {
                     </Stack>
                 </PageLayout>
             </Stack>
-
+            <EditViceAdminDialog
+                open={openEditDialog}
+                onClose={() => setOpenEditDialog(false)}
+                viceAdminId={Number(id)}
+            />
         </NarrowLayout>
-
     );
 };
 

@@ -5,18 +5,27 @@ import { useTranslation } from 'react-i18next';
 import { MoreHoriz } from '@mui/icons-material';
 import {
     Button,
+    CircularProgress,
     Divider,
     IconButton,
     Menu,
     MenuItem,
+    Table as MuiTable,
+    Paper,
     Select,
     Stack,
+    TableBody,
     TableCell,
+    TableContainer,
+    TableFooter,
+    TableHead,
     TableRow,
     Typography,
 } from '@mui/material';
 import { Plus } from '@phosphor-icons/react';
 import dayjs, { Dayjs } from 'dayjs';
+
+import noData from '@assets/noData.svg';
 
 import { getCookies } from '@/apis/AppUser/cookie';
 import { useGetVillageHeadList } from '@/apis/AppUser/useGetVillageHeadList';
@@ -24,19 +33,20 @@ import { useDeletePurchase } from '@/apis/Approval/useDeletePurchase';
 import { GetPurchaseList, useGetPurchaseList } from '@/apis/Purchase/getPurchaseList';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import PageLayout from '@/components/PageLayout';
-import Table from '@/components/Table';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
 import { TPurchase } from '@/typings/Purchase';
 
 import { TreesPurchaseCreateDialog } from './create-dialog';
+import { CreateTreesPurchaseRow } from './create-row';
 import { TreesPurchaseEditDialog } from './edit-dialog';
 
 const TreesPurchaseList = () => {
     const { openDialog } = useDialog();
     const { t } = useTranslation();
     const { mutate: deletePurchase } = useDeletePurchase();
+    const [openCreateRow, setOpenCreateRow] = useState(false);
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedPurchaseDetail, setSelectedPurchaseDetail] = useState<TPurchase | null>(null);
@@ -47,7 +57,7 @@ const TreesPurchaseList = () => {
     const [startDate, setStartDate] = useState<Dayjs | undefined>(today.subtract(1, 'month'));
     const [endDate, setEndDate] = useState<Dayjs | undefined>(today);
 
-    const { data: purchaseList } = useGetPurchaseList({
+    const { data: purchaseList, isLoading } = useGetPurchaseList({
         startDate,
         endDate,
         villageHeadId,
@@ -188,6 +198,34 @@ const TreesPurchaseList = () => {
         );
     };
 
+    const headData =
+        role !== 'VILLAGE_HEAD'
+            ? [
+                  { label: t('ID') },
+                  { label: t('담당자'), minWidth: '100px' },
+                  { label: t('면장'), minWidth: '150px' },
+                  { label: t('거래일자'), minWidth: '150px' },
+                  { label: t('수량'), minWidth: '150px' },
+                  { label: t('단가'), minWidth: '150px' },
+                  { label: t('총액'), minWidth: '150px' },
+                  { label: t('차감액'), minWidth: '150px' },
+                  { label: t('지급액'), minWidth: '150px' },
+                  { label: t('비고'), minWidth: '150px' },
+                  { label: '', minWidth: '150px' },
+              ]
+            : [
+                  { label: t('ID'), minWidth: '100px' },
+                  { label: t('담당자'), minWidth: '150px' },
+                  { label: t('면장'), minWidth: '150px' },
+                  { label: t('거래일자'), minWidth: '150px' },
+                  { label: t('수량'), minWidth: '150px' },
+                  { label: t('단가'), minWidth: '150px' },
+                  { label: t('총액'), minWidth: '150px' },
+                  { label: t('차감액'), minWidth: '150px' },
+                  { label: t('지급액'), minWidth: '150px' },
+                  { label: t('비고'), minWidth: '150px' },
+              ];
+
     return (
         <>
             <Stack>
@@ -195,7 +233,7 @@ const TreesPurchaseList = () => {
                     {role !== 'VILLAGE_HEAD' && (
                         <Button
                             variant="outlinedBlue"
-                            onClick={() => setOpenCreateDialog(true)}
+                            onClick={() => setOpenCreateRow(true)}
                             startIcon={<Plus />}
                         >
                             추가
@@ -253,39 +291,71 @@ const TreesPurchaseList = () => {
                             </Select>
                         </Stack>
                     </Stack>
-                    <Table
-                        headData={
-                            role !== 'VILLAGE_HEAD'
-                                ? [
-                                      t('ID'),
-                                      t('담당자'),
-                                      t('면장'),
-                                      t('거래일자'),
-                                      t('수량'),
-                                      t('단가'),
-                                      t('총액'),
-                                      t('차감액'),
-                                      t('지급액'),
-                                      t('비고'),
-                                      '',
-                                  ]
-                                : [
-                                      t('ID'),
-                                      t('담당자'),
-                                      t('면장'),
-                                      t('거래일자'),
-                                      t('수량'),
-                                      t('단가'),
-                                      t('총액'),
-                                      t('차감액'),
-                                      t('지급액'),
-                                      t('비고'),
-                                  ]
-                        }
-                        bodyData={purchaseList || []}
-                        renderRow={renderRow}
-                        tableFooter={totalRow()}
-                    />
+
+                    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+                        <TableContainer sx={{ width: '100%', height: '100%', minHeight: 0 }}>
+                            <MuiTable stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        {headData.map((item) => {
+                                            return (
+                                                <TableCell
+                                                    key={item.label}
+                                                    style={{
+                                                        minWidth: item.minWidth
+                                                            ? item.minWidth
+                                                            : '',
+                                                    }}
+                                                >
+                                                    {item.label}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody sx={{ '.MuiTableRow-root': { height: '60px' } }}>
+                                    {openCreateRow && (
+                                        <CreateTreesPurchaseRow
+                                            onClose={() => setOpenCreateRow(false)}
+                                        />
+                                    )}
+                                    {purchaseList && purchaseList.length > 0 ? (
+                                        purchaseList.map((item) => renderRow(item))
+                                    ) : isLoading ? (
+                                        <TableRow>
+                                            <TableCell colSpan={headData.length}>
+                                                <Stack
+                                                    sx={{
+                                                        width: '100%',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}
+                                                >
+                                                    <CircularProgress color="primary" size={30} />
+                                                </Stack>
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        <TableRow>
+                                            <TableCell colSpan={headData.length}>
+                                                <Stack
+                                                    sx={{
+                                                        width: '100%',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}
+                                                >
+                                                    <img src={noData} alt="No Data" width={60} />
+                                                </Stack>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+
+                                <TableFooter>{totalRow()}</TableFooter>
+                            </MuiTable>
+                        </TableContainer>
+                    </Paper>
                 </PageLayout>
             </Stack>
 

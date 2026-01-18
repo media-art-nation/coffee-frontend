@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { Close } from '@mui/icons-material';
@@ -14,7 +14,6 @@ import {
     MenuItem,
     Select,
     Stack,
-    TextField,
     Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -27,13 +26,18 @@ import { useGetArea } from '@/apis/Area/useGetArea';
 import { useGetMyArea } from '@/apis/Area/useGetMyArea';
 import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
-import AddPhoto from '@/components/AddPhoto';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes/palette';
+import { GcsDirectoryEnum } from '@/typings/Gcs';
+import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
+import LabelAndSelectFileWithGcs from '@/components/LabelAndSelectFileWithGcs';
+import LabelAndPasswordInput from '@/components/LabelAndPasswordInput';
+import Input from '@/components/Input';
+import { showToast } from '@/utils/showToast';
 
 type CreateApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
@@ -67,7 +71,7 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                         queryKey: QUERY_KEYS.APP_USER.getVillageHeadList(),
                     });
 
-                    handleClose();
+                    methods.reset();
 
                     setSelectArea(null);
 
@@ -78,21 +82,14 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                         primaryAction: {
                             name: t('확인'),
                             onClick: () => {
-                                methods.reset();
+                                handleClose();
                             },
                         },
                     });
                     return;
+                } else {
+                    showToast.error(res?.data?.message);
                 }
-                openDialog({
-                    title: t('면장 등록 요청 실패'),
-                    description: t('권한 확인 또는 관리자에게 문의해주세요.'),
-                    variant: 'alert',
-                    primaryAction: {
-                        name: t('확인'),
-                        onClick: () => {},
-                    },
-                });
             })
             .catch((err) => {
                 openDialog({
@@ -133,10 +130,16 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                 <form onSubmit={methods.handleSubmit(onSubmit)} id="create-village-head-form">
                     <Stack gap={'12px'}>
                         <LabelComponentsLayout labelValue={t('사진')}>
-                            <AddPhoto
-                                fieldName={'identificationPhoto'}
-                                watch={methods.watch}
-                                setValue={methods.setValue}
+                            <Controller
+                                control={methods.control}
+                                name="identificationPhotoUrl"
+                                render={({ field }) => (
+                                    <AddPhotoWithGcs
+                                        value={field.value || null}
+                                        onChange={field.onChange}
+                                        directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    />
+                                )}
                             />
                         </LabelComponentsLayout>
                         <Stack direction="row" gap="12px" width="100%">
@@ -193,11 +196,11 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                             register={methods.register}
                             placeholder={t('아이디를 입력해주세요.')}
                         />
-                        <LabelAndInput
-                            labelValue={t('비밀번호')}
+                        <LabelAndPasswordInput
+                            sx={{ width: '100%' }}
                             fieldName="password"
-                            type="password"
                             register={methods.register}
+                            labelValue={t('비밀번호')}
                             placeholder={t('비밀번호를 입력해주세요.')}
                         />
                         <LabelAndInput
@@ -211,30 +214,42 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                                 {t('계좌 정보')}
                             </Typography>
                             <Stack direction={'row'} gap="15px">
-                                <TextField
-                                    {...methods.register('bankName')}
+                                <Input
+                                    fieldName="bankName"
+                                    register={methods.register}
                                     placeholder={t('은행명')}
                                 />
-                                <TextField
+                                <Input
                                     sx={{ width: '500px' }}
-                                    {...methods.register('accountInfo')}
+                                    fieldName="accountInfo"
+                                    register={methods.register}
                                     placeholder={t('계좌 번호')}
                                 />
                             </Stack>
                         </Stack>
-                        <LabelAndSelectFile
-                            labelValue={t('계약서')}
-                            fieldName={'contractFile'}
-                            watch={methods.watch}
-                            setValue={methods.setValue}
-                            inputAccept="image/*,application/pdf"
+                        <Controller
+                            control={methods.control}
+                            name="bankbookPhotoUrl"
+                            render={({ field }) => (
+                                <LabelAndSelectFileWithGcs
+                                    labelValue={t('통장 사본')}
+                                    directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    value={field.value}
+                                    inputAccept="image/*,application/pdf"
+                                    onChange={field.onChange}
+                                />)}
                         />
-                        <LabelAndSelectFile
-                            labelValue={t('통장 사본')}
-                            fieldName={'bankbookPhoto'}
-                            watch={methods.watch}
-                            setValue={methods.setValue}
-                            inputAccept="image/*,application/pdf"
+                        <Controller
+                            control={methods.control}
+                            name="contractFileUrl"
+                            render={({ field }) => (
+                                <LabelAndSelectFileWithGcs
+                                    labelValue={t('계약서')}
+                                    directory={GcsDirectoryEnum.VILLAGE_HEAD}
+                                    value={field.value}
+                                    inputAccept="image/*,application/pdf"
+                                    onChange={field.onChange}
+                                />)}
                         />
                     </Stack>
                 </form>

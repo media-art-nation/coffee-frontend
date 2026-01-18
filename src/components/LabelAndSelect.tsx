@@ -1,4 +1,4 @@
-import { Control, Controller, FieldValues, Path, RegisterOptions } from 'react-hook-form';
+import { Control, Controller, FieldValues, Path, PathValue, RegisterOptions } from 'react-hook-form';
 
 import { MenuItem, Select, StackProps, Typography } from '@mui/material';
 
@@ -25,12 +25,14 @@ const LabelAndSelect = <T extends FieldValues>({
     disabled = false,
     ...props
 }: LabelAndSelectProps<T>) => {
+
     return (
         <LabelComponentsLayout {...props} labelValue={labelValue} sx={{ ...props.sx }}>
             <Controller
                 name={fieldName}
                 control={control}
                 rules={rules}
+                defaultValue={(props.defaultValue ?? '') as PathValue<T, Path<T>>}
                 render={({ field }) => (
                     <Select
                         {...field}
