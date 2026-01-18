@@ -11,7 +11,6 @@ import {
 } from '@/apis/Approval/useCreateApprovalPurchase';
 import CustomDatePicker from '@/components/CustomDatePicker';
 import Select from '@/components/Select';
-import TextArea from '@/components/TextArea';
 import { useDialog } from '@/hooks/useDialog';
 
 type CreateTreesPurchaseRowProps = {

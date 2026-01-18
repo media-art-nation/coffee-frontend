@@ -48,7 +48,6 @@ const LabelAndSelectFileWithGcs = ({
     return (
         <LabelComponentsLayout labelValue={labelValue}>
             <Stack direction={'row'} gap="10px" sx={{ alignItems: 'center', width: '100%' }}>
-                {/* 한줄 넘어가면 말줄임 ... 처리 */}
                 <Stack sx={{ flex: 1, height: '56px', justifyContent: 'center', border: `1px solid ${palette.grey[300]}`, borderRadius: '10px', px: '14px', minWidth: '0' }}>
                     <Typography sx={{ padding: 'auto 12px', color: palette.grey[400], fontSize: '15px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {value ? value : t('선택된 파일 없음')}

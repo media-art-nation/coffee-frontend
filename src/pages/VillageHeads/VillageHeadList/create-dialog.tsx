@@ -28,7 +28,6 @@ import { useGetSectionList } from '@/apis/Area/useGetSectionList';
 import { QUERY_KEYS } from '@/apis/QueryKeys';
 import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
-import LabelAndSelectFile from '@/components/LabelAndSelectFile';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes/palette';
@@ -88,7 +87,8 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                     });
                     return;
                 } else {
-                    showToast.error(res?.data?.message);
+
+                  showToast.error(res?.data?.message);
                 }
             })
             .catch((err) => {

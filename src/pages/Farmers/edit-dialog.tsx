@@ -28,7 +28,6 @@ import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { useDialog } from '@/hooks/useDialog';
 import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
 import { GcsDirectoryEnum } from '@/typings/Gcs';
-import { showToast } from '@/utils/showToast';
 
 type FarmerEditDialogProps = {
     open: boolean;
@@ -43,7 +42,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
     const { data: villageHeadList } = useGetVillageHeadList();
     const { data: farmer, isLoading: farmerDetailLoading } = useGetFarmerDetail(String(farmerId));
 
-    const { reset, control, register, handleSubmit, watch } =
+    const { reset, control, register, handleSubmit } =
         useForm<UpdateApprovalFarmerReq>({
             defaultValues: {
                 villageHeadId: String(farmer?.villageHeadId) || null,
@@ -72,6 +71,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
                             name: t('확인'),
                             onClick: () => {
                                 handleClose();
+
                             },
                         },
                     });
