@@ -67,10 +67,10 @@ const lnbData: Record<TRole, TLnbItem[]> = {
                 // { label: '농부 등록', path: '/village-heads/farmers/register' },
             ],
         },
-        // {
-        //     label: '수매 관리',
-        //     children: [{ label: '수매 목록', path: '/trees-purchases' }],
-        // },
+        {
+            label: '수매 관리',
+            children: [{ label: '수매 목록', path: '/trees-purchases' }],
+        },
         {
             label: '지역 관리',
             children: [

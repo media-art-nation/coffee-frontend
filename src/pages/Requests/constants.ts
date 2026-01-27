@@ -19,7 +19,6 @@ export const REQUEST_SERVICE_TYPE: Record<TRequestServiceType, string> = {
     VILLAGE_HEAD: '면장',
     FARMER: '농부',
     PURCHASE: '수매',
-    TREES_TRANSACTION: '나무 수령',
     SECTION: '지역',
 };
 

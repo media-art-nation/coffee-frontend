@@ -110,7 +110,7 @@ const FarmerList = () => {
                                     handleCloseMenu();
                                 }}
                             >
-                                수정하기
+                                {t('수정하기')}
                             </MenuItem>
                             <Divider />
                             <MenuItem
@@ -119,7 +119,7 @@ const FarmerList = () => {
                                     handleCloseMenu();
                                 }}
                             >
-                                삭제하기
+                                {t('삭제하기')}
                             </MenuItem>
                         </Menu>
                     </TableCell>

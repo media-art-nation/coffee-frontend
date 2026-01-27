@@ -196,7 +196,7 @@ export const TreesPurchaseEditDialog = ({
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
-                    취소
+                    {t('취소')}
                 </Button>
                 <Button
                     onClick={methods.handleSubmit(onSubmit)}

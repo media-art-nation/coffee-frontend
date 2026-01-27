@@ -7,7 +7,6 @@ export type TRequestServiceType =
     | 'FARMER'
     | 'PURCHASE'
     | 'SECTION'
-    | 'TREES_TRANSACTION';
 
 export type TRequestListTableRow = {
     id: number;

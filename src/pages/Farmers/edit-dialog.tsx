@@ -173,7 +173,7 @@ export const FarmerEditDialog = ({ open, onClose, farmerId }: FarmerEditDialogPr
 
             <DialogActions>
                 <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
-                    취소
+                    {t('취소')}
                 </Button>
                 <Button
                     onClick={handleSubmit(onSubmit)}

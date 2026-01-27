@@ -135,7 +135,7 @@ const TreesPurchaseList = () => {
                                 handleCloseMenu();
                             }}
                         >
-                            수정하기
+                            {t('수정하기')}
                         </MenuItem>
                         {role !== 'VILLAGE_HEAD' && <Divider />}
                         {role !== 'VILLAGE_HEAD' && (
@@ -145,7 +145,7 @@ const TreesPurchaseList = () => {
                                     handleCloseMenu();
                                 }}
                             >
-                                삭제하기
+                                {t('삭제하기')}
                             </MenuItem>
                         )}
                     </Menu>
@@ -176,7 +176,7 @@ const TreesPurchaseList = () => {
                     align="center"
                     sx={{ fontWeight: 600, backgroundColor: palette.grey[50] }}
                 >
-                    합계
+                    {t('합계')}
                 </TableCell>
                 <TableCell sx={{ textAlign: 'center', fontWeight: 600 }}>
                     {totalData.quantity.toLocaleString()}
@@ -236,7 +236,7 @@ const TreesPurchaseList = () => {
                             onClick={() => setOpenCreateRow(true)}
                             startIcon={<Plus />}
                         >
-                            추가
+                            {t('추가')}
                         </Button>
                     )}
                 </Title>
@@ -269,7 +269,7 @@ const TreesPurchaseList = () => {
                                 renderValue={(selected) => {
                                     if (!selected) {
                                         return (
-                                            <Typography color="text.disabled">면장 선택</Typography>
+                                            <Typography color="text.disabled">{t('면장 선택')}</Typography>
                                         );
                                     }
                                     return (

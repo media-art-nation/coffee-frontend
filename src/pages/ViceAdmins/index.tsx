@@ -74,7 +74,7 @@ const ViceAdminList = () => {
                                 handleCloseMenu();
                             }}
                         >
-                            수정하기
+                            {t('수정하기')}
                         </MenuItem>
                     </Menu>
                 </TableCell>

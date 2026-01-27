@@ -36,7 +36,7 @@ export const AreaDetails = () => {
                                         }}
                                     >
                                         <TableCell sx={{ backgroundColor: palette.grey[50] }}>
-                                            지역명
+                                            {t('지역명')}
                                         </TableCell>
                                         <TableCell>{areaDetails?.areaName}</TableCell>
                                     </TableRow>
@@ -48,7 +48,7 @@ export const AreaDetails = () => {
                                         }}
                                     >
                                         <TableCell sx={{ backgroundColor: palette.grey[50] }}>
-                                            위도/경도
+                                            {t('위도')}/{t('경도')}
                                         </TableCell>
                                         <TableCell>
                                             {areaDetails?.latitude} / {areaDetails?.longitude}
