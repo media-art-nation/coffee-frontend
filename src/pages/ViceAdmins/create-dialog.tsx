@@ -20,7 +20,7 @@ import LabelAndInput from '@/components/LabelAndInput';
 import LabelAndSelect from '@/components/LabelAndSelect';
 import LabelComponentsLayout from '@/components/LabelComponentsLayout';
 import { GcsDirectoryEnum } from '@/typings/Gcs';
-import { TRole } from '@/typings/User';
+import { RoleEnum, TRole } from '@/typings/User';
 import { showToast } from '@/utils/showToast';
 import AddPhotoWithGcs from '@/components/AddPhotoWithGcs';
 import LabelAndPasswordInput from '@/components/LabelAndPasswordInput';
@@ -54,7 +54,7 @@ export const CreateViceAdminDialog = ({ open, onClose }: CreateViceAdminDialogPr
             userId: '',
             username: '',
             password: '',
-            role: 'VICE_ADMIN_HEAD_OFFICER',
+            role: RoleEnum.VICE_ADMIN_HEAD_OFFICER,
         },
     });
 
@@ -108,6 +108,18 @@ export const CreateViceAdminDialog = ({ open, onClose }: CreateViceAdminDialogPr
                             )}
                         />
                     </LabelComponentsLayout>
+
+                    <LabelAndSelect
+                        control={control}
+                        labelValue={t('권한')}
+                        fieldName="role"
+                        selectArr={[
+                            { value: RoleEnum.VICE_ADMIN_HEAD_OFFICER, label: t('부관리자(한국지사)') },
+                            { value: RoleEnum.VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER, label: t('부관리자(농림부)') },
+                        ]
+                        }
+                        placeholder={t('관리 지역을 선택해주세요.')}
+                    />
                     <LabelAndInput
                         register={register}
                         labelValue={t('이름')}
@@ -142,7 +154,7 @@ export const CreateViceAdminDialog = ({ open, onClose }: CreateViceAdminDialogPr
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
-                    취소
+                    {t('취소')}
                 </Button>
                 <Button
                     onClick={handleSubmit(onSubmit)}

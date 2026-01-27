@@ -139,6 +139,7 @@ const SectionRegister = () => {
                                         });
                                     }
                                 }}
+                                readOnly
                             >
                                 <MenuItem value="kr">대한민국</MenuItem>
                                 <MenuItem value="la">라오스</MenuItem>

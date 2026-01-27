@@ -231,9 +231,9 @@ export const theme = createTheme({
                     'borderRadius': '10px',
                     'minHeight': '48px',
                     'backgroundColor': palette.common.white,
-                    'border': `1px solid ${palette.grey[300]}`,
                     '& fieldset': {
                         borderColor: 'transparent',
+                        border: `1px solid ${palette.grey[300]}`,
                     },
                     '&:hover fieldset': {
                         border: `1px solid ${palette.grey[200]}`,
@@ -369,14 +369,16 @@ export const theme = createTheme({
                     'width': '100%',
                     'minWidth': '100%',
                     'borderRadius': '10px',
+                    'padding': '0',
                     'backgroundColor': palette.common.white,
                     'border': `1px solid ${palette.grey[300]}`,
                     'outline': 'none',
-                    padding: '0',
                     '& fieldset': {
                         border: 'none',
-                        padding: '16px 12px',
-
+                        padding: '0',
+                    },
+                    '& .MuiSelect-select' : {
+                        padding: '12px 16px',
                     },
                     '&:focus': {
                         outline: 'none',

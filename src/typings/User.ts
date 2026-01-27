@@ -3,3 +3,10 @@ export type TRole =
     | 'VILLAGE_HEAD' //본인에게 직접 소속된 농부 목록 조회
     | 'VICE_ADMIN_HEAD_OFFICER' //자신의 Area 내 VillageHead에 속한 농부 목록 조회
     | 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER'; //자신의 Area 내 VillageHead에 속한 농부 목록 조회
+
+export enum RoleEnum {
+    ADMIN = 'ADMIN',
+    VILLAGE_HEAD = 'VILLAGE_HEAD',
+    VICE_ADMIN_HEAD_OFFICER = 'VICE_ADMIN_HEAD_OFFICER',
+    VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER = 'VICE_ADMIN_AGRICULTURE_MINISTRY_OFFICER',
+}

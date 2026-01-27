@@ -66,7 +66,7 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
                         variant: 'alert',
                         primaryAction: {
                             name: t('확인'),
-                            onClick: () => {},
+                            onClick: () => { },
                         },
                     });
             })
@@ -169,7 +169,7 @@ export const TreesPurchaseCreateDialog = ({ open, onClose }: TreesPurchaseCreate
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} sx={{ flex: 1 }} variant="containedGrey">
-                    취소
+                    {t('취소')}
                 </Button>
                 <Button
                     onClick={methods.handleSubmit(onSubmit)}
