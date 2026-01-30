@@ -16,7 +16,6 @@ import { palette } from '@/themes';
 
 import { EditViceAdminDialog } from '../edit-dialog';
 import { Loading } from '@/components/Loading';
-import { Image } from '@mui/icons-material';
 
 const ViceAdminDetails = () => {
     const { t } = useTranslation();
