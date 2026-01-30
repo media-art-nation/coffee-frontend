@@ -23,6 +23,6 @@ export const useGetGcsImage = (param: GetGcsImageReq) => {
     return useQuery({
         queryKey: QUERY_KEYS.GCS.getImagePreview(JSON.stringify(param)),
         queryFn: () => getGcsImage(param),
-        enabled: Boolean(param),
+        enabled: Boolean(param.fileUrl),
     });
 };

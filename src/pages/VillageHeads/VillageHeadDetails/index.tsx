@@ -73,12 +73,11 @@ const VillageHeadDetails = () => {
                                                 sx={{
                                                     width: '120px',
                                                     height: '160px',
-                                                    backgroundImage: `url(${data.identificationPhotoUrl})`,
-                                                    backgroundSize: 'cover',
-                                                    backgroundRepeat: 'no-repeat',
-                                                    backgroundPosition: 'center',
+                                                    border: '1px solid #E0E0E0',
                                                 }}
-                                            />
+                                            >
+                                                <img src={data.identificationPhotoUrl} alt="identificationPhoto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            </Box>
                                         ) : (
                                             <Stack
                                                 sx={{

@@ -29,12 +29,11 @@ const FarmerRequestDetails = () => {
                             sx={{
                                 width: '120px',
                                 height: '160px',
-                                backgroundImage: `url(${details.identificationPhotoUrl})`,
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                                backgroundPosition: 'center',
+                                border: '1px solid #E0E0E0',
                             }}
-                        />
+                        >
+                            <img src={details.identificationPhotoUrl} alt="identificationPhoto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </Box>
                     ) : (
                         <Stack
                             sx={{
