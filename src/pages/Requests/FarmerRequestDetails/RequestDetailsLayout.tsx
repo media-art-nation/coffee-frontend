@@ -106,7 +106,7 @@ const RequestDetailsLayout = ({ children }: RequestDetailsLayoutProps) => {
     const handleDeleteApproval = () => {
         openDialog({
             title: t('요청 삭제'),
-            description: t('삭제된 내용은 되돌릴 수 없습니다.'),
+            description: t('삭제한 내용은 되돌릴 수 없습니다.'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),

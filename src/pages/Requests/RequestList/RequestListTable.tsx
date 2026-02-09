@@ -32,7 +32,7 @@ const RequestListTable = ({ data, isLoading }: RequestListTableProps) => {
     const handleDeleteApproval = (approvalId: number) => {
         openDialog({
             title: t('요청 삭제'),
-            description: t('삭제된 요청은 되돌릴 수 없습니다.'),
+            description: t('삭제한 내용은 되돌릴 수 없습니다.'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),

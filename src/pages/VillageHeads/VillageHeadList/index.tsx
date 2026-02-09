@@ -53,8 +53,8 @@ const VillageHeadList = () => {
     const handleClickDelete = (id: number) => {
         openDialog({
             title: t('해당 면장을 삭제하시겠습니까?'),
-            description: t('삭제하면 복구가 불가능합니다.'),
-            variant: 'alert',
+            description: t('삭제한 내용은 되돌릴 수 없습니다.'),
+            variant: 'alert',   
             primaryAction: {
                 name: t('확인'),
                 onClick: () => {
