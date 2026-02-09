@@ -80,7 +80,7 @@ const TreesPurchaseList = () => {
     const handleClickDelete = (id: number) => {
         openDialog({
             title: t('해당 구매 내역을 삭제하시겠습니까?'),
-            description: t('삭제하면 복구가 불가능합니다.'),
+            description: t('삭제한 내용은 되돌릴 수 없습니다.'),
             variant: 'alert',
             primaryAction: {
                 name: t('확인'),
@@ -88,7 +88,7 @@ const TreesPurchaseList = () => {
                     deletePurchase({ purchaseId: id });
                 },
             },
-            secondaryAction: { name: t('취소'), onClick: () => {} },
+            secondaryAction: { name: t('취소'), onClick: () => { } },
         });
     };
 
@@ -107,7 +107,7 @@ const TreesPurchaseList = () => {
                 <TableCell>{row.deduction.toLocaleString()}원</TableCell>
                 <TableCell>{row.paymentAmount.toLocaleString()}원</TableCell>
                 <TableCell>{row?.remarks}</TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()} align="right">
+                {role !== 'VILLAGE_HEAD' && <TableCell onClick={(e) => e.stopPropagation()} align="right">
                     <IconButton
                         id={`basic-button-${row.id}`}
                         size="small"
@@ -137,19 +137,17 @@ const TreesPurchaseList = () => {
                         >
                             {t('수정하기')}
                         </MenuItem>
-                        {role !== 'VILLAGE_HEAD' && <Divider />}
-                        {role !== 'VILLAGE_HEAD' && (
-                            <MenuItem
-                                onClick={() => {
-                                    handleClickDelete(row.id);
-                                    handleCloseMenu();
-                                }}
-                            >
-                                {t('삭제하기')}
-                            </MenuItem>
-                        )}
+                        <Divider />
+                        <MenuItem
+                            onClick={() => {
+                                handleClickDelete(row.id);
+                                handleCloseMenu();
+                            }}
+                        >
+                            {t('삭제하기')}
+                        </MenuItem>
                     </Menu>
-                </TableCell>
+                </TableCell>}
             </TableRow>
         );
     };
@@ -201,30 +199,30 @@ const TreesPurchaseList = () => {
     const headData =
         role !== 'VILLAGE_HEAD'
             ? [
-                  { label: t('ID') },
-                  { label: t('담당자'), minWidth: '100px' },
-                  { label: t('면장'), minWidth: '150px' },
-                  { label: t('거래일자'), minWidth: '150px' },
-                  { label: t('수량'), minWidth: '150px' },
-                  { label: t('단가'), minWidth: '150px' },
-                  { label: t('총액'), minWidth: '150px' },
-                  { label: t('차감액'), minWidth: '150px' },
-                  { label: t('지급액'), minWidth: '150px' },
-                  { label: t('비고'), minWidth: '150px' },
-                  { label: '', minWidth: '150px' },
-              ]
+                { label: t('ID') },
+                { label: t('담당자'), minWidth: '100px' },
+                { label: t('면장'), minWidth: '150px' },
+                { label: t('거래일자'), minWidth: '150px' },
+                { label: t('수량'), minWidth: '150px' },
+                { label: t('단가'), minWidth: '150px' },
+                { label: t('총액'), minWidth: '150px' },
+                { label: t('차감액'), minWidth: '150px' },
+                { label: t('지급액'), minWidth: '150px' },
+                { label: t('비고'), minWidth: '150px' },
+                { label: '', minWidth: '150px' },
+            ]
             : [
-                  { label: t('ID'), minWidth: '100px' },
-                  { label: t('담당자'), minWidth: '150px' },
-                  { label: t('면장'), minWidth: '150px' },
-                  { label: t('거래일자'), minWidth: '150px' },
-                  { label: t('수량'), minWidth: '150px' },
-                  { label: t('단가'), minWidth: '150px' },
-                  { label: t('총액'), minWidth: '150px' },
-                  { label: t('차감액'), minWidth: '150px' },
-                  { label: t('지급액'), minWidth: '150px' },
-                  { label: t('비고'), minWidth: '150px' },
-              ];
+                { label: t('ID'), minWidth: '100px' },
+                { label: t('담당자'), minWidth: '150px' },
+                { label: t('면장'), minWidth: '150px' },
+                { label: t('거래일자'), minWidth: '150px' },
+                { label: t('수량'), minWidth: '150px' },
+                { label: t('단가'), minWidth: '150px' },
+                { label: t('총액'), minWidth: '150px' },
+                { label: t('차감액'), minWidth: '150px' },
+                { label: t('지급액'), minWidth: '150px' },
+                { label: t('비고'), minWidth: '150px' },
+            ];
 
     return (
         <>
