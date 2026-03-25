@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Close } from '@mui/icons-material';
 import {
     Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -14,6 +15,7 @@ import {
     MenuItem,
     Select,
     Stack,
+    Alert,
     Typography,
 } from '@mui/material';
 import { useQueryClient } from '@tanstack/react-query';
@@ -41,7 +43,7 @@ import { showToast } from '@/utils/showToast';
 type CreateApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
     'sectionId'
-> & { sectionId: string };
+> & { sectionId: string | null };
 
 type CreateVillageHeadDialogProps = {
     open: boolean;
@@ -55,15 +57,28 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
     const { data: myArea } = useGetMyArea();
     const { data: getAreaList } = useGetArea();
     const [selectArea, setSelectArea] = React.useState<string | null>(null);
+    const isUnassignedArea = selectArea === '';
+    const [alertOpen, setAlertOpen] = React.useState(true);
     const { data: sectionList } = useGetSectionList(
         myArea?.id ?? (selectArea ? Number(selectArea) : undefined)
     );
     const queryClient = useQueryClient();
-    const methods = useForm<CreateApprovalVillageHeadRegisterForm>();
+    const methods = useForm<CreateApprovalVillageHeadRegisterForm>({
+        defaultValues: {
+            sectionId: null,
+        },
+    });
+    const watchSectionId = methods.watch('sectionId');
+
+    useEffect(() => {
+        if (watchSectionId === '' && selectArea && selectArea !== '') {
+            setSelectArea('');
+        }
+    }, [watchSectionId]);
 
     const onSubmit = (data: CreateApprovalVillageHeadRegisterForm) => {
         const submit = createVillageHead;
-        submit({ ...data, sectionId: Number(data.sectionId) })
+        submit({ ...data, sectionId: data.sectionId ? Number(data.sectionId) : null })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
@@ -146,8 +161,20 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                             <LabelComponentsLayout labelValue={t('지역')} sx={{ width: '100%' }}>
                                 <Select
                                     value={selectArea}
-                                    onChange={(e) => setSelectArea(e.target.value)}
+                                    onChange={(e) => {
+                                        setSelectArea(e.target.value);
+                                        if (e.target.value === '') {
+                                            methods.setValue('sectionId', '');
+                                        }
+                                    }}
                                     renderValue={(selected) => {
+                                        if (selected === '') {
+                                            return (
+                                                <Typography sx={{ color: `${palette.common.black} !important` }}>
+                                                    {t('미할당')}
+                                                </Typography>
+                                            );
+                                        }
                                         const selectedOption = getAreaList
                                             ?.map((area) => {
                                                 return {
@@ -168,6 +195,7 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                                         );
                                     }}
                                 >
+                                    <MenuItem value="">{t('미할당')}</MenuItem>
                                     {getAreaList?.map((area) => (
                                         <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>
                                     ))}
@@ -179,16 +207,44 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
                                 fieldName="sectionId"
                                 control={methods.control}
                                 placeholder={t('관리 섹션')}
+                                disabled={isUnassignedArea || !selectArea}
                                 selectArr={
-                                    sectionList?.[0].sections?.map((section) => {
-                                        return {
-                                            value: String(section.id),
-                                            label: section.sectionName,
-                                        };
-                                    }) || []
+                                    !selectArea || isUnassignedArea
+                                        ? []
+                                        : [
+                                            { value: '', label: t('미할당') },
+                                            ...(sectionList?.[0].sections?.map((section) => {
+                                                return {
+                                                    value: String(section.id),
+                                                    label: section.sectionName,
+                                                };
+                                            }) || []),
+                                        ]
                                 }
                             />
                         </Stack>
+                        <Collapse in={alertOpen}>
+                            <Alert
+                                severity="info"
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => setAlertOpen(false)}
+                                    >
+                                        <Close fontSize="inherit" />
+                                    </IconButton>
+                                }
+                                sx={{
+                                    bgcolor: '#F3E5F5',
+                                    color: '#7B1FA2',
+                                    '& .MuiAlert-icon': { color: '#7B1FA2' },
+                                }}
+                            >
+                                {t('지역은 추후 변경할 수 있습니다.')}
+                            </Alert>
+                        </Collapse>
 
                         <LabelAndInput
                             labelValue={t('아이디')}

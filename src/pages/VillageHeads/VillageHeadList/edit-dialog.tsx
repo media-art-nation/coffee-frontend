@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Close } from '@mui/icons-material';
 import {
     Button,
+    Collapse,
     Dialog,
     DialogActions,
     DialogContent,
@@ -14,6 +15,7 @@ import {
     MenuItem,
     Select,
     Stack,
+    Alert,
     Typography,
 } from '@mui/material';
 import { GoogleMap, Marker } from '@react-google-maps/api';
@@ -40,7 +42,7 @@ import LabelAndInput from '@/components/LabelAndInput';
 type EditApprovalVillageHeadRegisterForm = Omit<
     CreateApprovalVillageHeadRegisterReq,
     'sectionId'
-> & { sectionId: string };
+> & { sectionId: string | null };
 
 type EditVillageHeadDialogProps = {
     open: boolean;
@@ -56,25 +58,39 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
     const { data: myArea } = useGetMyArea();
     const { data: getAreaList } = useGetArea();
     const [selectArea, setSelectArea] = React.useState<string>();
+    const isUnassignedArea = selectArea === '';
+    const [alertOpen, setAlertOpen] = React.useState(true);
     const { data: sectionList } = useGetSectionList(
         myArea?.id ?? (selectArea ? Number(selectArea) : undefined)
     );
     const queryClient = useQueryClient();
     const methods = useForm<EditApprovalVillageHeadRegisterForm>({
+
         defaultValues: {
             userId: villageHead?.userId,
             username: villageHead?.username,
             accountInfo: villageHead?.accountInfo,
-            sectionId: JSON.stringify(villageHead?.sectionInfo.sectionId),
+            sectionId: JSON.stringify(villageHead?.sectionInfo?.sectionId || ''),
             identificationPhotoUrl: villageHead?.identificationPhotoUrl,
             contractFileUrl: villageHead?.contractFileUrl,
             bankbookPhotoUrl: villageHead?.bankbookPhotoUrl,
         },
     });
 
+console.log(methods.formState.errors);
+
+    const watchSectionId = methods.watch('sectionId');
+
+    useEffect(() => {
+        if (watchSectionId === '' && selectArea && selectArea !== '') {
+            setSelectArea('');
+        }
+    }, [watchSectionId]);
+
     const onSubmit = (data: EditApprovalVillageHeadRegisterForm) => {
         const submit = updateVillageHead;
-        submit({ ...data, sectionId: Number(data.sectionId) })
+        console.log(data);
+        submit({ ...data, sectionId: data.sectionId ? Number(data.sectionId) : null })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
@@ -91,6 +107,8 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                             },
                         },
                     });
+
+                    handleClose();
                     return;
                 }
                 openDialog({
@@ -127,20 +145,21 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
     };
 
     useEffect(() => {
-        if (!villageHead) return;
+        if (!villageHead || !id) return;
 
         methods.reset({
+            id : Number(id),
             userId: villageHead.userId,
             username: villageHead.username,
             bankName: villageHead.bankName,
             accountInfo: villageHead.accountInfo,
-            sectionId: String(villageHead.sectionInfo.sectionId),
+            sectionId: String(villageHead.sectionInfo?.sectionId || ''),
             identificationPhotoUrl: villageHead.identificationPhotoUrl,
             contractFileUrl: villageHead.contractFileUrl,
             bankbookPhotoUrl: villageHead.bankbookPhotoUrl,
         });
 
-        setSelectArea(String(villageHead.areaInfo.areaId));
+        setSelectArea(String(villageHead.areaInfo?.areaId || ''));
     }, [villageHead, methods]);
 
     if (isLoading) return <Loading />;
@@ -182,8 +201,14 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                             <LabelComponentsLayout labelValue={t('지역')} sx={{ width: '100%' }}>
                                 <Select
                                     value={selectArea}
-                                    onChange={(e) => setSelectArea(e.target.value)}
+                                    onChange={(e) => {
+                                        setSelectArea(e.target.value);
+                                        if (e.target.value === '') {
+                                            methods.setValue('sectionId', '');
+                                        }
+                                    }}
                                 >
+                                    <MenuItem value="">{t('미할당')}</MenuItem>
                                     {getAreaList?.map((area) => (
                                         <MenuItem value={String(area.id)}>{area.areaName}</MenuItem>
                                     ))}
@@ -195,16 +220,44 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                                 fieldName="sectionId"
                                 control={methods.control}
                                 placeholder={t('관리 섹션')}
+                                disabled={isUnassignedArea || !selectArea}
                                 selectArr={
-                                    sectionList?.[0].sections?.map((section) => {
-                                        return {
-                                            value: String(section.id),
-                                            label: section.sectionName,
-                                        };
-                                    }) || []
+                                    !selectArea || isUnassignedArea
+                                        ? []
+                                        : [
+                                            { value: '', label: t('미할당') },
+                                            ...(sectionList?.[0].sections?.map((section) => {
+                                                return {
+                                                    value: String(section.id),
+                                                    label: section.sectionName,
+                                                };
+                                            }) || []),
+                                        ]
                                 }
                             />
                         </Stack>
+                        <Collapse in={alertOpen}>
+                            <Alert
+                                severity="info"
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => setAlertOpen(false)}
+                                    >
+                                        <Close fontSize="inherit" />
+                                    </IconButton>
+                                }
+                                sx={{
+                                    bgcolor: '#F3E5F5',
+                                    color: '#7B1FA2',
+                                    '& .MuiAlert-icon': { color: '#7B1FA2' },
+                                }}
+                            >
+                                {t('지역은 추후 변경할 수 있습니다.')}
+                            </Alert>
+                        </Collapse>
 
                         <Stack>
                             <GoogleMap
@@ -284,10 +337,10 @@ const EditVillageHeadDialog = ({ open, onClose, id }: EditVillageHeadDialogProps
                     {t('취소')}
                 </Button>
                 <Button
-                    type="submit"
                     form="create-village-head-form"
                     variant="containedBlue"
                     sx={{ flex: 1 }}
+                    onClick={() => methods.handleSubmit(onSubmit)()}
                 >
                     {t('확인')}
                 </Button>
