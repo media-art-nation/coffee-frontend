@@ -10,7 +10,7 @@ export type CreateApprovalVillageHeadRegisterReq = {
     password: string;
     bankName?: string;
     accountInfo?: string;
-    sectionId: number;
+    sectionId: number | null;
     identificationPhotoUrl: string | null;
     contractFileUrl: string | null;
     bankbookPhotoUrl: string | null;

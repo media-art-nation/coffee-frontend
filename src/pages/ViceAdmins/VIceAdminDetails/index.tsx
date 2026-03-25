@@ -89,28 +89,29 @@ const ViceAdminDetails = () => {
 
                                 <Stack>
                                     <Typography>{t('관리 지역')}</Typography>
-                                    <Typography>{viceAdminDetail?.areaInfo.areaName}</Typography>
+                                    <Typography>{viceAdminDetail?.areaInfo?.areaName ?? '(미할당)'}</Typography>
                                 </Stack>
                             </Stack>
                         </Stack>
 
-                        <Stack>
-                            <GoogleMap
-                                mapContainerStyle={containerStyle}
-                                center={{
-                                    lat: viceAdminDetail?.areaInfo.latitude || 0,
-                                    lng: viceAdminDetail?.areaInfo.longitude || 0,
-                                }}
-                                zoom={13}
-                            >
-                                <Marker
-                                    position={{
-                                        lat: viceAdminDetail?.areaInfo.latitude || 0,
-                                        lng: viceAdminDetail?.areaInfo.longitude || 0,
+                        {viceAdminDetail?.areaInfo && (
+                            <Stack>
+                                <GoogleMap
+                                    mapContainerStyle={containerStyle}
+                                    center={{
+                                        lat: viceAdminDetail?.areaInfo?.latitude || 0,
+                                        lng: viceAdminDetail?.areaInfo?.longitude || 0,
                                     }}
-                                />
-                            </GoogleMap>
-                        </Stack>
+                                    zoom={13}
+                                >
+                                    <Marker
+                                        position={{
+                                            lat: viceAdminDetail?.areaInfo?.latitude || 0,
+                                            lng: viceAdminDetail?.areaInfo?.longitude || 0,
+                                        }}
+                                    />
+                                </GoogleMap>
+                            </Stack>)}
                     </PageLayout>}
             </Stack>
             <EditViceAdminDialog

@@ -54,7 +54,7 @@ const VillageHeadList = () => {
         openDialog({
             title: t('해당 면장을 삭제하시겠습니까?'),
             description: t('삭제한 내용은 되돌릴 수 없습니다.'),
-            variant: 'alert',   
+            variant: 'alert',
             primaryAction: {
                 name: t('확인'),
                 onClick: () => {
@@ -63,7 +63,7 @@ const VillageHeadList = () => {
                     handleCloseMenu();
                 },
             },
-            secondaryAction: { name: t('취소'), onClick: () => {} },
+            secondaryAction: { name: t('취소'), onClick: () => { } },
         });
     };
     const renderRow = (row: GetVillageHeadListRes) => {
@@ -77,10 +77,12 @@ const VillageHeadList = () => {
                         variant="text"
                         onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/locations/area/${row.areaInfo.areaId}`);
+                            if (row.areaInfo?.areaId) {
+                                navigate(`/locations/area/${row.areaInfo?.areaId}`);
+                            }
                         }}
                     >
-                        {row.areaInfo.areaName}
+                        {row.areaInfo?.areaName ?? '(미할당)'}
                     </Button>
                 </TableCell>
                 <TableCell>
@@ -88,10 +90,12 @@ const VillageHeadList = () => {
                         variant="text"
                         onClick={(e) => {
                             e.stopPropagation();
-                            navigate(`/locations/section/${row.sectionInfo.sectionId}`);
+                            if (row.sectionInfo?.sectionId) {
+                                navigate(`/locations/section/${row.sectionInfo?.sectionId}`);
+                            }
                         }}
                     >
-                        {row.sectionInfo.sectionName}
+                        {row.sectionInfo?.sectionName ?? '(미할당)'}
                     </Button>
                 </TableCell>
                 <TableCell>{row.farmerCount}</TableCell>

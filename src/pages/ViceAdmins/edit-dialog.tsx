@@ -62,7 +62,7 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
         try {
             updateViceAdminUrl({
                 ...data,
-                areaId: Number(data.areaId),
+                areaId: data.areaId ? Number(data.areaId) : null,
             })
                 .then((res) => {
                     if (res.data.code === 'SUCCESS') {
@@ -120,7 +120,7 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                 username: viceAdminDetail?.username || '',
                 userId: viceAdminDetail?.userId || '',
                 idCardUrl: viceAdminDetail?.idCardUrl || undefined,
-                areaId: String(viceAdminDetail?.areaInfo.areaId || ''),
+                areaId: String(viceAdminDetail?.areaInfo?.areaId || ''),
             });
         }
     }, [viceAdminDetail]);
@@ -173,11 +173,12 @@ export const EditViceAdminDialog = ({ open, onClose, viceAdminId }: EditViceAdmi
                         control={control}
                         labelValue={t('관리 지역')}
                         fieldName="areaId"
-                        selectArr={
-                            getAreaList?.map((area) => {
+                        selectArr={[
+                            { value: '', label: t('미할당') },
+                            ...(getAreaList?.map((area) => {
                                 return { value: String(area.id), label: area.areaName };
-                            }) || []
-                        }
+                            }) || []),
+                        ]}
                         placeholder={t('관리 지역을 선택해주세요.')}
                     />
                 </Stack>

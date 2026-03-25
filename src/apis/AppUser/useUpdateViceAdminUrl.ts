@@ -7,7 +7,7 @@ type UpdateViceAdminUrlReq = {
     viceAdminId: number;
     username: string;
     userId: string;
-    areaId: number;
+    areaId: number | null;
     idCardUrl: string | null;
 };
 

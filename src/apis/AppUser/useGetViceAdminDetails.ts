@@ -9,7 +9,7 @@ type GetViceAdminDetailsRes = {
     userId: string;
     username: string;
     idCardUrl: string;
-    areaInfo: {
+    areaInfo?: {
         areaId: number;
         longitude: number;
         latitude: number;

@@ -12,8 +12,8 @@ type GetVillageHeadDetailsRes = {
     identificationPhotoUrl: string;
     contractFileUrl: string;
     bankbookPhotoUrl: string;
-    areaInfo: { areaId : number;longitude: number; latitude: number; areaName: string };
-    sectionInfo: {
+    areaInfo?: { areaId : number;longitude: number; latitude: number; areaName: string };
+    sectionInfo?: {
         longitude: number;
         latitude: number;
         sectionName: string;

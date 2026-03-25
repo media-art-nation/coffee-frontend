@@ -103,7 +103,7 @@ const VillageHeadDetails = () => {
                                     }}
                                 >
                                     <TableCell sx={TABLE_HEADER_STYLES}>지역명</TableCell>
-                                    <TableCell align="left">{data?.areaInfo.areaName}</TableCell>
+                                    <TableCell align="left">{data?.areaInfo?.areaName ?? '(미할당)'}</TableCell>
                                 </TableRow>
 
                                 <TableRow
@@ -115,7 +115,7 @@ const VillageHeadDetails = () => {
                                 >
                                     <TableCell sx={TABLE_HEADER_STYLES}>섹션명</TableCell>
                                     <TableCell align="left">
-                                        {data?.sectionInfo.sectionName}
+                                        {data?.sectionInfo?.sectionName ?? '(미할당)'}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow
@@ -208,21 +208,22 @@ const VillageHeadDetails = () => {
                         </Table>
                     </TableContainer>
 
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={{
-                            lat: data?.sectionInfo.latitude || 0,
-                            lng: data?.sectionInfo.longitude || 0,
-                        }}
-                        zoom={13}
-                    >
-                        <Marker
-                            position={{
+                    {data?.sectionInfo && (
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={{
                                 lat: data?.sectionInfo.latitude || 0,
                                 lng: data?.sectionInfo.longitude || 0,
                             }}
-                        />
-                    </GoogleMap>
+                            zoom={13}
+                        >
+                            <Marker
+                                position={{
+                                    lat: data?.sectionInfo.latitude || 0,
+                                    lng: data?.sectionInfo.longitude || 0,
+                                }}
+                            />
+                        </GoogleMap>)}
                 </PageLayout>
             </Stack>
 

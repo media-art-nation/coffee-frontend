@@ -28,6 +28,7 @@ import PageLayout from '@/components/PageLayout';
 import Title from '@/components/Title';
 import { useDialog } from '@/hooks/useDialog';
 import { TAreaWithSections } from '@/typings/Area';
+import { useDeleteArea } from '@/apis/Approval/useDeleteArea';
 
 const LocationList = () => {
     const { t } = useTranslation();
@@ -35,10 +36,13 @@ const LocationList = () => {
     const navigate = useNavigate();
     const { data: areaWithSectionList, isLoading: areaWithSectionListLoading } =
         useGetAreaWithSectionList();
+    const { mutate: deleteArea } = useDeleteArea();
     const { mutate: deleteSection } = useDeleteSection();
     const { mutate: deleteSectionAdmin } = useDeleteSectionAdmin();
     const headData = [t('ID'), t('지역'), t('섹션'), ''];
     const role = getCookies('role');
+
+    console.log(areaWithSectionList);
 
     const [menuState, setMenuState] = useState<{
         anchorEl: HTMLElement | null;
@@ -62,11 +66,12 @@ const LocationList = () => {
             primaryAction: {
                 name: t('확인'),
                 onClick: () => {
-                    const submit = role === 'ADMIN' ? deleteSectionAdmin : deleteSection;
-                    submit({ sectionId: id });
+                    // admin만 삭제 가능
+                    const submit = deleteArea;
+                    submit({ areaId: id });
                 },
             },
-            secondaryAction: { name: t('취소'), onClick: () => {} },
+            secondaryAction: { name: t('취소'), onClick: () => { } },
         });
     };
 

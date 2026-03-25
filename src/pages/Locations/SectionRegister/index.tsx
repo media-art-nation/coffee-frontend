@@ -50,28 +50,16 @@ const SectionRegister = () => {
         return areaList?.find((area) => String(area.id) === String(areaId));
     }, [areaId, areaList]);
 
-    const areaName = selectedArea?.areaName ?? '';
-
-    // 지역 선택 시 sectionName 초기 설정 + 좌표도 설정
+    // 지역 선택 시 좌표 설정 (지도 이동)
     useEffect(() => {
         if (selectedArea) {
-            const newSectionName = areaName; // 초기값
-            setValue('sectionName', newSectionName);
             setValue('latitude', selectedArea.latitude);
             setValue('longitude', selectedArea.longitude);
         }
-    }, [selectedArea, areaName, setValue]);
+    }, [selectedArea, setValue]);
 
-    // 사용자가 입력하는 값을 제어하여 지역명은 지워지지 않도록 설정
     const handleChangeSectionName = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const userInput = e.target.value;
-        if (!userInput.startsWith(areaName)) {
-            // 강제로 앞부분 고정
-            setValue('sectionName', areaName);
-            return;
-        }
-
-        setValue('sectionName', userInput);
+        setValue('sectionName', e.target.value);
     };
 
     const onSubmit = (data: CreateSectionReq) => {
@@ -80,9 +68,7 @@ const SectionRegister = () => {
         submit({
             ...data,
             areaId: Number(data.areaId),
-            sectionName: data.sectionName.startsWith(areaName)
-                ? data.sectionName.slice(areaName.length).trim()
-                : data.sectionName,
+            sectionName: data.sectionName,
         }).then((res) => {
             if (res?.data?.code === 'SUCCESS') {
                 openDialog({
@@ -213,7 +199,6 @@ const SectionRegister = () => {
                         </Stack>
 
                         {/* 숨겨진 필드 등록 */}
-                        <input type="hidden" {...register('sectionName')} />
                         <input type="hidden" {...register('latitude', { valueAsNumber: true })} />
                         <input type="hidden" {...register('longitude', { valueAsNumber: true })} />
 

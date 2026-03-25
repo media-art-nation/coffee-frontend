@@ -30,7 +30,7 @@ type TCreateViceAdminForm = {
     username: string;
     password: string;
     role: TRole;
-    areaId: number;
+    areaId: number | null;
     identificationPhotoUrl: string | null;
 };
 
@@ -62,6 +62,7 @@ export const CreateViceAdminDialog = ({ open, onClose }: CreateViceAdminDialogPr
         try {
             const res = await signUpUrl({
                 ...formData,
+                areaId: formData.areaId ? Number(formData.areaId) : null,
                 identificationPhotoUrl: formData.identificationPhotoUrl || null,
             });
             if (res.code === 'SUCCESS') {
@@ -143,11 +144,12 @@ export const CreateViceAdminDialog = ({ open, onClose }: CreateViceAdminDialogPr
                         control={control}
                         labelValue={t('관리 지역')}
                         fieldName="areaId"
-                        selectArr={
-                            getAreaList?.map((area) => {
+                        selectArr={[
+                            { value: '', label: `${t('미할당')}` },
+                            ...(getAreaList?.map((area) => {
                                 return { value: String(area.id), label: area.areaName };
-                            }) || []
-                        }
+                            }) || []),
+                        ]}
                         placeholder={t('관리 지역을 선택해주세요.')}
                     />
                 </Stack>

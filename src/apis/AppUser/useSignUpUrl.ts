@@ -9,7 +9,7 @@ type SignUpUrlReq = {
     username: string;
     password: string;
     role: TRole;
-    areaId: number;
+    areaId: number | null;
     sectionId?: number;
     bankName?: string;
     accountInfo?: string;

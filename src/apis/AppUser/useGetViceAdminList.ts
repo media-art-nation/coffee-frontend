@@ -7,7 +7,7 @@ export type GetViceAdminListRes = {
     id: number;
     userName: string;
     userId: string;
-    areaInfo: {
+    areaInfo?: {
         longitude: number;
         latitude: number;
         areaName: string;

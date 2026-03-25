@@ -15,12 +15,16 @@ import Title from '@/components/Title';
 
 import { EditViceAdminDialog } from './edit-dialog';
 import { CreateViceAdminDialog } from './create-dialog';
+import { useDialog } from '@/hooks/useDialog';
+import { useDeleteViceAdmin } from '@/apis/AppUser/useDeleteViceAdmin';
 
 const ViceAdminList = () => {
     const { t } = useTranslation();
     const role = getCookies('role');
     const { data: viceAdminList, isLoading } = useGetViceAdminList();
     const navigate = useNavigate();
+    const { openDialog } = useDialog();
+    const { mutate: deleteViceAdmin } = useDeleteViceAdmin();
     const [openCreateDialog, setOpenCreateDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [viceAdminId, setViceAdminId] = useState<number | null>(null);
@@ -39,13 +43,28 @@ const ViceAdminList = () => {
 
     const handleCloseMenu = () => setMenuState({ anchorEl: null, rowId: null });
 
+    const handleClickDelete = (rowId: number) => {
+        openDialog({
+            title: t('해당 부관리자를 삭제하시겠습니까?'),
+            description: t('삭제한 내용은 되돌릴 수 없습니다.'),
+            variant: 'alert',
+            primaryAction: {
+                name: t('확인'),
+                onClick: () => {
+                    deleteViceAdmin({ viceAdminId: rowId });
+                },
+            },
+            secondaryAction: { name: t('취소'), onClick: () => { } },
+        });
+    };
+
     const renderRow = (row: GetViceAdminListRes) => {
         return (
             <TableRow key={row.id} onClick={() => navigate(`/vice-admins/${row.id}`)}>
                 <TableCell>{row.id.toString()}</TableCell>
                 <TableCell>{row.userName}</TableCell>
                 <TableCell>{row.userId}</TableCell>
-                <TableCell>{row.areaInfo.areaName}</TableCell>
+                <TableCell>{row.areaInfo?.areaName ?? '(미할당)'}</TableCell>
                 <TableCell onClick={(e) => e.stopPropagation()} align="right">
                     <IconButton
                         id={`basic-button-${row.id}`}
@@ -76,6 +95,18 @@ const ViceAdminList = () => {
                         >
                             {t('수정하기')}
                         </MenuItem>
+                        {
+                            role === 'ADMIN' && (
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClickDelete(row.id);
+                                        handleCloseMenu();
+                                    }}
+                                >
+                                    {t('삭제하기')}
+                                </MenuItem>
+                            )
+                        }
                     </Menu>
                 </TableCell>
             </TableRow>
