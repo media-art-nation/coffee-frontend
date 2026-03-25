@@ -90,7 +90,8 @@ console.log(methods.formState.errors);
     const onSubmit = (data: EditApprovalVillageHeadRegisterForm) => {
         const submit = updateVillageHead;
         console.log(data);
-        submit({ ...data, sectionId: data.sectionId ? Number(data.sectionId) : null })
+        const { sectionId, ...rest } = data;
+        submit({ ...rest, sectionId: sectionId ? Number(sectionId) : null })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({

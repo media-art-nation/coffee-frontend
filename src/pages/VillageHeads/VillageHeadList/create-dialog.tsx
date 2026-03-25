@@ -78,7 +78,8 @@ const CreateVillageHeadDialog = ({ open, onClose }: CreateVillageHeadDialogProps
 
     const onSubmit = (data: CreateApprovalVillageHeadRegisterForm) => {
         const submit = createVillageHead;
-        submit({ ...data, sectionId: data.sectionId ? Number(data.sectionId) : null })
+        const { sectionId, ...rest } = data;
+        submit({ ...rest, sectionId: sectionId ? Number(sectionId) : null })
             .then((res) => {
                 if (res?.data?.code === 'SUCCESS') {
                     queryClient.invalidateQueries({
