@@ -38,7 +38,6 @@ import { useDialog } from '@/hooks/useDialog';
 import { palette } from '@/themes';
 import { TPurchase } from '@/typings/Purchase';
 
-import { TreesPurchaseCreateDialog } from './create-dialog';
 import { CreateTreesPurchaseRow } from './create-row';
 import { TreesPurchaseEditDialog } from './edit-dialog';
 
@@ -47,8 +46,7 @@ const TreesPurchaseList = () => {
     const { t } = useTranslation();
     const { mutate: deletePurchase } = useDeletePurchase();
     const [openCreateRow, setOpenCreateRow] = useState(false);
-    const [openCreateDialog, setOpenCreateDialog] = useState(false);
-    const [openEditDialog, setOpenEditDialog] = useState(false);
+const [openEditDialog, setOpenEditDialog] = useState(false);
     const [selectedPurchaseDetail, setSelectedPurchaseDetail] = useState<TPurchase | null>(null);
 
     const { data: villageHeadList } = useGetVillageHeadList(); // 면장 목록
@@ -356,11 +354,6 @@ const TreesPurchaseList = () => {
                     </Paper>
                 </PageLayout>
             </Stack>
-
-            <TreesPurchaseCreateDialog
-                open={openCreateDialog}
-                onClose={() => setOpenCreateDialog(false)}
-            />
 
             {selectedPurchaseDetail && (
                 <TreesPurchaseEditDialog

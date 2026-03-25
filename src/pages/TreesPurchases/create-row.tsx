@@ -88,7 +88,12 @@ export const CreateTreesPurchaseRow = ({ onClose }: CreateTreesPurchaseRowProps)
                     placeholder={t('면장 선택')}
                     selectArr={
                         villageHeadList?.map((head) => {
-                            return { value: String(head.id), label: head.appUserName };
+                            const noSection = head.sectionInfo?.sectionId === null || !head.sectionName;
+                            return {
+                                value: String(head.id),
+                                label: head.appUserName + (noSection ? ' (미할당)' : ''),
+                                disabled: noSection,
+                            };
                         }) || []
                     }
                 />

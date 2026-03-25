@@ -9,7 +9,7 @@ type SelectProps<T extends FieldValues> = StackProps & {
     rules?: RegisterOptions<T, Path<T>>;
     fieldName: Path<T>;
     placeholder?: string;
-    selectArr: { value: string; label: string }[];
+    selectArr: { value: string; label: string; disabled?: boolean }[];
     disabled?: boolean;
 };
 
@@ -46,7 +46,7 @@ const Select = <T extends FieldValues>({
                     disabled={disabled}
                 >
                     {selectArr.map((item) => (
-                        <MenuItem key={item.value} value={item.value}>
+                        <MenuItem key={item.value} value={item.value} disabled={item.disabled}>
                             {item.label}
                         </MenuItem>
                     ))}
